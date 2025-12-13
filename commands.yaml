@@ -1,0 +1,170 @@
+categories:
+  reconnaissance:
+    name: "Reconnaissance"
+    tools:
+      nmap_quick_scan:
+        name: "Nmap - Quick Scan"
+        description: "Fast port scan of the 1000 most common ports"
+        command: "nmap -T4 -F {target_ip}"
+        params:
+          - target_ip
+
+      nmap_full_scan:
+        name: "Nmap - Full Port Scan"
+        description: "Comprehensive scan of all 65535 ports with service detection"
+        command: "nmap -p- -sV -sC -T4 -A {target_ip}"
+        params:
+          - target_ip
+
+      nmap_vuln_scan:
+        name: "Nmap - Vulnerability Scan"
+        description: "Check for common vulnerabilities using NSE scripts"
+        command: "nmap --script vuln {target_ip}"
+        params:
+          - target_ip
+
+      rustscan:
+        name: "RustScan - Ultra Fast"
+        description: "Lightning-fast port scanner that feeds results to Nmap"
+        command: "rustscan -a {target_ip} -- -sC -sV"
+        params:
+          - target_ip
+
+      whatweb:
+        name: "WhatWeb - Web Fingerprint"
+        description: "Identify web technologies, CMS, frameworks, and server info"
+        command: "whatweb http://{target_ip}"
+        params:
+          - target_ip
+
+  web_attacks:
+    name: "Web Application Attacks"
+    tools:
+      gobuster_dir:
+        name: "Gobuster - Directory Brute Force"
+        description: "Discover hidden directories and files on web servers"
+        command: "gobuster dir -u http://{target_ip} -w /usr/share/wordlists/dirb/common.txt"
+        params:
+          - target_ip
+
+      nikto:
+        name: "Nikto - Web Vulnerability Scanner"
+        description: "Scan for web server vulnerabilities and misconfigurations"
+        command: "nikto -h http://{target_ip}"
+        params:
+          - target_ip
+
+      sqlmap:
+        name: "SQLMap - SQL Injection"
+        description: "Automated SQL injection and database takeover tool"
+        command: "sqlmap -u http://{target_ip} --batch --crawl=2"
+        params:
+          - target_ip
+
+      wfuzz:
+        name: "Wfuzz - Web Fuzzer"
+        description: "Brute force web application parameters and paths"
+        command: "wfuzz -c -z file,/usr/share/wordlists/dirb/common.txt --hc 404 http://{target_ip}/FUZZ"
+        params:
+          - target_ip
+
+  exploitation:
+    name: "Exploitation"
+    tools:
+      metasploit_db_nmap:
+        name: "Metasploit - Import Nmap Results"
+        description: "Import Nmap XML scan results into Metasploit database"
+        command: "msfconsole -q -x 'db_nmap {target_ip}; exit'"
+        params:
+          - target_ip
+
+      searchsploit:
+        name: "SearchSploit - Exploit Search"
+        description: "Search for exploits in the Exploit Database"
+        command: "searchsploit {search_term}"
+        params:
+          - search_term
+
+      hydra_ssh:
+        name: "Hydra - SSH Brute Force"
+        description: "Brute force SSH credentials using wordlist"
+        command: "hydra -L /usr/share/wordlists/metasploit/unix_users.txt -P /usr/share/wordlists/rockyou.txt ssh://{target_ip}"
+        params:
+          - target_ip
+
+  network:
+    name: "Network Analysis"
+    tools:
+      netdiscover:
+        name: "NetDiscover - Network Scanner"
+        description: "Active/passive ARP reconnaissance for network discovery"
+        command: "netdiscover -r {target_ip}/24"
+        params:
+          - target_ip
+
+      arp_scan:
+        name: "ARP-Scan - Local Network"
+        description: "Discover devices on local network using ARP"
+        command: "arp-scan --localnet"
+        params: []
+
+      tcpdump:
+        name: "TCPDump - Packet Capture"
+        description: "Capture and analyze network traffic on specific port"
+        command: "tcpdump -i {interface} port {port} -w capture.pcap"
+        params:
+          - interface
+          - port
+
+  enumeration:
+    name: "Service Enumeration"
+    tools:
+      enum4linux:
+        name: "Enum4Linux - SMB Enumeration"
+        description: "Enumerate information from Windows/Samba systems"
+        command: "enum4linux -a {target_ip}"
+        params:
+          - target_ip
+
+      smbclient:
+        name: "SMBClient - List Shares"
+        description: "List available SMB shares on target system"
+        command: "smbclient -L //{target_ip} -N"
+        params:
+          - target_ip
+
+      ldapsearch:
+        name: "LDAP Search - Directory Enumeration"
+        description: "Query LDAP directory services for information"
+        command: "ldapsearch -x -h {target_ip} -b 'dc=example,dc=com'"
+        params:
+          - target_ip
+
+      snmpwalk:
+        name: "SNMP Walk - SNMP Enumeration"
+        description: "Enumerate SNMP-enabled devices and retrieve MIB data"
+        command: "snmpwalk -v 2c -c public {target_ip}"
+        params:
+          - target_ip
+
+  wireless:
+    name: "Wireless Attacks"
+    tools:
+      airmon_ng:
+        name: "Airmon-ng - Monitor Mode"
+        description: "Enable monitor mode on wireless interface"
+        command: "airmon-ng start wlan0"
+        params: []
+
+      airodump_ng:
+        name: "Airodump-ng - Wireless Capture"
+        description: "Capture wireless packets and discover networks"
+        command: "airodump-ng wlan0mon"
+        params: []
+
+      wash:
+        name: "Wash - WPS Detection"
+        description: "Identify WPS-enabled access points"
+        command: "wash -i wlan0mon"
+        params: []
+
