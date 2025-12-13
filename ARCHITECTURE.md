@@ -1,4 +1,130 @@
-# 🏗️ Tajaa CLI - Architecture Documentation
+# Tajaa CLI - Architecture Documentation
+
+## System Overview
+
+Tajaa CLI is a production-grade penetration testing command manager built with object-oriented principles. The system provides a structured interface for executing security tools with intelligent input validation, dependency checking, and session logging.
+
+### Core Design Philosophy
+
+The architecture follows strict separation of concerns, where each component handles a specific aspect of the application lifecycle. This modular approach enables maintainability, testability, and extensibility while ensuring robust error handling at every layer.
+
+### Technology Stack
+- Python 3.8+: Modern Python with type hints
+- Typer: Command-line interface framework
+- Rich: Terminal formatting and UI
+- InquirerPy: Interactive prompts
+- PyYAML: Configuration parsing
+- pyfiglet: ASCII art banners
+- pyperclip: Clipboard integration
+
+### System Flow Diagram
+
+```
+┌─────────────┐
+│   Config    │  commands.yaml loaded and parsed
+│   Loader    │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│     UI      │  Display categories and tools
+│   Manager   │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│    User     │  Interactive tool selection
+│   Input     │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Input     │  Validate IPv4, ports, parameters
+│  Validator  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│ Dependency  │  Check if tool binary exists
+│   Checker   │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Command   │  Execute with progress feedback
+│  Executor   │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Session   │  Log command with timestamp
+│   Logger    │
+└─────────────┘
+```
+
+---
+
+## Component Design
+
+### ConfigLoader
+
+**Responsibility:** Parse and validate YAML configuration files.
+
+**Key Methods:**
+- `load() -> Dict[str, CategoryConfig]`: Loads tool categories from YAML
+- Validates configuration structure and converts to typed dataclasses
+
+**Dependencies:** PyYAML, pathlib
+
+**Error Handling:** Raises descriptive exceptions for malformed configuration
+
+### InputValidator
+
+**Responsibility:** Validate user input for security and correctness.
+
+**Key Methods:**
+- `validate_ipv4(ip_string: str) -> Tuple[bool, Optional[str]]`: IPv4 validation using ipaddress module
+- `validate_port(port_string: str) -> Tuple[bool, Optional[str]]`: Port range validation (1-65535)
+- `get_validated_input(param_name: str) -> str`: Interactive input with retry logic
+
+**Validation Rules:**
+- IPv4: Must be valid format (e.g., 192.168.1.1)
+- Port: Integer between 1 and 65535
+- Re-prompts on invalid input with clear error messages
+
+### CommandExecutor
+
+**Responsibility:** Execute pentesting commands with safety checks and feedback.
+
+**Key Methods:**
+- `execute(category: CategoryConfig, tool_name: str, tool: ToolConfig)`: Main execution flow
+- `prepare_command(command_template: str, params: List[str]) -> str`: Build command from template
+- `_execute_with_progress(command: str)`: Run command with visual progress indicator
+
+**Safety Features:**
+- Dependency checking before execution
+- Command preview with user confirmation
+- Clipboard auto-copy of generated commands
+- Graceful KeyboardInterrupt handling
+
+### SessionLogger
+
+**Responsibility:** Maintain audit trail of executed commands.
+
+**Key Methods:**
+- `log_command(command: str, category: str, tool: str)`: Append to session log file
+
+**Log Format:**
+```
+[2025-12-14 10:30:45] [Reconnaissance] [Nmap Quick Scan] nmap -T4 -F 192.168.1.1
+```
+
+**File Management:**
+- Creates log file if not exists
+- Appends with atomic writes
+- Handles file permission errors gracefully
+
+---
 
 ## Table of Contents
 1. [Overview](#overview)
