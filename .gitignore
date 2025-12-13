@@ -91,7 +91,9 @@ POST_UPLOAD_CHECKLIST.md
 SCRIPT_FIXED.md
 upload-to-github.ps1
 upload-to-github.sh
+cleanup-github.ps1
 DELIVERY_SUMMARY.md
 PROJECT_COMPLETE.txt
 ARCHITECTURE_DIAGRAM.txt
+CLEANUP_COMPLETE.md
 
