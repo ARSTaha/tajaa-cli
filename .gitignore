@@ -83,20 +83,12 @@ reports/
 temp/
 tmp/
 
-# GitHub upload guides (internal use only - not for public repo)
-GITHUB_UPLOAD_GUIDE.md
-GITHUB_SETUP_COMPLETE.md
-QUICK_UPLOAD.md
-POST_UPLOAD_CHECKLIST.md
-SCRIPT_FIXED.md
-upload-to-github.ps1
-upload-to-github.sh
-cleanup-github.ps1
-final-cleanup.ps1
-DELIVERY_SUMMARY.md
-PROJECT_COMPLETE.txt
-ARCHITECTURE_DIAGRAM.txt
-CLEANUP_COMPLETE.md
-FINAL_VERSION_SUMMARY.md
-QUICK_REFERENCE.md
+# Development and internal files
+*_GUIDE.md
+*_SUMMARY.md
+*_COMPLETE.md
+*CHECKLIST.md
+*.ps1
+*.sh
+*_DIAGRAM.txt
 
