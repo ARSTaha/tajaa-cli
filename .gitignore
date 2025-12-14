@@ -1,9 +1,13 @@
 # ============================================================================
 # Tajaa CLI v3.0.0 - Git Ignore Configuration
 # ============================================================================
+# Project: Modular Cyber Security Framework
+# Author: Tajaa
+# Updated: December 14, 2025
+# ============================================================================
 
 # ============================================================================
-# Python
+# Python Runtime & Build
 # ============================================================================
 __pycache__/
 *.py[cod]
@@ -37,29 +41,40 @@ venv/
 ENV/
 env/
 .virtualenv/
+.python-version
 
 # ============================================================================
 # IDE & Editors
 # ============================================================================
+# JetBrains (PyCharm, IntelliJ)
 .idea/
+*.iml
+*.iws
+*.ipr
+
+# VSCode
 .vscode/
+*.code-workspace
+
+# Vim/Emacs
 *.swp
 *.swo
 *~
 .project
 .pydevproject
 .settings/
-*.code-workspace
 
 # ============================================================================
-# Session Logs & Output
+# Tajaa CLI - Session & Execution Logs
 # ============================================================================
 session_logs.txt
 *.log
 test_session.log
+execution_*.log
+audit_*.log
 
 # ============================================================================
-# Operating System
+# Operating System Files
 # ============================================================================
 # macOS
 .DS_Store
@@ -67,17 +82,23 @@ test_session.log
 ._*
 .Spotlight-V100
 .Trashes
+.AppleDouble
+.LSOverride
 
 # Windows
-ehthumbs.db
 Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
 desktop.ini
+$RECYCLE.BIN/
 
 # Linux
-*~
+.directory
+.Trash-*
 
 # ============================================================================
-# Testing & Coverage
+# Testing & Code Quality
 # ============================================================================
 .pytest_cache/
 .coverage
@@ -90,14 +111,18 @@ htmlcov/
 .hypothesis/
 .mypy_cache/
 .pytype/
+.ruff_cache/
+.dmypy.json
+dmypy.json
 
 # ============================================================================
-# Security Tool Output
+# Security Tool Output & Artifacts
 # ============================================================================
 # Packet captures
 *.pcap
 *.cap
 *.pcapng
+*.pcapng.gz
 
 # Tool output directories
 captures/
@@ -106,6 +131,12 @@ results/
 reports/
 scans/
 loot/
+artifacts/
+exploits_output/
+
+# Wordlists and large datasets (keep versioned lists only)
+wordlists/custom_*.txt
+wordlists/generated_*.txt
 
 # ============================================================================
 # Temporary & Backup Files
@@ -115,36 +146,61 @@ loot/
 *.temp
 temp/
 tmp/
-*~
 *.orig
+*.old
+*.backup
 
 # ============================================================================
-# Development & Documentation (Internal)
+# Documentation - Internal/Work-in-Progress
 # ============================================================================
-# Keep published docs, ignore internal working files
+# Keep all published documentation, ignore work files
 *_INTERNAL.md
 *_NOTES.md
 *_TODO.md
 *_WIP.md
+*_DRAFT.md
 drafts/
 notes/
+.notes/
 
 # ============================================================================
-# Custom User Configurations
+# Configuration - User Customizations
 # ============================================================================
-# Allow versioned configs in configs/ but ignore user customizations
+# Track official configs (01-09), ignore user additions (10+)
 configs/*_custom.yaml
 configs/*_local.yaml
+configs/*_test.yaml
 configs/10_*.yaml
 configs/11_*.yaml
 configs/12_*.yaml
+configs/13_*.yaml
+configs/14_*.yaml
+configs/15_*.yaml
+configs/20_*.yaml
+
+# Keep README and official numbered configs
+!configs/README.md
+!configs/01_*.yaml
+!configs/02_*.yaml
+!configs/03_*.yaml
+!configs/04_*.yaml
+!configs/05_*.yaml
+!configs/06_*.yaml
+!configs/07_*.yaml
+!configs/08_*.yaml
+!configs/09_*.yaml
 
 # ============================================================================
-# Environment Variables
+# Environment Variables & Secrets
 # ============================================================================
 .env
 .env.local
 .env.*.local
+.envrc
+secrets.yaml
+secrets.json
+api_keys.txt
+credentials.txt
 
 # ============================================================================
 # Database & Cache
@@ -152,11 +208,18 @@ configs/12_*.yaml
 *.db
 *.sqlite
 *.sqlite3
+*.db-journal
 cache/
+.cache/
+__db__/
 
 # ============================================================================
-# Misc
+# Misc Development
 # ============================================================================
 .vagrant/
 *.retry
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
