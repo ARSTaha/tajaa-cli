@@ -1,0 +1,428 @@
+categories:
+  passive_recon:
+    name: "🕵️ Passive Intelligence Gathering"
+    tools:
+      theharvester_all:
+        name: "TheHarvester - All Sources"
+        description: "Gather emails, subdomains, IPs from multiple sources"
+        command: "theHarvester -d {domain} -b all -l 500"
+        params:
+          - domain
+
+      theharvester_google:
+        name: "TheHarvester - Google Search"
+        description: "Gather intelligence using Google search engine"
+        command: "theHarvester -d {domain} -b google -l 500"
+        params:
+          - domain
+
+      theharvester_linkedin:
+        name: "TheHarvester - LinkedIn Employees"
+        description: "Extract employee names from LinkedIn"
+        command: "theHarvester -d {domain} -b linkedin -l 500"
+        params:
+          - domain
+
+      theharvester_hunter:
+        name: "TheHarvester - Hunter.io API"
+        description: "Extract emails using Hunter.io database"
+        command: "theHarvester -d {domain} -b hunter"
+        params:
+          - domain
+
+      spiderfoot_cli:
+        name: "SpiderFoot - CLI Automation"
+        description: "Automated OSINT reconnaissance framework"
+        command: "spiderfoot -s {target_domain} -o json:{output_file}"
+        params:
+          - target_domain
+          - output_file
+
+      spiderfoot_modules:
+        name: "SpiderFoot - Specific Modules"
+        description: "Run specific OSINT modules only"
+        command: "spiderfoot -s {target_domain} -m {module_list}"
+        params:
+          - target_domain
+          - module_list
+
+      recon_ng_startup:
+        name: "Recon-ng - Interactive Framework"
+        description: "Full-featured web reconnaissance framework"
+        command: "recon-ng"
+        params: []
+
+  domain_intel:
+    name: "🌍 Domain & DNS Intelligence"
+    tools:
+      whois_lookup:
+        name: "Whois - Domain Registration Info"
+        description: "Query domain registration details (owner, dates, nameservers)"
+        command: "whois {domain}"
+        params:
+          - domain
+
+      dnsrecon_full:
+        name: "DNSRecon - Full Enumeration"
+        description: "Complete DNS enumeration (A, MX, NS, SOA, TXT records)"
+        command: "dnsrecon -d {domain}"
+        params:
+          - domain
+
+      dnsrecon_axfr:
+        name: "DNSRecon - Zone Transfer Test"
+        description: "Attempt DNS zone transfer (AXFR) from nameservers"
+        command: "dnsrecon -d {domain} -a"
+        params:
+          - domain
+
+      dnsrecon_bruteforce:
+        name: "DNSRecon - Subdomain Brute Force"
+        description: "Brute force subdomains using built-in wordlist"
+        command: "dnsrecon -d {domain} -D /usr/share/wordlists/dnsmap.txt -t brt"
+        params:
+          - domain
+
+      dnsenum:
+        name: "DNSenum - Comprehensive DNS Enum"
+        description: "DNS enumeration with Google scraping and brute force"
+        command: "dnsenum {domain}"
+        params:
+          - domain
+
+      fierce:
+        name: "Fierce - DNS Reconnaissance"
+        description: "Locate non-contiguous IP space and hostnames"
+        command: "fierce --domain {domain}"
+        params:
+          - domain
+
+      dig_any:
+        name: "Dig - All DNS Records"
+        description: "Query all available DNS record types"
+        command: "dig {domain} ANY +noall +answer"
+        params:
+          - domain
+
+      dig_mx:
+        name: "Dig - Mail Server Records"
+        description: "Query MX records to identify mail servers"
+        command: "dig {domain} MX +short"
+        params:
+          - domain
+
+      dig_txt:
+        name: "Dig - TXT Records (SPF/DMARC)"
+        description: "Query TXT records for SPF, DMARC, verification tokens"
+        command: "dig {domain} TXT +short"
+        params:
+          - domain
+
+      host_reverse:
+        name: "Host - Reverse DNS Lookup"
+        description: "Perform reverse DNS lookup on IP address"
+        command: "host {ip_address}"
+        params:
+          - ip_address
+
+  social_media:
+    name: "👤 Social Media Intelligence"
+    tools:
+      sherlock:
+        name: "Sherlock - Username Hunter"
+        description: "Hunt for username across 300+ social networks"
+        command: "sherlock {username} --timeout 10"
+        params:
+          - username
+
+      sherlock_specific:
+        name: "Sherlock - Specific Sites"
+        description: "Search username on specific social media sites"
+        command: "sherlock {username} --site {site_list}"
+        params:
+          - username
+          - site_list
+
+      socialscan:
+        name: "SocialScan - Fast Account Checker"
+        description: "Check email/username availability on social platforms"
+        command: "socialscan {username}"
+        params:
+          - username
+
+      maigret:
+        name: "Maigret - Advanced Username OSINT"
+        description: "Collect detailed profile information from username"
+        command: "maigret {username}"
+        params:
+          - username
+
+      toutatis:
+        name: "Toutatis - Instagram OSINT"
+        description: "Extract Instagram account information without API"
+        command: "toutatis {instagram_username}"
+        params:
+          - instagram_username
+
+      twint:
+        name: "Twint - Twitter Scraper"
+        description: "Scrape Twitter/X data without API (tweets, followers)"
+        command: "twint -u {twitter_username} --limit 100"
+        params:
+          - twitter_username
+
+  email_intel:
+    name: "📧 Email Intelligence"
+    tools:
+      holehe:
+        name: "Holehe - Email Account Finder"
+        description: "Check if email is registered on 120+ websites"
+        command: "holehe {email_address}"
+        params:
+          - email_address
+
+      h8mail:
+        name: "h8mail - Breach Data Lookup"
+        description: "Search for email in data breaches (HaveIBeenPwned, etc.)"
+        command: "h8mail -t {email_address}"
+        params:
+          - email_address
+
+      emailrep:
+        name: "EmailRep - Reputation Check"
+        description: "Check email reputation and breach history"
+        command: "emailrep {email_address}"
+        params:
+          - email_address
+
+      infoga:
+        name: "Infoga - Email OSINT Gathering"
+        description: "Gather information about email addresses"
+        command: "infoga --target {email_address} --source all"
+        params:
+          - email_address
+
+  ip_geolocation:
+    name: "🌐 IP & Geolocation Intelligence"
+    tools:
+      shodan_host:
+        name: "Shodan - Host Information"
+        description: "Query Shodan for host details (requires API key)"
+        command: "shodan host {ip_address}"
+        params:
+          - ip_address
+
+      shodan_search:
+        name: "Shodan - Search Query"
+        description: "Search Shodan database with custom query"
+        command: "shodan search {query}"
+        params:
+          - query
+
+      shodan_count:
+        name: "Shodan - Count Results"
+        description: "Count how many results match a search query"
+        command: "shodan count {query}"
+        params:
+          - query
+
+      censys_search:
+        name: "Censys - Internet-Wide Search"
+        description: "Search Censys database for hosts and certificates"
+        command: "censys search {query}"
+        params:
+          - query
+
+      geoiplookup:
+        name: "GeoIP - Location Lookup"
+        description: "Get geographical location of IP address"
+        command: "geoiplookup {ip_address}"
+        params:
+          - ip_address
+
+      ipinfo:
+        name: "IPInfo - IP Intelligence"
+        description: "Get IP details (location, ISP, ASN, company)"
+        command: "curl ipinfo.io/{ip_address}"
+        params:
+          - ip_address
+
+  metadata_extraction:
+    name: "📄 Document & Metadata Analysis"
+    tools:
+      exiftool_all:
+        name: "ExifTool - Extract All Metadata"
+        description: "Extract all EXIF metadata from documents/images"
+        command: "exiftool {file_path}"
+        params:
+          - file_path
+
+      exiftool_gps:
+        name: "ExifTool - GPS Coordinates"
+        description: "Extract GPS location data from images"
+        command: "exiftool -gps* {file_path}"
+        params:
+          - file_path
+
+      metagoofil:
+        name: "Metagoofil - Document Metadata Harvester"
+        description: "Download and extract metadata from public documents"
+        command: "metagoofil -d {domain} -t pdf,doc,docx -l 100 -o {output_dir}"
+        params:
+          - domain
+          - output_dir
+
+      foca_cli:
+        name: "FOCA - Fingerprinting Organizations"
+        description: "Extract metadata and analyze organizational footprint"
+        command: "foca -d {domain} -o {output_file}"
+        params:
+          - domain
+          - output_file
+
+  phone_intel:
+    name: "📞 Phone Number Intelligence"
+    tools:
+      phoneinfoga:
+        name: "PhoneInfoga - Phone Number OSINT"
+        description: "Advanced phone number reconnaissance tool"
+        command: "phoneinfoga scan -n {phone_number}"
+        params:
+          - phone_number
+
+      ignorant:
+        name: "Ignorant - Phone Number Checker"
+        description: "Check if phone number is registered on social media"
+        command: "ignorant {phone_number}"
+        params:
+          - phone_number
+
+  dark_web:
+    name: "🕸️ Dark Web & Leak Intelligence"
+    tools:
+      onionscan:
+        name: "OnionScan - Tor Hidden Service Scanner"
+        description: "Scan and analyze Tor hidden services (.onion)"
+        command: "onionscan {onion_address}"
+        params:
+          - onion_address
+
+      tor_whois:
+        name: "Tor Whois - Onion Domain Lookup"
+        description: "Query information about .onion domains"
+        command: "torwhois {onion_address}"
+        params:
+          - onion_address
+
+      pwndb:
+        name: "PwnDB - Leaked Credentials Search"
+        description: "Search leaked credentials databases (requires Tor)"
+        command: "pwndb --target {email_or_domain}"
+        params:
+          - email_or_domain
+
+  company_intel:
+    name: "🏢 Corporate Intelligence"
+    tools:
+      linkedin2username:
+        name: "LinkedIn2Username - Employee List"
+        description: "Generate username list from LinkedIn company employees"
+        command: "linkedin2username -c {company_name} -n {company_name}"
+        params:
+          - company_name
+
+      crosslinked:
+        name: "CrossLinked - LinkedIn Scraper"
+        description: "Extract employee names from LinkedIn for password spraying"
+        command: "crosslinked -f {first.last} {company_name}"
+        params:
+          - company_name
+
+      bbot:
+        name: "BBOT - Recursive OSINT Scanner"
+        description: "Recursive subdomain/asset discovery with intelligence"
+        command: "bbot -t {domain}"
+        params:
+          - domain
+
+  certificate_transparency:
+    name: "🔒 Certificate Transparency Logs"
+    tools:
+      crt_sh:
+        name: "crt.sh - Certificate Search"
+        description: "Search certificate transparency logs for subdomains"
+        command: "curl -s 'https://crt.sh/?q={domain}&output=json' | jq -r '.[].name_value' | sort -u"
+        params:
+          - domain
+
+      certspotter:
+        name: "CertSpotter - CT Log Monitor"
+        description: "Query Certificate Transparency logs"
+        command: "certspotter {domain}"
+        params:
+          - domain
+
+      ctfr:
+        name: "CTFR - Subdomain from CT Logs"
+        description: "Fast subdomain enumeration from certificate transparency"
+        command: "ctfr -d {domain} -o {output_file}"
+        params:
+          - domain
+          - output_file
+
+  pastebins:
+    name: "📋 Pastebin & Code Repository Search"
+    tools:
+      psbdmp:
+        name: "Psbdmp - Pastebin Dump Monitor"
+        description: "Search Pastebin dumps for domain/email mentions"
+        command: "psbdmp -q {search_term}"
+        params:
+          - search_term
+
+      gitrob:
+        name: "GitRob - GitHub Secrets Scanner"
+        description: "Find sensitive information in GitHub repositories"
+        command: "gitrob {github_org_or_user}"
+        params:
+          - github_org_or_user
+
+      gitleaks:
+        name: "Gitleaks - Scan Git for Secrets"
+        description: "Detect hardcoded secrets in git repositories"
+        command: "gitleaks detect --source {repo_path} -v"
+        params:
+          - repo_path
+
+      trufflehog:
+        name: "TruffleHog - Git Secrets Hunter"
+        description: "Search git history for high-entropy strings (secrets)"
+        command: "trufflehog git {repo_url} --only-verified"
+        params:
+          - repo_url
+
+  image_intel:
+    name: "🖼️ Image & Visual Intelligence"
+    tools:
+      google_reverse:
+        name: "Google Reverse Image Search"
+        description: "Reverse image search using Google (browser-based)"
+        command: "xdg-open 'https://www.google.com/searchbyimage?image_url={image_url}'"
+        params:
+          - image_url
+
+      tineye_api:
+        name: "TinEye - Reverse Image API"
+        description: "Reverse image search using TinEye"
+        command: "tineye {image_path}"
+        params:
+          - image_path
+
+      photon:
+        name: "Photon - Web Crawler & Extractor"
+        description: "Fast web crawler to extract URLs, files, intel"
+        command: "photon -u {url} -o {output_dir}"
+        params:
+          - url
+          - output_dir
+

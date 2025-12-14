@@ -1,0 +1,368 @@
+categories:
+  aws_enumeration:
+    name: "☁️ AWS Reconnaissance"
+    tools:
+      aws_whoami:
+        name: "AWS CLI - Get Caller Identity"
+        description: "Check current AWS credentials and permissions"
+        command: "aws sts get-caller-identity"
+        params: []
+
+      aws_s3_list:
+        name: "AWS CLI - List S3 Buckets"
+        description: "Enumerate all S3 buckets in account"
+        command: "aws s3 ls"
+        params: []
+
+      aws_s3_bucket_contents:
+        name: "AWS CLI - List Bucket Contents"
+        description: "List all objects in specific S3 bucket"
+        command: "aws s3 ls s3://{bucket_name} --recursive"
+        params:
+          - bucket_name
+
+      aws_ec2_instances:
+        name: "AWS CLI - List EC2 Instances"
+        description: "Enumerate all EC2 instances in region"
+        command: "aws ec2 describe-instances --region {region}"
+        params:
+          - region
+
+      aws_iam_users:
+        name: "AWS CLI - List IAM Users"
+        description: "Enumerate all IAM users in account"
+        command: "aws iam list-users"
+        params: []
+
+      aws_iam_policies:
+        name: "AWS CLI - List IAM Policies"
+        description: "List all custom IAM policies"
+        command: "aws iam list-policies --scope Local"
+        params: []
+
+      aws_lambda_functions:
+        name: "AWS CLI - List Lambda Functions"
+        description: "Enumerate all Lambda functions in region"
+        command: "aws lambda list-functions --region {region}"
+        params:
+          - region
+
+      aws_rds_instances:
+        name: "AWS CLI - List RDS Databases"
+        description: "Enumerate all RDS database instances"
+        command: "aws rds describe-db-instances --region {region}"
+        params:
+          - region
+
+      aws_secrets:
+        name: "AWS CLI - List Secrets Manager"
+        description: "Enumerate stored secrets in Secrets Manager"
+        command: "aws secretsmanager list-secrets --region {region}"
+        params:
+          - region
+
+  aws_security_audit:
+    name: "🔍 AWS Security Auditing"
+    tools:
+      prowler_full:
+        name: "Prowler - Full AWS Audit"
+        description: "Comprehensive AWS security best practices audit (200+ checks)"
+        command: "prowler -M text,html"
+        params: []
+
+      prowler_cis:
+        name: "Prowler - CIS Benchmark"
+        description: "Run CIS AWS Foundations Benchmark checks only"
+        command: "prowler -c check11,check12,check13"
+        params: []
+
+      prowler_region:
+        name: "Prowler - Specific Region Audit"
+        description: "Audit specific AWS region for security issues"
+        command: "prowler -r {region}"
+        params:
+          - region
+
+      scoutsuite_aws:
+        name: "ScoutSuite - AWS Multi-Check"
+        description: "Multi-cloud security auditing tool for AWS"
+        command: "scout aws"
+        params: []
+
+      scoutsuite_report:
+        name: "ScoutSuite - Generate HTML Report"
+        description: "Run ScoutSuite and generate detailed HTML report"
+        command: "scout aws --report-dir {output_dir}"
+        params:
+          - output_dir
+
+      cloudsplaining_scan:
+        name: "Cloudsplaining - IAM Risk Analysis"
+        description: "Identify excessive IAM permissions and privilege escalation paths"
+        command: "cloudsplaining scan --input-file {policy_file} --output {output_dir}"
+        params:
+          - policy_file
+          - output_dir
+
+      cloudsplaining_download:
+        name: "Cloudsplaining - Download Account Auth"
+        description: "Download AWS account authorization details for analysis"
+        command: "cloudsplaining download --profile {profile_name}"
+        params:
+          - profile_name
+
+      pacu_enumeration:
+        name: "Pacu - AWS Exploitation Framework"
+        description: "Open-source AWS exploitation framework (interactive)"
+        command: "pacu"
+        params: []
+
+  azure_enumeration:
+    name: "🔷 Azure Reconnaissance"
+    tools:
+      az_account_show:
+        name: "Azure CLI - Show Account"
+        description: "Display current Azure subscription and tenant info"
+        command: "az account show"
+        params: []
+
+      az_vm_list:
+        name: "Azure CLI - List Virtual Machines"
+        description: "Enumerate all Azure VMs in subscription"
+        command: "az vm list --output table"
+        params: []
+
+      az_storage_list:
+        name: "Azure CLI - List Storage Accounts"
+        description: "List all Azure storage accounts"
+        command: "az storage account list --output table"
+        params: []
+
+      az_webapp_list:
+        name: "Azure CLI - List Web Apps"
+        description: "Enumerate all Azure App Service web apps"
+        command: "az webapp list --output table"
+        params: []
+
+      az_keyvault_list:
+        name: "Azure CLI - List Key Vaults"
+        description: "Enumerate all Azure Key Vaults"
+        command: "az keyvault list --output table"
+        params: []
+
+      az_ad_users:
+        name: "Azure CLI - List AD Users"
+        description: "List all Azure Active Directory users"
+        command: "az ad user list --output table"
+        params: []
+
+      az_role_assignments:
+        name: "Azure CLI - List Role Assignments"
+        description: "Show all RBAC role assignments"
+        command: "az role assignment list --output table"
+        params: []
+
+      scoutsuite_azure:
+        name: "ScoutSuite - Azure Audit"
+        description: "Security audit for Azure subscriptions"
+        command: "scout azure"
+        params: []
+
+  gcp_enumeration:
+    name: "🌐 GCP Reconnaissance"
+    tools:
+      gcloud_auth_list:
+        name: "GCloud - List Auth Accounts"
+        description: "Display all authenticated GCP accounts"
+        command: "gcloud auth list"
+        params: []
+
+      gcloud_projects:
+        name: "GCloud - List Projects"
+        description: "Enumerate all accessible GCP projects"
+        command: "gcloud projects list"
+        params: []
+
+      gcloud_compute_instances:
+        name: "GCloud - List Compute Instances"
+        description: "List all GCP Compute Engine VMs"
+        command: "gcloud compute instances list"
+        params: []
+
+      gcloud_storage_buckets:
+        name: "GCloud - List Storage Buckets"
+        description: "Enumerate all GCS buckets in project"
+        command: "gcloud storage buckets list"
+        params: []
+
+      gcloud_iam_list:
+        name: "GCloud - List IAM Members"
+        description: "Show all IAM policy bindings for project"
+        command: "gcloud projects get-iam-policy {project_id}"
+        params:
+          - project_id
+
+      gcloud_sql_instances:
+        name: "GCloud - List SQL Instances"
+        description: "Enumerate all Cloud SQL database instances"
+        command: "gcloud sql instances list"
+        params: []
+
+      gcloud_functions:
+        name: "GCloud - List Cloud Functions"
+        description: "List all deployed Cloud Functions"
+        command: "gcloud functions list"
+        params: []
+
+      scoutsuite_gcp:
+        name: "ScoutSuite - GCP Audit"
+        description: "Security audit for Google Cloud Platform"
+        command: "scout gcp"
+        params: []
+
+  s3_security:
+    name: "🪣 S3 Bucket Exploitation"
+    tools:
+      aws_s3_public_check:
+        name: "AWS CLI - Check Bucket Public Access"
+        description: "Check if S3 bucket allows public access"
+        command: "aws s3api get-bucket-acl --bucket {bucket_name}"
+        params:
+          - bucket_name
+
+      aws_s3_policy:
+        name: "AWS CLI - Get Bucket Policy"
+        description: "Retrieve bucket policy JSON configuration"
+        command: "aws s3api get-bucket-policy --bucket {bucket_name}"
+        params:
+          - bucket_name
+
+      aws_s3_download:
+        name: "AWS CLI - Download Bucket Contents"
+        description: "Download entire S3 bucket to local directory"
+        command: "aws s3 sync s3://{bucket_name} {local_dir}"
+        params:
+          - bucket_name
+          - local_dir
+
+      s3scanner:
+        name: "S3Scanner - Bucket Finder"
+        description: "Scan for open S3 buckets from domain list"
+        command: "s3scanner --bucket-file {bucket_list}"
+        params:
+          - bucket_list
+
+      bucket_finder:
+        name: "Bucket Finder - Wordlist Search"
+        description: "Search for S3 buckets using wordlist"
+        command: "bucket_finder.rb {wordlist} --download"
+        params:
+          - wordlist
+
+  container_security:
+    name: "🐳 Container & Kubernetes Security"
+    tools:
+      kubectl_pods:
+        name: "Kubectl - List Pods"
+        description: "List all pods in Kubernetes cluster"
+        command: "kubectl get pods --all-namespaces"
+        params: []
+
+      kubectl_secrets:
+        name: "Kubectl - List Secrets"
+        description: "Enumerate all Kubernetes secrets"
+        command: "kubectl get secrets --all-namespaces"
+        params: []
+
+      kubectl_exec:
+        name: "Kubectl - Execute in Pod"
+        description: "Execute command inside Kubernetes pod"
+        command: "kubectl exec -it {pod_name} -- /bin/bash"
+        params:
+          - pod_name
+
+      trivy_image:
+        name: "Trivy - Scan Container Image"
+        description: "Scan Docker/container image for vulnerabilities"
+        command: "trivy image {image_name}"
+        params:
+          - image_name
+
+      trivy_filesystem:
+        name: "Trivy - Scan Filesystem"
+        description: "Scan local filesystem for vulnerabilities"
+        command: "trivy fs {path}"
+        params:
+          - path
+
+      docker_inspect:
+        name: "Docker - Inspect Container"
+        description: "Get detailed container configuration and metadata"
+        command: "docker inspect {container_id}"
+        params:
+          - container_id
+
+      docker_exec:
+        name: "Docker - Execute in Container"
+        description: "Execute command inside running Docker container"
+        command: "docker exec -it {container_id} /bin/bash"
+        params:
+          - container_id
+
+  cloud_metadata:
+    name: "🔐 Cloud Metadata Exploitation"
+    tools:
+      aws_metadata_iam:
+        name: "AWS - Fetch Instance IAM Role"
+        description: "Retrieve IAM role credentials from EC2 metadata"
+        command: "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+        params: []
+
+      aws_metadata_userdata:
+        name: "AWS - Fetch User Data"
+        description: "Retrieve EC2 instance user data (may contain secrets)"
+        command: "curl http://169.254.169.254/latest/user-data"
+        params: []
+
+      azure_metadata:
+        name: "Azure - Fetch Instance Metadata"
+        description: "Retrieve Azure VM metadata and access tokens"
+        command: "curl -H Metadata:true 'http://169.254.169.254/metadata/instance?api-version=2021-02-01'"
+        params: []
+
+      gcp_metadata_token:
+        name: "GCP - Fetch Access Token"
+        description: "Retrieve GCP service account access token"
+        command: "curl -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/token"
+        params: []
+
+      gcp_metadata_serviceaccount:
+        name: "GCP - Fetch Service Account Email"
+        description: "Get GCP service account email from metadata"
+        command: "curl -H 'Metadata-Flavor: Google' http://169.254.169.254/computeMetadata/v1/instance/service-accounts/default/email"
+        params: []
+
+  serverless_security:
+    name: "⚡ Serverless Security"
+    tools:
+      sls_info:
+        name: "Serverless Framework - Get Info"
+        description: "Display serverless application information"
+        command: "serverless info"
+        params: []
+
+      sls_invoke:
+        name: "Serverless Framework - Invoke Function"
+        description: "Invoke Lambda function with test payload"
+        command: "serverless invoke -f {function_name} -d '{json_data}'"
+        params:
+          - function_name
+          - json_data
+
+      sls_logs:
+        name: "Serverless Framework - View Logs"
+        description: "Tail logs from Lambda function"
+        command: "serverless logs -f {function_name} --tail"
+        params:
+          - function_name
+

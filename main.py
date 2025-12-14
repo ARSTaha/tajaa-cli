@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """
-Tajaa CLI - Professional Penetration Testing Command Manager
-A production-grade, object-oriented CLI tool for ethical hacking and pentesting.
+Tajaa CLI - The Ultimate Modular Cyber Security Framework
+A production-grade, modular cyber security framework for Kali Linux.
+Supports 8 specialized domains: CTF, Web Bounty, Active Directory, Mobile/IoT,
+Cloud Security, OSINT, Wireless Hacking, and Post-Exploitation.
 
 Author: Tajaa
-Version: 2.0.0
+Version: 3.0.0
 License: MIT
 """
 
@@ -35,7 +37,7 @@ from InquirerPy.base.control import Choice
 
 @dataclass
 class ToolConfig:
-    """Represents a single pentesting tool configuration."""
+    """Represents a single security tool configuration."""
 
     name: str
     description: str
@@ -45,21 +47,21 @@ class ToolConfig:
 
 @dataclass
 class CategoryConfig:
-    """Represents a category of pentesting tools."""
+    """Represents a category of security tools."""
 
     name: str
     tools: Dict[str, ToolConfig]
 
 
 class ConfigLoader:
-    """Handles loading and parsing of commands.yaml configuration."""
+    """Handles loading and parsing of YAML configuration files from configs/ directory."""
 
     def __init__(self, config_path: Path) -> None:
         """
         Initialize the configuration loader.
 
         Args:
-            config_path: Path to the commands.yaml file
+            config_path: Path to the YAML configuration file (e.g., configs/01_commands.yaml)
 
         Raises:
             FileNotFoundError: If config file doesn't exist
@@ -490,8 +492,8 @@ class UIManager:
 
         self.console.print(
             Panel(
-                "[bold]Professional Penetration Testing Command Manager[/bold]\n"
-                "[dim]Version 2.0.0 | Ethical Hacking & Security Research[/dim]",
+                "[bold]Modular Cyber Security Framework[/bold]\n"
+                "[dim]Version 3.0.0 | 8 Specialized Domains | 480+ Tools[/dim]",
                 border_style="cyan"
             )
         )
@@ -587,7 +589,7 @@ class TajaaCLI:
         Initialize the Tajaa CLI application.
 
         Args:
-            config_path: Path to commands.yaml
+            config_path: Path to module configuration file (e.g., configs/01_commands.yaml)
             log_path: Path to session log file
         """
         self.console: Console = Console()
@@ -678,7 +680,7 @@ class TajaaCLI:
 
 app = typer.Typer(
     name="tajaa",
-    help="Tajaa CLI - Professional Penetration Testing Command Manager",
+    help="Tajaa CLI - The Ultimate Modular Cyber Security Framework with 8 specialized domains",
     add_completion=False
 )
 
@@ -686,10 +688,10 @@ app = typer.Typer(
 @app.command()
 def main(
     config: Path = typer.Option(
-        Path("commands.yaml"),
+        Path("configs/01_commands.yaml"),
         "--config",
         "-c",
-        help="Path to commands.yaml configuration file"
+        help="Path to specific module config (e.g., configs/02_ctf_kit.yaml, configs/07_osint_detective.yaml)"
     ),
     log: Path = typer.Option(
         Path("session_logs.txt"),
@@ -701,7 +703,9 @@ def main(
     """
     Launch the Tajaa CLI interactive interface.
 
-    A production-grade penetration testing command manager for Kali Linux.
+    A production-grade modular cyber security framework for Kali Linux.
+    Choose from 8 specialized domains: CTF, Web Bounty, Active Directory,
+    Mobile/IoT, Cloud Security, OSINT, Wireless, and Post-Exploitation.
     """
     tajaa = TajaaCLI(config_path=config, log_path=log)
     tajaa.run()

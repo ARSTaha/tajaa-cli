@@ -1,0 +1,467 @@
+categories:
+  wifi_monitoring:
+    name: "📡 WiFi Reconnaissance"
+    tools:
+      airmon_start:
+        name: "Airmon-ng - Enable Monitor Mode"
+        description: "Put wireless interface into monitor mode (required for attacks)"
+        command: "sudo airmon-ng start {interface}"
+        params:
+          - interface
+
+      airmon_stop:
+        name: "Airmon-ng - Disable Monitor Mode"
+        description: "Return wireless interface to managed mode"
+        command: "sudo airmon-ng stop {interface}"
+        params:
+          - interface
+
+      airmon_check_kill:
+        name: "Airmon-ng - Kill Interfering Processes"
+        description: "Kill processes that interfere with monitor mode"
+        command: "sudo airmon-ng check kill"
+        params: []
+
+      airodump_scan:
+        name: "Airodump-ng - Scan for Networks"
+        description: "Scan for WiFi networks and connected clients"
+        command: "sudo airodump-ng {interface}"
+        params:
+          - interface
+
+      airodump_channel:
+        name: "Airodump-ng - Monitor Specific Channel"
+        description: "Monitor specific channel and BSSID for packets"
+        command: "sudo airodump-ng -c {channel} --bssid {bssid} -w {output_file} {interface}"
+        params:
+          - channel
+          - bssid
+          - output_file
+          - interface
+
+      wash_wps:
+        name: "Wash - WPS Network Scanner"
+        description: "Scan for WPS-enabled access points (vulnerable to Reaver)"
+        command: "sudo wash -i {interface}"
+        params:
+          - interface
+
+  wifi_attacks:
+    name: "⚔️ WiFi Attacks & Exploitation"
+    tools:
+      aireplay_deauth:
+        name: "Aireplay-ng - Deauthentication Attack"
+        description: "Send deauth frames to disconnect clients (capture handshake)"
+        command: "sudo aireplay-ng --deauth 10 -a {bssid} {interface}"
+        params:
+          - bssid
+          - interface
+
+      aireplay_deauth_client:
+        name: "Aireplay-ng - Deauth Specific Client"
+        description: "Deauthenticate specific client from access point"
+        command: "sudo aireplay-ng --deauth 10 -a {bssid} -c {client_mac} {interface}"
+        params:
+          - bssid
+          - client_mac
+          - interface
+
+      aircrack_wpa:
+        name: "Aircrack-ng - Crack WPA Handshake"
+        description: "Crack WPA/WPA2 handshake using wordlist"
+        command: "sudo aircrack-ng -w {wordlist} -b {bssid} {capture_file}"
+        params:
+          - wordlist
+          - bssid
+          - capture_file
+
+      wifite_auto:
+        name: "Wifite - Automated WiFi Attack"
+        description: "Fully automated WiFi auditing (WEP, WPA, WPS)"
+        command: "sudo wifite --interface {interface}"
+        params:
+          - interface
+
+      wifite_wps_only:
+        name: "Wifite - WPS Attack Only"
+        description: "Attack only WPS-enabled networks with Pixie Dust"
+        command: "sudo wifite --wps-only --interface {interface}"
+        params:
+          - interface
+
+      reaver_wps:
+        name: "Reaver - WPS PIN Attack"
+        description: "Brute force WPS PIN to recover WPA passphrase"
+        command: "sudo reaver -i {interface} -b {bssid} -vv"
+        params:
+          - interface
+          - bssid
+
+      reaver_pixie:
+        name: "Reaver - Pixie Dust Attack"
+        description: "Fast WPS attack using Pixie Dust vulnerability"
+        command: "sudo reaver -i {interface} -b {bssid} -K -vv"
+        params:
+          - interface
+          - bssid
+
+      mdk4_beacon_flood:
+        name: "MDK4 - Beacon Flood Attack"
+        description: "Flood area with fake access points (denial of service)"
+        command: "sudo mdk4 {interface} b -f {essid_list}"
+        params:
+          - interface
+          - essid_list
+
+      mdk4_deauth:
+        name: "MDK4 - Mass Deauthentication"
+        description: "Send deauth packets to all clients on all channels"
+        command: "sudo mdk4 {interface} d"
+        params:
+          - interface
+
+  wifi_cracking:
+    name: "🔓 WiFi Password Cracking"
+    tools:
+      cowpatty:
+        name: "Cowpatty - WPA-PSK Cracker"
+        description: "Crack WPA-PSK using precomputed PMK rainbow tables"
+        command: "cowpatty -r {capture_file} -f {wordlist} -s {essid}"
+        params:
+          - capture_file
+          - wordlist
+          - essid
+
+      hashcat_wpa:
+        name: "Hashcat - GPU WPA Cracking"
+        description: "GPU-accelerated WPA/WPA2 handshake cracking"
+        command: "hashcat -m 22000 {hccapx_file} {wordlist}"
+        params:
+          - hccapx_file
+          - wordlist
+
+      hcxpcapngtool:
+        name: "Hcxpcapngtool - Convert to Hashcat"
+        description: "Convert PCAP to Hashcat-compatible format"
+        command: "hcxpcapngtool -o {output_hash} {capture_file}"
+        params:
+          - output_hash
+          - capture_file
+
+      cap2hccapx:
+        name: "Cap2hccapx - Legacy Conversion"
+        description: "Convert .cap file to .hccapx for Hashcat (legacy)"
+        command: "cap2hccapx {capture_file} {output_file}"
+        params:
+          - capture_file
+          - output_file
+
+  evil_twin:
+    name: "👯 Evil Twin & Rogue AP"
+    tools:
+      hostapd_ap:
+        name: "Hostapd - Create Rogue AP"
+        description: "Create fake access point using hostapd configuration"
+        command: "sudo hostapd {config_file}"
+        params:
+          - config_file
+
+      dnsmasq_dhcp:
+        name: "Dnsmasq - DHCP/DNS Server"
+        description: "Run DHCP and DNS server for rogue AP"
+        command: "sudo dnsmasq -C {config_file}"
+        params:
+          - config_file
+
+      fluxion:
+        name: "Fluxion - Automated Evil Twin"
+        description: "Automated evil twin attack with captive portal"
+        command: "sudo fluxion"
+        params: []
+
+      wifiphisher:
+        name: "WiFiPhisher - Phishing AP"
+        description: "Create evil twin with credential harvesting portal"
+        command: "sudo wifiphisher -i {interface} -e {essid}"
+        params:
+          - interface
+          - essid
+
+      eaphammer:
+        name: "EAPHammer - Enterprise WiFi Attack"
+        description: "Evil twin for WPA2-Enterprise networks"
+        command: "sudo eaphammer -i {interface} --essid {essid} --creds"
+        params:
+          - interface
+          - essid
+
+  bluetooth:
+    name: "🔵 Bluetooth Reconnaissance"
+    tools:
+      hciconfig:
+        name: "Hciconfig - Show BT Adapters"
+        description: "Display Bluetooth adapter configuration"
+        command: "hciconfig -a"
+        params: []
+
+      hcitool_scan:
+        name: "Hcitool - Scan for Devices"
+        description: "Scan for nearby Bluetooth devices"
+        command: "hcitool scan"
+        params: []
+
+      hcitool_inq:
+        name: "Hcitool - Device Inquiry"
+        description: "Perform Bluetooth device inquiry (more details)"
+        command: "hcitool inq"
+        params: []
+
+      hcitool_info:
+        name: "Hcitool - Device Information"
+        description: "Get detailed information about Bluetooth device"
+        command: "hcitool info {bt_address}"
+        params:
+          - bt_address
+
+      sdptool_browse:
+        name: "SDPTool - Browse Services"
+        description: "Browse SDP services on Bluetooth device"
+        command: "sdptool browse {bt_address}"
+        params:
+          - bt_address
+
+      l2ping:
+        name: "L2ping - Bluetooth Ping"
+        description: "Send L2CAP echo request to Bluetooth device"
+        command: "l2ping {bt_address}"
+        params:
+          - bt_address
+
+      btscanner:
+        name: "BTScanner - Bluetooth Scanner"
+        description: "Interactive Bluetooth device scanner and analyzer"
+        command: "sudo btscanner"
+        params: []
+
+  bluetooth_attacks:
+    name: "🔓 Bluetooth Exploitation"
+    tools:
+      bluesnarfer:
+        name: "Bluesnarfer - Data Theft"
+        description: "Download phonebook/messages from vulnerable BT devices"
+        command: "bluesnarfer -b {bt_address}"
+        params:
+          - bt_address
+
+      bluebugger:
+        name: "Bluebugger - Remote Control"
+        description: "Execute AT commands on vulnerable Bluetooth phones"
+        command: "bluebugger {bt_address}"
+        params:
+          - bt_address
+
+      spooftooph:
+        name: "Spooftooph - MAC Spoofing"
+        description: "Spoof Bluetooth device MAC address"
+        command: "sudo spooftooph -i {interface} -a {new_mac}"
+        params:
+          - interface
+          - new_mac
+
+      redfang:
+        name: "Redfang - Hidden Device Finder"
+        description: "Find hidden/non-discoverable Bluetooth devices"
+        command: "redfang -r {start_address}-{end_address}"
+        params:
+          - start_address
+          - end_address
+
+      btlejack_scan:
+        name: "BTLEJack - BLE Scanner"
+        description: "Scan for Bluetooth Low Energy devices"
+        command: "btlejack -s"
+        params: []
+
+      gattacker:
+        name: "Gattacker - BLE MitM"
+        description: "Man-in-the-Middle attack on BLE devices"
+        command: "sudo gattacker -i {interface} -t {target_mac}"
+        params:
+          - interface
+          - target_mac
+
+  bettercap_suite:
+    name: "🦈 Bettercap Multi-Protocol"
+    tools:
+      bettercap_wifi:
+        name: "Bettercap - WiFi Recon"
+        description: "WiFi reconnaissance and monitoring with Bettercap"
+        command: "sudo bettercap -iface {interface} -eval 'wifi.recon on'"
+        params:
+          - interface
+
+      bettercap_ble:
+        name: "Bettercap - BLE Scanner"
+        description: "Bluetooth Low Energy scanning and enumeration"
+        command: "sudo bettercap -iface {interface} -eval 'ble.recon on'"
+        params:
+          - interface
+
+      bettercap_mitm:
+        name: "Bettercap - ARP Spoofing"
+        description: "Perform ARP spoofing for man-in-the-middle"
+        command: "sudo bettercap -iface {interface} -eval 'set arp.spoof.targets {target_ip}; arp.spoof on'"
+        params:
+          - interface
+          - target_ip
+
+      bettercap_sniffer:
+        name: "Bettercap - Network Sniffer"
+        description: "Sniff network traffic and credentials"
+        command: "sudo bettercap -iface {interface} -eval 'net.sniff on'"
+        params:
+          - interface
+
+      bettercap_deauth:
+        name: "Bettercap - WiFi Deauth"
+        description: "WiFi deauthentication attack via Bettercap"
+        command: "sudo bettercap -iface {interface} -eval 'wifi.deauth {bssid}'"
+        params:
+          - interface
+          - bssid
+
+  sdr_radio:
+    name: "📻 Software Defined Radio (SDR)"
+    tools:
+      hackrf_info:
+        name: "HackRF - Device Info"
+        description: "Display HackRF One device information"
+        command: "hackrf_info"
+        params: []
+
+      hackrf_transfer:
+        name: "HackRF - Record Signal"
+        description: "Record RF signal to file using HackRF"
+        command: "hackrf_transfer -r {output_file} -f {frequency} -s {sample_rate}"
+        params:
+          - output_file
+          - frequency
+          - sample_rate
+
+      rtl_sdr:
+        name: "RTL-SDR - Record Signal"
+        description: "Record RF signal using RTL-SDR dongle"
+        command: "rtl_sdr -f {frequency} -s {sample_rate} {output_file}"
+        params:
+          - frequency
+          - sample_rate
+          - output_file
+
+      rtl_fm:
+        name: "RTL-FM - FM Radio Receiver"
+        description: "Receive and demodulate FM radio signals"
+        command: "rtl_fm -f {frequency} -M fm -s 200000 - | aplay -r 32k -f S16_LE"
+        params:
+          - frequency
+
+      gqrx:
+        name: "GQRX - SDR GUI"
+        description: "Open GQRX software-defined radio GUI"
+        command: "gqrx"
+        params: []
+
+      urh:
+        name: "Universal Radio Hacker - GUI"
+        description: "Investigate unknown wireless protocols with URH"
+        command: "urh"
+        params: []
+
+      inspectrum:
+        name: "Inspectrum - Signal Analysis"
+        description: "Offline radio signal analysis tool"
+        command: "inspectrum {signal_file}"
+        params:
+          - signal_file
+
+  rfid_nfc:
+    name: "💳 RFID & NFC Tools"
+    tools:
+      nfc_list:
+        name: "NFC-List - Detect NFC Devices"
+        description: "List available NFC devices and readers"
+        command: "nfc-list"
+        params: []
+
+      nfc_poll:
+        name: "NFC-Poll - Scan for Tags"
+        description: "Poll for nearby NFC tags continuously"
+        command: "nfc-poll"
+        params: []
+
+      mfoc:
+        name: "MFOC - MIFARE Classic Cracker"
+        description: "Crack MIFARE Classic card keys"
+        command: "mfoc -O {output_dump}"
+        params:
+          - output_dump
+
+      mfcuk:
+        name: "MFCUK - MIFARE Unfuck"
+        description: "Recover MIFARE Classic keys via darkside attack"
+        command: "mfcuk -C -R 0:A"
+        params: []
+
+      proxmark_hw_tune:
+        name: "Proxmark3 - Hardware Tune"
+        description: "Tune Proxmark3 antenna for optimal performance"
+        command: "proxmark3 -c 'hw tune'"
+        params: []
+
+      proxmark_hf_search:
+        name: "Proxmark3 - HF Tag Search"
+        description: "Search for high-frequency RFID/NFC tags"
+        command: "proxmark3 -c 'hf search'"
+        params: []
+
+      proxmark_lf_search:
+        name: "Proxmark3 - LF Tag Search"
+        description: "Search for low-frequency RFID tags"
+        command: "proxmark3 -c 'lf search'"
+        params: []
+
+  packet_capture:
+    name: "📦 Wireless Packet Analysis"
+    tools:
+      wireshark:
+        name: "Wireshark - GUI Packet Analyzer"
+        description: "Open Wireshark for wireless packet analysis"
+        command: "wireshark"
+        params: []
+
+      tshark_capture:
+        name: "TShark - CLI Packet Capture"
+        description: "Capture packets using TShark (Wireshark CLI)"
+        command: "sudo tshark -i {interface} -w {output_file}"
+        params:
+          - interface
+          - output_file
+
+      tshark_read:
+        name: "TShark - Read PCAP File"
+        description: "Read and display packets from PCAP file"
+        command: "tshark -r {pcap_file}"
+        params:
+          - pcap_file
+
+      kismet:
+        name: "Kismet - Wireless IDS"
+        description: "Wireless network detector and intrusion detection"
+        command: "sudo kismet"
+        params: []
+
+      kismet_drone:
+        name: "Kismet - Drone Mode"
+        description: "Run Kismet in drone mode for remote capture"
+        command: "sudo kismet_drone"
+        params: []
+

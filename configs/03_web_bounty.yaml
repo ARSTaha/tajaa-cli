@@ -1,0 +1,323 @@
+categories:
+  subdomain_enum:
+    name: "🔎 Subdomain Discovery"
+    tools:
+      sublist3r:
+        name: "Sublist3r - Passive Subdomain Finder"
+        description: "Fast subdomain enumeration using search engines and DNS"
+        command: "sublist3r -d {domain} -o {output_file}"
+        params:
+          - domain
+          - output_file
+
+      amass_enum:
+        name: "Amass - Advanced Subdomain Enum"
+        description: "OWASP Amass active and passive subdomain enumeration"
+        command: "amass enum -d {domain} -o {output_file}"
+        params:
+          - domain
+          - output_file
+
+      amass_passive:
+        name: "Amass - Passive Only Mode"
+        description: "Passive reconnaissance without touching target"
+        command: "amass enum -passive -d {domain} -o {output_file}"
+        params:
+          - domain
+          - output_file
+
+      subfinder:
+        name: "Subfinder - Fast Passive Subdomain Discovery"
+        description: "Lightning-fast passive subdomain discovery tool"
+        command: "subfinder -d {domain} -o {output_file}"
+        params:
+          - domain
+          - output_file
+
+      assetfinder:
+        name: "Assetfinder - Domain Asset Discovery"
+        description: "Find domains and subdomains related to target"
+        command: "assetfinder --subs-only {domain}"
+        params:
+          - domain
+
+  web_probing:
+    name: "🌐 Web Service Probing"
+    tools:
+      httprobe:
+        name: "Httprobe - Live Host Detection"
+        description: "Probe for working HTTP and HTTPS services"
+        command: "cat {subdomain_file} | httprobe -c 50"
+        params:
+          - subdomain_file
+
+      httpx:
+        name: "Httpx - Advanced HTTP Toolkit"
+        description: "Multi-purpose HTTP toolkit with tech detection"
+        command: "httpx -l {url_file} -tech-detect -status-code -title"
+        params:
+          - url_file
+
+      waybackurls:
+        name: "Wayback URLs - Historical Endpoint Discovery"
+        description: "Fetch all URLs from Wayback Machine archive"
+        command: "waybackurls {domain} | tee {output_file}"
+        params:
+          - domain
+          - output_file
+
+      gau:
+        name: "GAU - Get All URLs"
+        description: "Fetch known URLs from AlienVault, Wayback, Common Crawl"
+        command: "gau {domain} | tee {output_file}"
+        params:
+          - domain
+          - output_file
+
+  vulnerability_scanning:
+    name: "🎯 Vulnerability Scanners"
+    tools:
+      nuclei_basic:
+        name: "Nuclei - Template-Based Scanner"
+        description: "Fast vulnerability scanner with 5000+ templates"
+        command: "nuclei -u http://{target_ip} -t cves/ -t vulnerabilities/"
+        params:
+          - target_ip
+
+      nuclei_list:
+        name: "Nuclei - Scan URL List"
+        description: "Scan multiple URLs from file with all templates"
+        command: "nuclei -l {url_file} -severity critical,high,medium"
+        params:
+          - url_file
+
+      nikto:
+        name: "Nikto - Web Server Scanner"
+        description: "Classic web server vulnerability scanner"
+        command: "nikto -h http://{target_ip} -o {output_file}"
+        params:
+          - target_ip
+          - output_file
+
+      wapiti:
+        name: "Wapiti - Web Application Auditor"
+        description: "Black-box vulnerability scanner (XSS, SQLi, etc.)"
+        command: "wapiti -u http://{target_ip} -f txt -o {output_dir}"
+        params:
+          - target_ip
+          - output_dir
+
+  xss_testing:
+    name: "🔥 XSS Detection & Exploitation"
+    tools:
+      dalfox_pipe:
+        name: "Dalfox - Fast XSS Scanner"
+        description: "Parameter analysis and XSS scanning"
+        command: "dalfox url http://{target_url} --blind {callback_url}"
+        params:
+          - target_url
+          - callback_url
+
+      dalfox_file:
+        name: "Dalfox - Scan URL List"
+        description: "Scan multiple URLs from file for XSS"
+        command: "dalfox file {url_file} -o {output_file}"
+        params:
+          - url_file
+          - output_file
+
+      xsstrike:
+        name: "XSStrike - Intelligent XSS Scanner"
+        description: "Advanced XSS detection with crawling"
+        command: "xsstrike -u http://{target_url} --crawl"
+        params:
+          - target_url
+
+      xsser:
+        name: "XSSer - Automated XSS Framework"
+        description: "Comprehensive XSS exploitation framework"
+        command: "xsser -u http://{target_url} --auto"
+        params:
+          - target_url
+
+  sql_injection:
+    name: "💉 SQL Injection"
+    tools:
+      sqlmap_auto:
+        name: "SQLmap - Automatic Detection"
+        description: "Automatic SQL injection detection and exploitation"
+        command: "sqlmap -u http://{target_url} --batch --random-agent"
+        params:
+          - target_url
+
+      sqlmap_dbs:
+        name: "SQLmap - Enumerate Databases"
+        description: "List all databases after confirming injection"
+        command: "sqlmap -u http://{target_url} --dbs --batch"
+        params:
+          - target_url
+
+      sqlmap_dump:
+        name: "SQLmap - Dump Database"
+        description: "Extract entire database contents"
+        command: "sqlmap -u http://{target_url} -D {database_name} --dump --batch"
+        params:
+          - target_url
+          - database_name
+
+      sqlmap_os_shell:
+        name: "SQLmap - OS Shell"
+        description: "Attempt to get operating system shell"
+        command: "sqlmap -u http://{target_url} --os-shell --batch"
+        params:
+          - target_url
+
+      nosqlmap:
+        name: "NoSQLMap - NoSQL Injection"
+        description: "NoSQL database injection scanner (MongoDB, CouchDB)"
+        command: "nosqlmap -t {target_url} --attack 1"
+        params:
+          - target_url
+
+  cms_scanning:
+    name: "📦 CMS-Specific Scanners"
+    tools:
+      wpscan:
+        name: "WPScan - WordPress Scanner"
+        description: "WordPress security scanner with plugin/theme detection"
+        command: "wpscan --url http://{target_ip} --enumerate p,t,u --random-user-agent"
+        params:
+          - target_ip
+
+      wpscan_aggressive:
+        name: "WPScan - Aggressive Mode"
+        description: "Aggressive plugin detection (slower but thorough)"
+        command: "wpscan --url http://{target_ip} --enumerate ap --plugins-detection aggressive"
+        params:
+          - target_ip
+
+      droopescan:
+        name: "Droopescan - Drupal/Joomla Scanner"
+        description: "Scanner for Drupal, Joomla, Moodle, Silverstripe"
+        command: "droopescan scan drupal -u http://{target_ip}"
+        params:
+          - target_ip
+
+      joomscan:
+        name: "Joomscan - Joomla Vulnerability Scanner"
+        description: "Dedicated Joomla CMS vulnerability scanner"
+        command: "joomscan -u http://{target_ip}"
+        params:
+          - target_ip
+
+  api_testing:
+    name: "🔌 API Security Testing"
+    tools:
+      arjun:
+        name: "Arjun - HTTP Parameter Discovery"
+        description: "Find hidden HTTP GET/POST parameters"
+        command: "arjun -u http://{target_url}"
+        params:
+          - target_url
+
+      kiterunner:
+        name: "Kiterunner - API Content Discovery"
+        description: "Fast API endpoint and route discovery"
+        command: "kr scan http://{target_ip} -w /opt/wordlists/kiterunner/routes.kite"
+        params:
+          - target_ip
+
+      ffuf_param:
+        name: "Ffuf - Parameter Fuzzing"
+        description: "Fuzz for hidden parameters in API endpoints"
+        command: "ffuf -u http://{target_url}?FUZZ=test -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt"
+        params:
+          - target_url
+
+      postman_newman:
+        name: "Newman - Postman CLI Runner"
+        description: "Run Postman collections from command line"
+        command: "newman run {collection_file} -e {environment_file}"
+        params:
+          - collection_file
+          - environment_file
+
+  fuzzing:
+    name: "🎲 Web Fuzzing"
+    tools:
+      wfuzz_basic:
+        name: "Wfuzz - General Purpose Fuzzer"
+        description: "Fuzz any part of HTTP requests"
+        command: "wfuzz -c -z file,/usr/share/wordlists/dirb/common.txt http://{target_ip}/FUZZ"
+        params:
+          - target_ip
+
+      wfuzz_post:
+        name: "Wfuzz - POST Parameter Fuzzing"
+        description: "Fuzz POST data parameters"
+        command: "wfuzz -c -z file,/usr/share/wordlists/rockyou.txt -d 'username=admin&password=FUZZ' http://{target_ip}/login"
+        params:
+          - target_ip
+
+      ffuf_subdomain:
+        name: "Ffuf - Subdomain Fuzzing"
+        description: "Fast subdomain discovery via DNS fuzzing"
+        command: "ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://FUZZ.{domain}"
+        params:
+          - domain
+
+      ffuf_extension:
+        name: "Ffuf - File Extension Discovery"
+        description: "Discover hidden files with different extensions"
+        command: "ffuf -w /usr/share/seclists/Discovery/Web-Content/web-extensions.txt -u http://{target_ip}/indexFUZZ"
+        params:
+          - target_ip
+
+  command_injection:
+    name: "⚡ Command Injection Testing"
+    tools:
+      commix_auto:
+        name: "Commix - Automatic Detection"
+        description: "All-in-one command injection and exploitation"
+        command: "commix --url=http://{target_url} --batch"
+        params:
+          - target_url
+
+      commix_os_shell:
+        name: "Commix - Get OS Shell"
+        description: "Exploit command injection to spawn shell"
+        command: "commix --url=http://{target_url} --os-shell --batch"
+        params:
+          - target_url
+
+      tplmap:
+        name: "Tplmap - SSTI Detection"
+        description: "Server-Side Template Injection detection and exploitation"
+        command: "tplmap -u http://{target_url}"
+        params:
+          - target_url
+
+  ssl_tls:
+    name: "🔒 SSL/TLS Analysis"
+    tools:
+      sslscan:
+        name: "SSLscan - SSL/TLS Scanner"
+        description: "Test SSL/TLS cipher suites and protocols"
+        command: "sslscan {domain}"
+        params:
+          - domain
+
+      testssl:
+        name: "Testssl.sh - Comprehensive SSL Test"
+        description: "In-depth SSL/TLS vulnerability testing"
+        command: "testssl.sh https://{domain}"
+        params:
+          - domain
+
+      sslyze:
+        name: "SSLyze - Fast SSL Scanner"
+        description: "Fast SSL configuration scanner"
+        command: "sslyze --regular {domain}"
+        params:
+          - domain
+
