@@ -9,11 +9,21 @@ Get started with Tajaa CLI in 5 minutes.
 git clone https://github.com/ARSTaha/tajaa-cli.git
 cd tajaa-cli
 
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
 # Install dependencies
 pip install -r requirements.txt
 
 # Verify installation
 python3 test_components.py
+```
+
+**Important:** Always activate the virtual environment before using Tajaa CLI:
+```bash
+source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate     # Windows
 ```
 
 ## Basic Usage

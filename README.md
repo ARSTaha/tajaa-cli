@@ -56,10 +56,32 @@ Tajaa CLI is a modular penetration testing framework with clean OOP architecture
 
 ### Installation
 
+**Option 1: Automated Installation (Recommended)**
+
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/ARSTaha/tajaa-cli.git
 cd tajaa-cli
+
+# Run installer (handles virtual environment automatically)
+chmod +x install.sh
+./install.sh
+
+# Activate and run
+source .venv/bin/activate
+python3 main.py
+```
+
+**Option 2: Manual Installation**
+
+```bash
+# Clone repository
+git clone https://github.com/ARSTaha/tajaa-cli.git
+cd tajaa-cli
+
+# Create virtual environment (required on Kali Linux)
+python3 -m venv .venv
+source .venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -67,6 +89,10 @@ pip install -r requirements.txt
 # Run the framework
 python3 main.py
 ```
+
+**Note for Kali Linux users:** Modern Kali uses externally-managed Python environments. Always use a virtual environment as shown above to avoid system conflicts.
+
+**Having installation issues?** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common solutions.
 
 ### Optional: Create Aliases
 
@@ -99,71 +125,20 @@ python3 main.py --config configs/02_ctf_kit.yaml
 python3 main.py --config configs/03_web_bounty.yaml
 
 # Cloud auditing
-```bash
-tajaa --config configs/03_web_bounty.yaml
-# Or: tajaa-web
+python3 main.py --config configs/06_cloud_auditor.yaml
+
+# Post-exploitation
+python3 main.py --config configs/09_post_exploit.yaml
 ```
 
-#### **🏢 Active Directory Pentesting**
-Enterprise network attacks:
-```bash
-tajaa --config configs/04_network_ad.yaml
-# Or: tajaa-ad
-```
-
-#### **📱 Mobile & IoT Security**
-Mobile app and firmware analysis:
-```bash
-tajaa --config configs/05_mobile_iot.yaml
-# Or: tajaa-mobile
-```
-
-#### **☁️ Cloud Security Auditing**
-AWS/Azure/GCP assessments:
-```bash
-tajaa --config configs/06_cloud_auditor.yaml
-# Or: tajaa-cloud
-```
-
-#### **🕵️ OSINT & Intelligence**
-Passive reconnaissance:
-```bash
-tajaa --config configs/07_osint_detective.yaml
-# Or: tajaa-osint
-```
-
-#### **📡 Wireless & Radio Frequency**
-WiFi/Bluetooth/SDR attacks:
-```bash
-tajaa --config configs/08_wireless_radio.yaml
-# Or: tajaa-wireless
-```
-
-#### **🔒 Post-Exploitation**
-Advanced persistence techniques:
-```bash
-tajaa --config configs/09_post_exploit.yaml
-# Or: tajaa-post
-```
-
-### 🎛️ Advanced Options
+### Using Aliases (if configured)
 
 ```bash
-# Custom log file
-tajaa --config configs/03_web_bounty.yaml --log ./my_engagement.log
-
-# Date-stamped logs
-tajaa --config configs/06_cloud_auditor.yaml --log ./aws_audit_$(date +%Y%m%d).log
+tajaa-ctf      # CTF toolkit
+tajaa-web      # Web security
+tajaa-cloud    # Cloud auditing
+tajaa-post     # Post-exploitation
 ```
-
-### 🔄 Typical Workflow
-
-1. **Launch appropriate module**: `tajaa-web` for web testing
-2. **Select category**: Choose from displayed categories
-3. **Select tool**: Pick specific tool
-4. **Enter parameters**: Input validated parameters
-5. **Review command**: See generated command
-6. **Execute or copy**: Run directly or copy to clipboard
 
 ---
 
@@ -171,26 +146,36 @@ tajaa --config configs/06_cloud_auditor.yaml --log ./aws_audit_$(date +%Y%m%d).l
 
 ```
 tajaa-cli/
-├── main.py                 # Main framework (OOP architecture)
-├── commands.yaml           # Default configuration
-├── requirements.txt        # Python dependencies
-├── session_logs.txt        # Auto-generated audit logs
+├── main.py                    # Main framework (OOP architecture)
+├── requirements.txt           # Python dependencies
+├── install.sh                 # Automated installer
+├── install_arsenal.sh         # Optional tools installer
 │
-├── README.md              # Main documentation (this file)
-├── CONFIG_CATALOG.md      # Complete module reference
-├── QUICKSTART.md          # Getting started guide
-├── QUICK_REFERENCE.md     # Command cheat sheet
-├── CHANGELOG.md           # Version history
-├── ARCHITECTURE.md        # Technical architecture
+├── configs/                   # Configuration modules
+│   ├── 01_commands.yaml       # General pentesting (60+ tools)
+│   ├── 02_ctf_kit.yaml        # CTF competitions (70+ tools)
+│   ├── 03_web_bounty.yaml     # Web security (80+ tools)
+│   ├── 04_network_ad.yaml     # Active Directory (65+ tools)
+│   ├── 05_mobile_iot.yaml     # Mobile & IoT (60+ tools)
+│   ├── 06_cloud_auditor.yaml  # Cloud security (75+ tools)
+│   ├── 07_osint_detective.yaml # OSINT (60+ tools)
+│   ├── 08_wireless_radio.yaml # Wireless (45+ tools)
+│   └── 09_post_exploit.yaml   # Post-exploitation (75+ tools)
 │
-├── ctf_kit.yaml           # CTF & Speed Hacking (50+ tools)
-├── web_bounty.yaml        # Web App & Bug Bounty (70+ tools)
-├── network_ad.yaml        # Active Directory (55+ tools)
-├── mobile_iot.yaml        # Mobile & IoT (60+ tools)
-├── cloud_auditor.yaml     # Cloud Security (50+ tools)
-├── osint_detective.yaml   # OSINT (65+ tools)
-├── wireless_radio.yaml    # Wireless/SDR/RFID (75+ tools)
-└── post_exploit.yaml      # Post-Exploitation (55+ tools)
+├── README.md                  # Main documentation
+├── QUICKSTART.md              # Getting started guide
+├── CONFIG_CATALOG.md          # Complete tool catalog
+├── TROUBLESHOOTING.md         # Installation & usage issues
+├── CHANGELOG.md               # Version history
+├── ARCHITECTURE.md            # Technical architecture
+├── EXAMPLES.md                # Usage examples
+├── SECURITY.md                # Security features
+├── LICENSE                    # MIT License
+│
+└── tests/
+    ├── test_components.py     # Unit tests
+    ├── test_security.py       # Security tests
+    └── verify_security.py     # Quick verification
 ```
 
 ---

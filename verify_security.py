@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Quick verification script for Tajaa CLI v3.1.0 security features
+Author: Tajaa
 """
+
+import sys
 
 print("=" * 60)
 print("Tajaa CLI v3.1.0 - Security Feature Verification")
@@ -11,10 +15,10 @@ print("=" * 60)
 print("\n[1/6] Testing module import...")
 try:
     import main
-    print("    ✓ main.py imports successfully")
+    print("    [OK] main.py imports successfully")
 except Exception as e:
-    print(f"    ✗ Import failed: {e}")
-    exit(1)
+    print(f"    [FAIL] Import failed: {e}")
+    sys.exit(1)
 
 # Test 2: InputValidator instantiation
 print("\n[2/6] Testing InputValidator...")
@@ -24,95 +28,88 @@ try:
     from io import StringIO
 
     validator = InputValidator(Console(file=StringIO()))
-    print("    ✓ InputValidator instantiated successfully")
+    print("    [OK] InputValidator instantiated successfully")
 except Exception as e:
-    print(f"    ✗ Failed: {e}")
-    exit(1)
+    print(f"    [FAIL] Failed: {e}")
+    sys.exit(1)
 
-# Test 3: Hostname validation
+# Test 3: Hostname validation (IPs + domains)
 print("\n[3/6] Testing hostname validation...")
 try:
-    test_cases = [
-        ("192.168.1.1", "IPv4"),
-        ("scanme.nmap.org", "Hostname"),
-        ("target.htb", "HTB machine"),
-    ]
+    # IPv4
+    is_valid, _ = validator.validate_ipv4("192.168.1.1")
+    assert is_valid
+    print("    [OK] IPv4: '192.168.1.1' validated")
 
-    for target, desc in test_cases:
-        is_valid, error = validator.validate_ip_or_hostname(target)
-        if is_valid:
-            print(f"    ✓ {desc}: '{target}' validated")
-        else:
-            print(f"    ✗ {desc}: '{target}' failed - {error}")
+    # Hostname
+    is_valid, _ = validator.validate_hostname("scanme.nmap.org")
+    assert is_valid
+    print("    [OK] Hostname: 'scanme.nmap.org' validated")
+
+    # HTB machine
+    is_valid, _ = validator.validate_hostname("target.htb")
+    assert is_valid
+    print("    [OK] HTB machine: 'target.htb' validated")
 except Exception as e:
-    print(f"    ✗ Failed: {e}")
-    exit(1)
+    print(f"    [FAIL] {e}")
+    sys.exit(1)
 
 # Test 4: URL normalization
 print("\n[4/6] Testing URL normalization...")
 try:
-    test_cases = [
-        ("example.com", "http://example.com"),
-        ("http://example.com", "http://example.com"),
-        ("http://http://example.com", "http://example.com"),
-    ]
+    is_valid, _, url = validator.validate_url("example.com")
+    assert url == "http://example.com"
+    print("    [OK] 'example.com' -> 'http://example.com'")
 
-    for input_url, expected in test_cases:
-        is_valid, error, normalized = validator.validate_url(input_url)
-        if normalized == expected:
-            print(f"    ✓ '{input_url}' → '{normalized}'")
-        else:
-            print(f"    ✗ Expected '{expected}', got '{normalized}'")
+    is_valid, _, url = validator.validate_url("http://example.com")
+    assert url == "http://example.com"
+    print("    [OK] 'http://example.com' -> 'http://example.com'")
+
+    is_valid, _, url = validator.validate_url("http://http://example.com")
+    assert url == "http://example.com"
+    print("    [OK] 'http://http://example.com' -> 'http://example.com'")
 except Exception as e:
-    print(f"    ✗ Failed: {e}")
-    exit(1)
+    print(f"    [FAIL] {e}")
+    sys.exit(1)
 
 # Test 5: Dangerous input detection
 print("\n[5/6] Testing dangerous input detection...")
 try:
-    dangerous_inputs = [
+    test_inputs = [
         "test; rm -rf /",
         "test && whoami",
-        "test | nc attacker",
+        "test | nc attacker"
     ]
-
-    for dangerous in dangerous_inputs:
-        is_safe, warning = validator.check_dangerous_input(dangerous, "test_param")
-        if not is_safe:
-            print(f"    ✓ Detected dangerous input: '{dangerous[:20]}...'")
-        else:
-            print(f"    ✗ Failed to detect: '{dangerous}'")
+    for inp in test_inputs:
+        has_dangerous, msg = validator.check_dangerous_input(inp, "test_param")
+        assert has_dangerous
+        print(f"    [OK] Detected dangerous input: '{inp[:20]}...'")
 except Exception as e:
-    print(f"    ✗ Failed: {e}")
-    exit(1)
+    print(f"    [FAIL] {e}")
+    sys.exit(1)
 
-# Test 6: Command injection protection
+# Test 6: shlex.quote() protection
 print("\n[6/6] Testing shlex.quote() protection...")
 try:
     import shlex
-
     dangerous = "wordpress; rm -rf /"
-    quoted = shlex.quote(dangerous)
-
-    # Quoted string should be wrapped in single quotes
-    if quoted.startswith("'") and quoted.endswith("'"):
-        print(f"    ✓ Input safely quoted: {quoted}")
-    else:
-        print(f"    ✗ Quoting failed: {quoted}")
+    safe = shlex.quote(dangerous)
+    assert safe == "'wordpress; rm -rf /'"
+    print(f"    [OK] Input safely quoted: '{dangerous}'")
 except Exception as e:
-    print(f"    ✗ Failed: {e}")
-    exit(1)
+    print(f"    [FAIL] {e}")
+    sys.exit(1)
 
 # Summary
 print("\n" + "=" * 60)
-print("✓ ALL SECURITY FEATURES VERIFIED SUCCESSFULLY!")
+print("[OK] ALL SECURITY FEATURES VERIFIED SUCCESSFULLY!")
 print("=" * 60)
 print("\nTajaa CLI v3.1.0 is production-ready with:")
-print("  • Command injection protection")
-print("  • Hostname/domain support")
-print("  • URL auto-normalization")
-print("  • Dangerous input detection")
-print("  • File path security")
+print("  * Command injection protection")
+print("  * Hostname/domain support")
+print("  * URL auto-normalization")
+print("  * Dangerous input detection")
+print("  * File path security")
 print("\nRun 'python test_security.py' for full test suite.")
 print("=" * 60)
 
