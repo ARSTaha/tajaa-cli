@@ -33,9 +33,9 @@ categories:
       whatweb:
         name: "WhatWeb - Web Fingerprint"
         description: "Identify web technologies, CMS, frameworks, and server info"
-        command: "whatweb http://{target_ip}"
+        command: "whatweb {target_url}"
         params:
-          - target_ip
+          - target_url
 
   web_attacks:
     name: "Web Application Attacks"
@@ -43,30 +43,36 @@ categories:
       gobuster_dir:
         name: "Gobuster - Directory Brute Force"
         description: "Discover hidden directories and files on web servers"
-        command: "gobuster dir -u http://{target_ip} -w /usr/share/wordlists/dirb/common.txt"
+        command: "gobuster dir -u {target_url} -w {wordlist}"
         params:
-          - target_ip
+          - target_url
+          - wordlist
+        defaults:
+          wordlist: "/usr/share/wordlists/dirb/common.txt"
 
       nikto:
         name: "Nikto - Web Vulnerability Scanner"
         description: "Scan for web server vulnerabilities and misconfigurations"
-        command: "nikto -h http://{target_ip}"
+        command: "nikto -h {target_url}"
         params:
-          - target_ip
+          - target_url
 
       sqlmap:
         name: "SQLMap - SQL Injection"
         description: "Automated SQL injection and database takeover tool"
-        command: "sqlmap -u http://{target_ip} --batch --crawl=2"
+        command: "sqlmap -u {target_url} --batch --crawl=2"
         params:
-          - target_ip
+          - target_url
 
       wfuzz:
         name: "Wfuzz - Web Fuzzer"
         description: "Brute force web application parameters and paths"
-        command: "wfuzz -c -z file,/usr/share/wordlists/dirb/common.txt --hc 404 http://{target_ip}/FUZZ"
+        command: "wfuzz -c -z file,{wordlist} --hc 404 {target_url}/FUZZ"
         params:
-          - target_ip
+          - target_url
+          - wordlist
+        defaults:
+          wordlist: "/usr/share/wordlists/dirb/common.txt"
 
   exploitation:
     name: "Exploitation"
@@ -88,9 +94,14 @@ categories:
       hydra_ssh:
         name: "Hydra - SSH Brute Force"
         description: "Brute force SSH credentials using wordlist"
-        command: "hydra -L /usr/share/wordlists/metasploit/unix_users.txt -P /usr/share/wordlists/rockyou.txt ssh://{target_ip}"
+        command: "hydra -L {users_wordlist} -P {passwords_wordlist} ssh://{target_ip}"
         params:
           - target_ip
+          - users_wordlist
+          - passwords_wordlist
+        defaults:
+          users_wordlist: "/usr/share/wordlists/metasploit/unix_users.txt"
+          passwords_wordlist: "/usr/share/wordlists/rockyou.txt"
 
   network:
     name: "Network Analysis"

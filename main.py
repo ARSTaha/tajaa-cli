@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 """
-Tajaa CLI - The Ultimate Modular Cyber Security Framework
-A production-grade, modular cyber security framework for Kali Linux.
-Supports 8 specialized domains: CTF, Web Bounty, Active Directory, Mobile/IoT,
-Cloud Security, OSINT, Wireless Hacking, and Post-Exploitation.
+Tajaa CLI - Modular Cyber Security Framework
+
+A modular framework for penetration testing and security assessments.
+Supports CTF, Web Security, Active Directory, Mobile/IoT, Cloud, OSINT,
+Wireless, and Post-Exploitation.
 
 Author: Tajaa
-Version: 3.0.0
+Version: 3.1.0
 License: MIT
 """
 
 import subprocess
 import shutil
 import ipaddress
+import shlex
+import re
 from pathlib import Path
 from datetime import datetime
 from dataclasses import dataclass
@@ -31,57 +34,35 @@ from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 
 
-# ============================================================================
 # Configuration Classes
-# ============================================================================
 
 @dataclass
 class ToolConfig:
-    """Represents a single security tool configuration."""
-
+    """Configuration for a single security tool."""
     name: str
     description: str
     command: str
     params: List[str]
+    defaults: Optional[Dict[str, str]] = None
 
 
 @dataclass
 class CategoryConfig:
-    """Represents a category of security tools."""
-
+    """Configuration for a category of tools."""
     name: str
     tools: Dict[str, ToolConfig]
 
 
 class ConfigLoader:
-    """Handles loading and parsing of YAML configuration files from configs/ directory."""
+    """Loads and parses YAML configuration files."""
 
     def __init__(self, config_path: Path) -> None:
-        """
-        Initialize the configuration loader.
-
-        Args:
-            config_path: Path to the YAML configuration file (e.g., configs/01_commands.yaml)
-
-        Raises:
-            FileNotFoundError: If config file doesn't exist
-            yaml.YAMLError: If config file is invalid
-        """
         self.config_path: Path = config_path
         self.console: Console = Console()
         self.categories: Dict[str, CategoryConfig] = {}
 
     def load(self) -> Dict[str, CategoryConfig]:
-        """
-        Load and parse the YAML configuration file.
-
-        Returns:
-            Dictionary of category configurations
-
-        Raises:
-            FileNotFoundError: If config file doesn't exist
-            yaml.YAMLError: If YAML is malformed
-        """
+        """Load configuration from YAML file."""
         if not self.config_path.exists():
             self.console.print(f"[bold red]Error:[/bold red] Configuration file not found: {self.config_path}")
             raise FileNotFoundError(f"Config file not found: {self.config_path}")
@@ -100,7 +81,8 @@ class ConfigLoader:
                         name=tool_data.get('name', tool_id),
                         description=tool_data.get('description', 'No description available'),
                         command=tool_data.get('command', ''),
-                        params=tool_data.get('params', [])
+                        params=tool_data.get('params', []),
+                        defaults=tool_data.get('defaults', {})
                     )
 
                 self.categories[category_id] = CategoryConfig(
@@ -134,32 +116,55 @@ class InputValidator:
         """
         self.console: Console = console
 
+        # Patterns for dangerous shell metacharacters
+        self.dangerous_patterns = [
+            r'[;&|`$<>]',     # Shell metacharacters
+            r'\$\(',          # Command substitution
+            r'`',             # Backticks
+            r'\.\./',         # Directory traversal
+            r'\n',            # Newline injection
+            r'\r',            # Carriage return
+        ]
+
     def validate_ipv4(self, ip_string: str) -> Tuple[bool, Optional[str]]:
-        """
-        Validate if a string is a valid IPv4 address.
-
-        Args:
-            ip_string: String to validate as IPv4
-
-        Returns:
-            Tuple of (is_valid, error_message)
-        """
+        """Validate IPv4 address format."""
         try:
             ipaddress.IPv4Address(ip_string)
             return True, None
         except ValueError:
             return False, f"Invalid IPv4 address: '{ip_string}'. Expected format: xxx.xxx.xxx.xxx"
 
+    def validate_hostname(self, hostname: str) -> Tuple[bool, Optional[str]]:
+        """Validate hostname or FQDN format."""
+        # Remove protocol if present
+        hostname_clean = re.sub(r'^https?://', '', hostname)
+        hostname_clean = hostname_clean.split('/')[0]
+        hostname_clean = hostname_clean.split(':')[0]
+
+        if len(hostname_clean) > 253:
+            return False, "Hostname too long (max 253 characters)"
+
+        hostname_pattern = r'^[a-zA-Z0-9]([a-zA-Z0-9-_]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-_]{0,61}[a-zA-Z0-9])?)*$'
+
+        if re.match(hostname_pattern, hostname_clean):
+            return True, None
+
+        return False, f"Invalid hostname format: '{hostname}'"
+
+    def validate_ip_or_hostname(self, value: str) -> Tuple[bool, Optional[str]]:
+        """Validate either IPv4 address or hostname."""
+        is_valid_ipv4, _ = self.validate_ipv4(value)
+        if is_valid_ipv4:
+            return True, None
+
+        is_valid_hostname, error_msg = self.validate_hostname(value)
+        if is_valid_hostname:
+            return True, None
+
+        return False, f"Invalid target: '{value}'. Must be an IPv4 address (e.g., 192.168.1.1) or hostname (e.g., example.com)"
+
     def validate_port(self, port_string: str) -> Tuple[bool, Optional[str], Optional[int]]:
-        """
-        Validate if a string is a valid port number (1-65535).
-
-        Args:
-            port_string: String to validate as port
-
-        Returns:
-            Tuple of (is_valid, error_message, port_number)
-        """
+        """Validate port number (1-65535)."""
         try:
             port = int(port_string)
             if 1 <= port <= 65535:
@@ -169,13 +174,115 @@ class InputValidator:
         except ValueError:
             return False, f"Invalid port: '{port_string}'. Must be an integer.", None
 
-    def get_validated_input(self, param_name: str, prompt_text: Optional[str] = None) -> str:
+    def validate_url(self, url: str) -> Tuple[bool, Optional[str], str]:
+        """
+        Validate and normalize a URL input.
+        Prevents protocol duplication (e.g., http://http://example.com)
+
+        Args:
+            url: URL string to validate
+
+        Returns:
+            Tuple of (is_valid, error_message, normalized_url)
+        """
+        url = url.strip()
+
+        # Remove duplicate protocols (e.g., http://http://example.com -> http://example.com)
+        url = re.sub(r'^(https?://)+', r'\1', url)
+
+        # Remove trailing protocol without domain (cleanup edge case)
+        url = re.sub(r'(https?://)$', '', url)
+
+        # Add protocol if missing
+        if url and not url.startswith(('http://', 'https://')):
+            url = f'http://{url}'
+
+        # Enhanced URL validation supporting:
+        # - Hostnames and IP addresses
+        # - Optional port numbers
+        # - Optional paths
+        url_pattern = r'^https?://([a-zA-Z0-9]([a-zA-Z0-9-_.]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-_.]{0,61}[a-zA-Z0-9])?)*|(\d{1,3}\.){3}\d{1,3})(:\d{1,5})?(/.*)?$'
+
+        if re.match(url_pattern, url):
+            return True, None, url
+
+        return False, f"Invalid URL format: '{url}'", url
+
+    def check_dangerous_input(self, value: str, param_name: str) -> Tuple[bool, Optional[str]]:
+        """
+        Check if input contains potentially dangerous shell metacharacters.
+
+        Args:
+            value: Input value to check
+            param_name: Parameter name for context
+
+        Returns:
+            Tuple of (is_safe, warning_message)
+        """
+        # Check for dangerous patterns
+        for pattern in self.dangerous_patterns:
+            if re.search(pattern, value):
+                return False, (
+                    f"Input contains potentially dangerous characters: '{value}'\n"
+                    f"This could lead to command injection. Please use alphanumeric values."
+                )
+
+        return True, None
+
+    def sanitize_input(self, value: str) -> str:
+        """Sanitize user input to prevent command injection."""
+        return value.strip()
+
+    def validate_file_path(self, path_string: str, allow_missing: bool = False) -> Tuple[bool, Optional[str]]:
+        """Validate file path with support for common wordlist aliases."""
+        path_string = path_string.strip()
+
+        if '..' in path_string:
+            return False, "Directory traversal (..) not allowed for security"
+
+        # Common wordlist aliases
+        wordlist_aliases = {
+            'rockyou': [
+                '/usr/share/wordlists/rockyou.txt',
+                '/usr/share/wordlists/rockyou.txt.gz',
+            ],
+            'dirb-common': [
+                '/usr/share/wordlists/dirb/common.txt',
+                '/usr/share/dirb/wordlists/common.txt',
+            ],
+            'dirbuster-medium': [
+                '/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt',
+                '/usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt',
+            ],
+        }
+
+        for alias, paths in wordlist_aliases.items():
+            if alias in path_string.lower():
+                for alt_path in paths:
+                    if Path(alt_path).exists():
+                        return True, None
+                if not allow_missing:
+                    return False, f"Wordlist not found. Tried: {', '.join(paths)}"
+
+        path = Path(path_string)
+        if not path.exists():
+            if allow_missing:
+                return True, None
+            return False, f"File not found: '{path_string}'"
+
+        if not path.is_file():
+            return False, f"Path is not a file: '{path_string}'"
+
+        return True, None
+
+    def get_validated_input(self, param_name: str, prompt_text: Optional[str] = None, default: Optional[str] = None) -> str:
         """
         Get and validate user input based on parameter type.
 
         Args:
             param_name: Name of the parameter (e.g., 'target_ip', 'port')
             prompt_text: Optional custom prompt text
+            default: Optional default value
 
         Returns:
             Validated input string
@@ -183,15 +290,32 @@ class InputValidator:
         if prompt_text is None:
             prompt_text = f"Enter {param_name.replace('_', ' ')}"
 
+        # Add default to prompt if provided
+        if default:
+            prompt_text = f"{prompt_text} (default: {default})"
+
         while True:
             try:
-                user_input = Prompt.ask(f"[cyan]{prompt_text}[/cyan]")
+                user_input = Prompt.ask(f"[cyan]{prompt_text}[/cyan]", default=default if default else "")
 
-                # Validate based on parameter name
-                if 'ip' in param_name.lower():
-                    is_valid, error_msg = self.validate_ipv4(user_input)
+                # Use default if no input provided
+                if not user_input.strip() and default:
+                    user_input = default
+
+                # Validate based on parameter name and type
+                if 'ip' in param_name.lower() or 'target' in param_name.lower() or 'host' in param_name.lower():
+                    # Support both IP and hostname
+                    is_valid, error_msg = self.validate_ip_or_hostname(user_input)
                     if is_valid:
-                        return user_input
+                        return self.sanitize_input(user_input)
+                    else:
+                        self.console.print(f"[bold red]✗[/bold red] {error_msg}")
+
+                elif 'url' in param_name.lower():
+                    # Validate and normalize URL
+                    is_valid, error_msg, normalized_url = self.validate_url(user_input)
+                    if is_valid:
+                        return normalized_url
                     else:
                         self.console.print(f"[bold red]✗[/bold red] {error_msg}")
 
@@ -202,10 +326,23 @@ class InputValidator:
                     else:
                         self.console.print(f"[bold red]✗[/bold red] {error_msg}")
 
+                elif 'wordlist' in param_name.lower() or 'file' in param_name.lower() or 'path' in param_name.lower():
+                    # Validate file paths
+                    is_valid, error_msg = self.validate_file_path(user_input)
+                    if is_valid:
+                        return self.sanitize_input(user_input)
+                    else:
+                        self.console.print(f"[bold red]✗[/bold red] {error_msg}")
+
                 else:
-                    # For other parameters, just ensure non-empty
+                    # For other parameters, check for dangerous input
                     if user_input.strip():
-                        return user_input
+                        is_safe, warning = self.check_dangerous_input(user_input, param_name)
+                        if not is_safe:
+                            self.console.print(f"[bold red]✗ Security Warning:[/bold red] {warning}")
+                            if not Confirm.ask("[yellow]Continue with this input anyway?[/yellow]", default=False):
+                                continue
+                        return self.sanitize_input(user_input)
                     else:
                         self.console.print("[bold red]✗[/bold red] Input cannot be empty")
 
@@ -233,6 +370,7 @@ class DependencyChecker:
     def check_tool_exists(self, tool_name: str) -> bool:
         """
         Check if a tool/binary exists in the system PATH.
+        Intelligently skips common wrapper commands (sudo, proxychains, etc.)
 
         Args:
             tool_name: Name of the tool to check
@@ -240,20 +378,22 @@ class DependencyChecker:
         Returns:
             True if tool exists, False otherwise
         """
-        # Extract the actual binary name from the command
-        binary_name = tool_name.split()[0]
-        return shutil.which(binary_name) is not None
+        wrapper_commands = ['sudo', 'proxychains', 'proxychains4', 'timeout', 'nohup', 'nice', 'ionice']
+        tokens = tool_name.split()
+
+        actual_binary = None
+        for token in tokens:
+            if token not in wrapper_commands and not token.startswith('-'):
+                actual_binary = token
+                break
+
+        if actual_binary:
+            return shutil.which(actual_binary) is not None
+
+        return shutil.which(tokens[0]) is not None if tokens else False
 
     def warn_missing_tool(self, tool_name: str) -> bool:
-        """
-        Warn user if a tool is missing and ask if they want to continue.
-
-        Args:
-            tool_name: Name of the missing tool
-
-        Returns:
-            True if user wants to continue anyway, False otherwise
-        """
+        """Warn user about missing tool and ask to continue."""
         self.console.print(
             Panel(
                 f"[bold yellow]⚠ Warning:[/bold yellow] Tool '{tool_name}' not found in system PATH!\n\n"
@@ -266,31 +406,16 @@ class DependencyChecker:
         return Confirm.ask("[yellow]Continue anyway?[/yellow]", default=False)
 
 
-# ============================================================================
 # Command Execution & Logging
-# ============================================================================
 
 class SessionLogger:
-    """Handles logging of commands and sessions to file."""
+    """Handles logging of commands to file."""
 
     def __init__(self, log_file: Path) -> None:
-        """
-        Initialize the session logger.
-
-        Args:
-            log_file: Path to the log file
-        """
         self.log_file: Path = log_file
 
     def log_command(self, command: str, category: str, tool_name: str) -> None:
-        """
-        Log an executed command with timestamp.
-
-        Args:
-            command: The command that was executed
-            category: Category of the tool
-            tool_name: Name of the tool
-        """
+        """Log executed command with timestamp."""
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         log_entry = (
             f"[{timestamp}] Category: {category} | Tool: {tool_name}\n"
@@ -346,25 +471,19 @@ class CommandExecutor:
         self.logger: SessionLogger = logger
 
     def prepare_command(self, tool: ToolConfig) -> Optional[str]:
-        """
-        Prepare a command by collecting and validating parameters.
-
-        Args:
-            tool: Tool configuration
-
-        Returns:
-            Prepared command string or None if cancelled
-        """
+        """Collect parameters and prepare command with shell-safe quoting."""
         command = tool.command
         params_dict = {}
 
         try:
-            # Collect all required parameters
             for param in tool.params:
-                value = self.validator.get_validated_input(param)
-                params_dict[param] = value
+                default_value = None
+                if tool.defaults and param in tool.defaults:
+                    default_value = tool.defaults[param]
 
-            # Substitute parameters in command
+                value = self.validator.get_validated_input(param, default=default_value)
+                params_dict[param] = shlex.quote(value)
+
             prepared_command = command.format(**params_dict)
             return prepared_command
 
@@ -374,27 +493,13 @@ class CommandExecutor:
             self.console.print(f"[bold red]Error preparing command:[/bold red] {e}")
             return None
 
-    def execute(
-        self,
-        tool: ToolConfig,
-        category_name: str,
-        simulate: bool = False
-    ) -> None:
-        """
-        Execute a pentesting tool command.
-
-        Args:
-            tool: Tool configuration
-            category_name: Name of the category
-            simulate: If True, only show command without executing
-        """
-        # Check if tool exists
+    def execute(self, tool: ToolConfig, category_name: str, simulate: bool = False) -> None:
+        """Execute a tool command or show it in simulation mode."""
         tool_binary = tool.command.split()[0]
         if not self.dependency_checker.check_tool_exists(tool_binary):
             if not self.dependency_checker.warn_missing_tool(tool_binary):
                 return
 
-        # Prepare command with parameters
         self.console.print(f"\n[bold cyan]🔧 Preparing:[/bold cyan] {tool.name}")
         self.console.print(f"[dim]{tool.description}[/dim]\n")
 
@@ -404,7 +509,6 @@ class CommandExecutor:
             self.console.print("[yellow]Command preparation cancelled[/yellow]")
             return
 
-        # Display the command
         self.console.print(
             Panel(
                 f"[bold green]{prepared_command}[/bold green]",
@@ -433,6 +537,7 @@ class CommandExecutor:
     def _execute_with_progress(self, command: str) -> None:
         """
         Execute command with a progress indicator.
+        Uses safer subprocess execution with shell=False when possible.
 
         Args:
             command: Command to execute
@@ -445,13 +550,27 @@ class CommandExecutor:
             ) as progress:
                 task = progress.add_task("[cyan]Executing command...", total=None)
 
-                # Execute the command
-                result = subprocess.run(
-                    command,
-                    shell=True,
-                    capture_output=False,
-                    text=True
-                )
+                # Try to execute without shell=True for better security
+                # Fall back to shell=True for complex commands with pipes, etc.
+                try:
+                    # Parse command into arguments
+                    args = shlex.split(command)
+                    result = subprocess.run(
+                        args,
+                        shell=False,
+                        capture_output=False,
+                        text=True
+                    )
+                except (ValueError, FileNotFoundError):
+                    # Fallback to shell=True for complex commands
+                    # (e.g., commands with pipes, redirects)
+                    self.console.print("[dim]Using shell mode for complex command...[/dim]")
+                    result = subprocess.run(
+                        command,
+                        shell=True,
+                        capture_output=False,
+                        text=True
+                    )
 
                 progress.stop()
 

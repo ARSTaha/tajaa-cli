@@ -1,19 +1,17 @@
-# ============================================================================
-# Tajaa CLI v3.0.0 - Git Ignore Configuration
-# ============================================================================
-# Project: Modular Cyber Security Framework
+# Tajaa CLI - Git Ignore Configuration
 # Author: Tajaa
-# Updated: December 14, 2025
-# ============================================================================
+# Updated: December 19, 2025
 
-# ============================================================================
-# Python Runtime & Build
-# ============================================================================
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+*.egg
+*.egg-info/
+.installed.cfg
+MANIFEST
 build/
 develop-eggs/
 dist/
@@ -23,19 +21,13 @@ eggs/
 lib/
 lib64/
 parts/
+pip-wheel-metadata/
 sdist/
+share/python-wheels/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
 
-# ============================================================================
 # Virtual Environment
-# ============================================================================
 .venv/
 venv/
 ENV/
@@ -43,130 +35,117 @@ env/
 .virtualenv/
 .python-version
 
-# ============================================================================
-# IDE & Editors
-# ============================================================================
-# JetBrains (PyCharm, IntelliJ)
+# IDEs and Editors
 .idea/
 *.iml
-*.iws
 *.ipr
-
-# VSCode
+*.iws
 .vscode/
 *.code-workspace
-
-# Vim/Emacs
-*.swp
-*.swo
-*~
 .project
 .pydevproject
 .settings/
+*.swp
+*.swo
+*~
 
-# ============================================================================
-# Tajaa CLI - Session & Execution Logs
-# ============================================================================
-session_logs.txt
-*.log
-test_session.log
-execution_*.log
-audit_*.log
-
-# ============================================================================
-# Operating System Files
-# ============================================================================
-# macOS
+# Operating Systems
 .DS_Store
 .DS_Store?
 ._*
-.Spotlight-V100
-.Trashes
 .AppleDouble
 .LSOverride
-
-# Windows
+.Spotlight-V100
+.Trashes
 Thumbs.db
 Thumbs.db:encryptable
+desktop.ini
 ehthumbs.db
 ehthumbs_vista.db
-desktop.ini
 $RECYCLE.BIN/
-
-# Linux
 .directory
 .Trash-*
 
-# ============================================================================
-# Testing & Code Quality
-# ============================================================================
+# Testing and Coverage
 .pytest_cache/
 .coverage
 .coverage.*
-htmlcov/
-.tox/
-.nox/
 *.cover
 *.py,cover
+htmlcov/
 .hypothesis/
 .mypy_cache/
+.nox/
 .pytype/
 .ruff_cache/
-.dmypy.json
+.tox/
 dmypy.json
+.dmypy.json
 
-# ============================================================================
-# Security Tool Output & Artifacts
-# ============================================================================
-# Packet captures
-*.pcap
+# Logs
+*.log
+audit_*.log
+execution_*.log
+session_logs.txt
+test_session.log
+
+# Database and Cache
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+.cache/
+__db__/
+cache/
+
+# Security Tool Outputs
 *.cap
+*.pcap
+*.pcap.gz
 *.pcapng
 *.pcapng.gz
-
-# Tool output directories
-captures/
-output/
-results/
-reports/
-scans/
-loot/
 artifacts/
+captures/
 exploits_output/
-
-# Wordlists and large datasets (keep versioned lists only)
+loot/
+output/
+reports/
+results/
+scans/
 wordlists/custom_*.txt
 wordlists/generated_*.txt
 
-# ============================================================================
-# Temporary & Backup Files
-# ============================================================================
+# Temporary and Backup Files
 *.bak
-*.tmp
+*.backup
+*.old
+*.orig
 *.temp
+*.tmp
 temp/
 tmp/
-*.orig
-*.old
-*.backup
 
-# ============================================================================
-# Documentation - Internal/Work-in-Progress
-# ============================================================================
-# Keep all published documentation, ignore work files
+# Secrets and Environment
+.env
+.env.local
+.env.*.local
+.envrc
+api_keys.txt
+credentials.txt
+secrets.json
+secrets.yaml
+
+# Documentation Drafts
+*_DRAFT.md
 *_INTERNAL.md
 *_NOTES.md
 *_TODO.md
 *_WIP.md
-*_DRAFT.md
+.notes/
 drafts/
 notes/
-.notes/
 
-# ============================================================================
-# Configuration - User Customizations
-# ============================================================================
-# Track official configs (01-09), ignore user additions (10+)
+# User Configuration Customizations
 configs/*_custom.yaml
 configs/*_local.yaml
 configs/*_test.yaml
@@ -178,7 +157,7 @@ configs/14_*.yaml
 configs/15_*.yaml
 configs/20_*.yaml
 
-# Keep README and official numbered configs
+# Keep Official Configs
 !configs/README.md
 !configs/01_*.yaml
 !configs/02_*.yaml
@@ -190,35 +169,9 @@ configs/20_*.yaml
 !configs/08_*.yaml
 !configs/09_*.yaml
 
-# ============================================================================
-# Environment Variables & Secrets
-# ============================================================================
-.env
-.env.local
-.env.*.local
-.envrc
-secrets.yaml
-secrets.json
-api_keys.txt
-credentials.txt
-
-# ============================================================================
-# Database & Cache
-# ============================================================================
-*.db
-*.sqlite
-*.sqlite3
-*.db-journal
-cache/
-.cache/
-__db__/
-
-# ============================================================================
-# Misc Development
-# ============================================================================
+# Miscellaneous
 .vagrant/
 *.retry
-.DS_Store
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

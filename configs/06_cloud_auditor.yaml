@@ -2,6 +2,12 @@ categories:
   aws_enumeration:
     name: "☁️ AWS Reconnaissance"
     tools:
+      check_auth:
+        name: "AWS CLI - Check Authentication"
+        description: "Verify AWS CLI is authenticated before running other commands"
+        command: "aws sts get-caller-identity || echo '[!] Not logged in. Run: aws configure'"
+        params: []
+
       aws_whoami:
         name: "AWS CLI - Get Caller Identity"
         description: "Check current AWS credentials and permissions"

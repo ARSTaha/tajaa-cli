@@ -1,54 +1,31 @@
-# ⚔️ Tajaa CLI - The Ultimate Modular Cyber Security Framework
+# ⚔️ Tajaa CLI - Modular Cyber Security Framework
 
-[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/ARSTaha/tajaa-cli)
+[![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](https://github.com/ARSTaha/tajaa-cli)
 [![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](https://www.kali.org/)
-[![Tools](https://img.shields.io/badge/tools-480+-red.svg)](CONFIG_CATALOG.md)
-[![Modules](https://img.shields.io/badge/modules-8-purple.svg)](CONFIG_CATALOG.md)
-[![GitHub](https://img.shields.io/badge/GitHub-ARSTaha-181717?logo=github)](https://github.com/ARSTaha)
 
-> **A production-grade, modular cyber security framework that unifies 480+ offensive security tools across 8 specialized domains into one intelligent CLI interface.**
-
-Built with clean OOP architecture, SOLID principles, and a revolutionary **Modular Configuration System** that adapts to any security assessment scenario - from CTF competitions to cloud audits, from OSINT investigations to wireless pentesting.
+A modular framework for penetration testing and security assessments. Combines 480+ security tools across 8 specialized domains in a single CLI interface.
 
 ---
 
-## 🌟 What Makes Tajaa CLI Different?
+## What is Tajaa CLI?
 
-Tajaa CLI isn't just another pentesting tool wrapper - it's a **complete modular cyber security framework** that transforms how security professionals work:
+Tajaa CLI is a modular penetration testing framework with clean OOP architecture. Instead of maintaining multiple scattered scripts, you get organized tool configurations that adapt to your workflow - whether you're doing CTF competitions, web pentesting, or cloud audits.
 
-### **🎯 The Modular Architecture Revolution**
+### Key Features
 
-Unlike traditional monolithic security tools, Tajaa CLI uses a **Modular Configuration System** with 8 specialized domains:
-
-- **🏆 CTF Kit** - Speed hacking, steganography, crypto challenges (50+ tools)
-- **🌐 Web Bounty** - Web app testing, bug bounty hunting (70+ tools)
-- **🏢 Network AD** - Active Directory, Windows networks (55+ tools)
-- **📱 Mobile IoT** - Mobile apps, firmware analysis (60+ tools)
-- **☁️ Cloud Auditor** - AWS/Azure/GCP security (50+ tools)
-- **🕵️ OSINT Detective** - Intelligence gathering (65+ tools)
-- **📡 Wireless Radio** - WiFi/Bluetooth/SDR/RFID (75+ tools)
-- **🔒 Post Exploit** - Persistence, lateral movement (55+ tools)
-
-### **✨ Core Framework Features**
-
-- **📦 Modular Configuration System**: Load specialized tool arsenals per engagement type
-- **🧠 Intelligent Parameter Handling**: Automatic validation for IP addresses, ports, domains
-- **🏗️ Clean OOP Architecture**: Built with SOLID principles and design patterns
-- **📝 Automatic Session Logging**: Every command timestamped for audit trails
-- **🔍 Smart Dependency Checking**: Pre-execution tool availability warnings
-- **🎨 Rich Terminal UI**: Beautiful interface with progress indicators and syntax highlighting
-- **📋 Clipboard Integration**: Auto-copy commands for quick terminal pasting
-- **⌨️ Graceful Error Handling**: Professional error messages, no ugly Python tracebacks
-- **🔧 Extensible by Design**: Add custom tools through simple YAML editing
-- **🎓 Built for Education**: Perfect for learning offensive security workflows
+- **Modular Configuration** - 8 specialized YAML configs for different security domains
+- **Input Validation** - Automatic validation for IPs, ports, domains, and file paths
+- **Command Injection Protection** - All inputs sanitized with `shlex.quote()`
+- **Session Logging** - Every command timestamped for documentation
+- **Smart Dependency Checking** - Pre-execution warnings for missing tools
+- **Rich Terminal UI** - Clean interface with syntax highlighting
+- **Clipboard Integration** - Auto-copy commands for quick execution
 
 ---
 
-## 🎯 The 8 Specialized Modules
-
-Each module is a complete arsenal optimized for specific security domains:
+## The 8 Modules
 
 | Module | Config File | Tools | Primary Use Cases |
 |--------|------------|-------|-------------------|
@@ -71,77 +48,57 @@ Each module is a complete arsenal optimized for specific security domains:
 
 - **Operating System**: Kali Linux, Parrot OS, or any Linux distribution
 - **Python**: 3.8 or higher
-- **Security Tools**: Install modules as needed (nmap, metasploit, aircrack-ng, etc.)
+### Requirements
 
-### Installation Steps
+- **Python 3.8+**
+- **Linux** (tested on Kali Linux, Ubuntu, Parrot OS)
+- **Security Tools** - Install as needed (nmap, metasploit, etc.)
+
+### Installation
 
 ```bash
-# 1. Clone the repository
+# Clone the repository
 git clone https://github.com/ARSTaha/tajaa-cli.git
 cd tajaa-cli
 
-# 2. Create virtual environment (recommended)
-python3 -m venv .venv
-source .venv/bin/activate
-
-# 3. Install Python dependencies
+# Install dependencies
 pip install -r requirements.txt
 
-# 4. Make the main script executable
-chmod +x main.py
-
-# 5. Verify configuration modules exist
-ls -la configs/
-
-# 6. Verify installation
-python3 main.py --help
+# Run the framework
+python3 main.py
 ```
 
-### Optional: Create System-Wide Aliases
+### Optional: Create Aliases
 
-Add to your `~/.bashrc` or `~/.zshrc`:
+Add to your `~/.bashrc`:
 
 ```bash
-# Main alias
 alias tajaa="python3 ~/tajaa-cli/main.py"
-
-# Module-specific aliases for instant switching
-alias tajaa-ctf="python3 ~/tajaa-cli/main.py --config ~/tajaa-cli/configs/02_ctf_kit.yaml"
-alias tajaa-web="python3 ~/tajaa-cli/main.py --config ~/tajaa-cli/configs/03_web_bounty.yaml"
-alias tajaa-ad="python3 ~/tajaa-cli/main.py --config ~/tajaa-cli/configs/04_network_ad.yaml"
-alias tajaa-mobile="python3 ~/tajaa-cli/main.py --config ~/tajaa-cli/configs/05_mobile_iot.yaml"
-alias tajaa-cloud="python3 ~/tajaa-cli/main.py --config ~/tajaa-cli/configs/06_cloud_auditor.yaml"
-alias tajaa-osint="python3 ~/tajaa-cli/main.py --config ~/tajaa-cli/configs/07_osint_detective.yaml"
-alias tajaa-wireless="python3 ~/tajaa-cli/main.py --config ~/tajaa-cli/configs/08_wireless_radio.yaml"
-alias tajaa-post="python3 ~/tajaa-cli/main.py --config ~/tajaa-cli/configs/09_post_exploit.yaml"
+alias tajaa-ctf="tajaa --config configs/02_ctf_kit.yaml"
+alias tajaa-web="tajaa --config configs/03_web_bounty.yaml"
+alias tajaa-cloud="tajaa --config configs/06_cloud_auditor.yaml"
 ```
-
-Then reload: `source ~/.bashrc`
 
 ---
 
-## 📖 Usage Guide - The Power of Modularity
+## Usage
 
-### 🎯 Basic Usage (Default Configuration)
+### Basic Usage
 
 ```bash
 python3 main.py
-# Or with alias: tajaa
 ```
 
-### 🚀 Module-Based Usage (The Real Power)
+### Load Specific Module
 
-Load specialized tool arsenals for different scenarios:
-
-#### **🏆 CTF & Speed Hacking**
-Perfect for competitions and rapid assessments:
 ```bash
-tajaa --config configs/02_ctf_kit.yaml
-# Or: tajaa-ctf
-```
+# CTF toolkit
+python3 main.py --config configs/02_ctf_kit.yaml
 
-#### **🌐 Web Application Security**
-Comprehensive web app testing:
+# Web security
+python3 main.py --config configs/03_web_bounty.yaml
+
+# Cloud auditing
 ```bash
 tajaa --config configs/03_web_bounty.yaml
 # Or: tajaa-web

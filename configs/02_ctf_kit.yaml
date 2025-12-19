@@ -146,12 +146,11 @@ categories:
           - encrypted_file
           - output_file
 
-      cyberchef_magic:
-        name: "CyberChef CLI - Auto Decode"
-        description: "Automatic encoding detection and decoding chain"
-        command: "echo {encoded_string} | cyberchef --recipe='Magic'"
-        params:
-          - encoded_string
+      cyberchef_local:
+        name: "CyberChef (Local HTML)"
+        description: "Opens local CyberChef in Firefox (Requires install_arsenal.sh run)"
+        command: "bash -c 'if [ -f /opt/tajaa-tools/cyberchef/CyberChef.html ]; then firefox /opt/tajaa-tools/cyberchef/CyberChef.html; else echo \"[!] CyberChef not found. Please run install_arsenal.sh\"; fi'"
+        params: []
 
   reverse_shells:
     name: "🐚 Reverse Shells & Payloads"
