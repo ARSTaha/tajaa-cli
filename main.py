@@ -612,7 +612,7 @@ class UIManager:
         self.console.print(
             Panel(
                 "[bold]Modular Cyber Security Framework[/bold]\n"
-                "[dim]Version 3.0.0 | 8 Specialized Domains | 480+ Tools[/dim]",
+                "[dim]Version 3.1.0 | 8 Specialized Domains | 480+ Tools[/dim]",
                 border_style="cyan"
             )
         )

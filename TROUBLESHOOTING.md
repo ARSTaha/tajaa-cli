@@ -4,6 +4,43 @@ Common installation issues and solutions for Tajaa CLI.
 
 ---
 
+## Error: ModuleNotFoundError: No module named 'typer'
+
+### Problem
+```
+Traceback (most recent call last):
+  File "/home/kali/tajaa-cli/main.py", line 24, in <module>
+    import typer
+ModuleNotFoundError: No module named 'typer'
+```
+
+### Cause
+You're running the script without activating the virtual environment. Modern Kali Linux requires virtual environments for Python packages.
+
+### Solution
+
+**ALWAYS activate the virtual environment before running:**
+
+```bash
+# Navigate to project directory
+cd tajaa-cli
+
+# Activate virtual environment
+source .venv/bin/activate
+
+# Now run the framework
+python3 main.py
+```
+
+You should see `(.venv)` at the beginning of your terminal prompt when activated.
+
+**To deactivate when done:**
+```bash
+deactivate
+```
+
+---
+
 ## Error: externally-managed-environment
 
 ### Problem
@@ -17,38 +54,36 @@ Modern Python installations (Kali Linux 2023+, Ubuntu 23.04+, Debian 12+) use PE
 
 ### Solution (Recommended)
 
-Use a virtual environment:
+Use a virtual environment (the install.sh script does this automatically):
 
 ```bash
 # Navigate to project directory
 cd tajaa-cli
 
-# Create virtual environment
+# Run the installer (recommended)
+chmod +x install.sh
+./install.sh
+
+# Or create manually
 python3 -m venv .venv
-
-# Activate it
 source .venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Run Tajaa CLI
-python3 main.py
 ```
 
 ### Alternative Solutions
 
-#### Option 2: Using pipx (for single application)
+#### Option 2: Use --break-system-packages (NOT RECOMMENDED)
 ```bash
-# Install pipx
-sudo apt install pipx
-
-# Not recommended for Tajaa CLI (designed for single-file apps)
+# This can break your system Python installation
+pip install -r requirements.txt --break-system-packages  # DON'T DO THIS
 ```
 
-#### Option 3: System packages (limited)
+#### Option 3: System packages (limited availability)
 ```bash
-# Install available system packages
+# Only some packages available as system packages
+sudo apt install python3-typer python3-rich python3-yaml
+# Missing: inquirerpy, pyfiglet - this won't work for Tajaa CLI
+```
 sudo apt install python3-yaml python3-typer python3-rich
 
 # Note: Not all dependencies may be available

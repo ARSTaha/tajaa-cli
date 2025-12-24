@@ -48,10 +48,6 @@ Tajaa CLI is a modular penetration testing framework with clean OOP architecture
 
 - **Operating System**: Kali Linux, Parrot OS, or any Linux distribution
 - **Python**: 3.8 or higher
-### Requirements
-
-- **Python 3.8+**
-- **Linux** (tested on Kali Linux, Ubuntu, Parrot OS)
 - **Security Tools** - Install as needed (nmap, metasploit, etc.)
 
 ### Installation
@@ -67,8 +63,10 @@ cd tajaa-cli
 chmod +x install.sh
 ./install.sh
 
-# Activate and run
+# Activate virtual environment (REQUIRED)
 source .venv/bin/activate
+
+# Run the framework
 python3 main.py
 ```
 
@@ -79,8 +77,10 @@ python3 main.py
 git clone https://github.com/ARSTaha/tajaa-cli.git
 cd tajaa-cli
 
-# Create virtual environment (required on Kali Linux)
+# Create virtual environment (REQUIRED on modern Kali/Debian)
 python3 -m venv .venv
+
+# Activate virtual environment
 source .venv/bin/activate
 
 # Install dependencies
@@ -90,24 +90,40 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
-**Note for Kali Linux users:** Modern Kali uses externally-managed Python environments. Always use a virtual environment as shown above to avoid system conflicts.
+**⚠️ IMPORTANT:** Modern Kali Linux (2023.1+) uses PEP 668 externally-managed Python environments. You **MUST** activate the virtual environment before running the framework:
+
+```bash
+source .venv/bin/activate
+```
+
+If you see `ModuleNotFoundError: No module named 'typer'`, you forgot to activate the virtual environment.
 
 **Having installation issues?** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common solutions.
 
 ### Optional: Create Aliases
 
-Add to your `~/.bashrc`:
+Add to your `~/.bashrc` or `~/.zshrc`:
 
 ```bash
-alias tajaa="python3 ~/tajaa-cli/main.py"
-alias tajaa-ctf="tajaa --config configs/02_ctf_kit.yaml"
-alias tajaa-web="tajaa --config configs/03_web_bounty.yaml"
-alias tajaa-cloud="tajaa --config configs/06_cloud_auditor.yaml"
+# Tajaa CLI Aliases (automatically activates venv)
+alias tajaa="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py"
+alias tajaa-ctf="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/02_ctf_kit.yaml"
+alias tajaa-web="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/03_web_bounty.yaml"
+alias tajaa-cloud="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/06_cloud_auditor.yaml"
 ```
+
+Then reload your shell: `source ~/.bashrc`
 
 ---
 
 ## Usage
+
+**Always activate the virtual environment first:**
+
+```bash
+cd ~/tajaa-cli
+source .venv/bin/activate
+```
 
 ### Basic Usage
 
