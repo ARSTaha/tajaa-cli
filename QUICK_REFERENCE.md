@@ -76,15 +76,15 @@ Add to `~/.bashrc` or `~/.zshrc`:
 
 ```bash
 # Tajaa CLI shortcuts
-alias tajaa="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py"
-alias tajaa-ctf="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/02_ctf_kit.yaml"
-alias tajaa-web="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/03_web_bounty.yaml"
-alias tajaa-ad="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/04_network_ad.yaml"
-alias tajaa-mobile="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/05_mobile_iot.yaml"
-alias tajaa-cloud="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/06_cloud_auditor.yaml"
-alias tajaa-osint="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/07_osint_detective.yaml"
-alias tajaa-wireless="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/08_wireless_radio.yaml"
-alias tajaa-post="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/09_post_exploit.yaml"
+alias tajaa='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py'
+alias tajaa-ctf='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/02_ctf_kit.yaml'
+alias tajaa-web='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/03_web_bounty.yaml'
+alias tajaa-ad='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/04_network_ad.yaml'
+alias tajaa-mobile='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/05_mobile_iot.yaml'
+alias tajaa-cloud='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/06_cloud_auditor.yaml'
+alias tajaa-osint='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/07_osint_detective.yaml'
+alias tajaa-wireless='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/08_wireless_radio.yaml'
+alias tajaa-post='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/09_post_exploit.yaml'
 ```
 
 Then reload:

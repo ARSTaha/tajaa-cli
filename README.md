@@ -44,6 +44,8 @@ Tajaa CLI is a modular penetration testing framework with clean OOP architecture
 
 ## 🚀 Quick Start Installation
 
+> **📘 New to Kali Linux?** See [INSTALL_KALI.md](INSTALL_KALI.md) for a complete step-by-step guide with troubleshooting.
+
 ### Prerequisites
 
 - **Operating System**: Kali Linux, Parrot OS, or any Linux distribution
@@ -102,17 +104,22 @@ If you see `ModuleNotFoundError: No module named 'typer'`, you forgot to activat
 
 ### Optional: Create Aliases
 
-Add to your `~/.bashrc` or `~/.zshrc`:
+Add to your `~/.bashrc` or `~/.zshrc` (replace `~/tajaa-cli` with your actual path):
 
 ```bash
 # Tajaa CLI Aliases (automatically activates venv)
-alias tajaa="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py"
-alias tajaa-ctf="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/02_ctf_kit.yaml"
-alias tajaa-web="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/03_web_bounty.yaml"
-alias tajaa-cloud="cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/06_cloud_auditor.yaml"
+alias tajaa='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py'
+alias tajaa-ctf='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/02_ctf_kit.yaml'
+alias tajaa-web='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/03_web_bounty.yaml'
+alias tajaa-ad='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/04_network_ad.yaml'
+alias tajaa-mobile='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/05_mobile_iot.yaml'
+alias tajaa-cloud='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/06_cloud_auditor.yaml'
+alias tajaa-osint='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/07_osint_detective.yaml'
+alias tajaa-wireless='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/08_wireless_radio.yaml'
+alias tajaa-post='cd ~/tajaa-cli && source .venv/bin/activate && python3 main.py --config configs/09_post_exploit.yaml'
 ```
 
-Then reload your shell: `source ~/.bashrc`
+Then reload your shell: `source ~/.bashrc` or `source ~/.zshrc`
 
 ---
 
@@ -150,9 +157,14 @@ python3 main.py --config configs/09_post_exploit.yaml
 ### Using Aliases (if configured)
 
 ```bash
+tajaa          # Default module (General pentesting)
 tajaa-ctf      # CTF toolkit
 tajaa-web      # Web security
+tajaa-ad       # Active Directory
+tajaa-mobile   # Mobile & IoT
 tajaa-cloud    # Cloud auditing
+tajaa-osint    # OSINT operations
+tajaa-wireless # Wireless attacks
 tajaa-post     # Post-exploitation
 ```
 
@@ -179,6 +191,7 @@ tajaa-cli/
 │   └── 09_post_exploit.yaml   # Post-exploitation (75+ tools)
 │
 ├── README.md                  # Main documentation
+├── INSTALL_KALI.md            # Step-by-step Kali installation guide
 ├── QUICKSTART.md              # Getting started guide
 ├── CONFIG_CATALOG.md          # Complete tool catalog
 ├── TROUBLESHOOTING.md         # Installation & usage issues
@@ -186,6 +199,7 @@ tajaa-cli/
 ├── ARCHITECTURE.md            # Technical architecture
 ├── EXAMPLES.md                # Usage examples
 ├── SECURITY.md                # Security features
+├── QUICK_REFERENCE.md         # Command reference
 ├── LICENSE                    # MIT License
 │
 └── tests/
