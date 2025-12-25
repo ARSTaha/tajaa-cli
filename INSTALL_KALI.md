@@ -172,7 +172,8 @@ This installs additional tools like CyberChef, LinPEAS, and SecLists wordlists:
 cd ~/tajaa-cli
 
 # Run the arsenal installer with sudo (it installs system-wide tools)
-sudo bash install_arsenal.sh
+chmod +x install_arsenal.sh
+sudo ./install_arsenal.sh
 ```
 
 **What this installs:**

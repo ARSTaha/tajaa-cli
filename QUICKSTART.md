@@ -80,7 +80,8 @@ python3 main.py --config configs/06_cloud_auditor.yaml
 Install CyberChef, payloads, and wordlists:
 
 ```bash
-sudo bash install_arsenal.sh
+chmod +x install_arsenal.sh
+sudo ./install_arsenal.sh
 ```
 
 This installs:

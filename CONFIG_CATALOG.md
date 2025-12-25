@@ -143,6 +143,7 @@ sudo apt install binwalk foremost steghide exiftool
 Run `install_arsenal.sh` for extras:
 
 ```bash
+chmod +x install_arsenal.sh
 sudo ./install_arsenal.sh
 ```
 

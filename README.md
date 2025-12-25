@@ -101,7 +101,7 @@ This is the framework that makes Metasploit look like a calculator.
 ### One-Line Install (Kali Linux)
 
 ```bash
-git clone https://github.com/ARSTaha/tajaa-cli.git && cd tajaa-cli && ./install.sh
+git clone https://github.com/ARSTaha/tajaa-cli.git && cd tajaa-cli && chmod +x install.sh && ./install.sh
 ```
 
 ### Manual Installation
@@ -127,7 +127,7 @@ python main.py
 
 - Python 3.12+
 - Kali Linux (recommended) or any Linux distribution
-- 480+ security tools (install with `./install_arsenal.sh`)
+- 480+ security tools (install with `chmod +x install_arsenal.sh && sudo ./install_arsenal.sh`)
 
 ---
 
