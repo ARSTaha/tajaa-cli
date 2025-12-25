@@ -542,7 +542,9 @@ class TajaaCLI:
             return True
 
         except Exception as e:
-            self.console.print(f"\n  [red]✗ Initialization failed: {e}[/red]\n")
+            # Escape any Rich markup in the error message
+            error_msg = str(e).replace("[", "\\[").replace("]", "\\]")
+            self.console.print(f"\n  [red]✗ Initialization failed: {error_msg}[/red]\n")
             return False
 
     def _load_categories(self) -> None:
