@@ -111,21 +111,33 @@ git clone https://github.com/ARSTaha/tajaa-cli.git && cd tajaa-cli && chmod +x i
 git clone https://github.com/ARSTaha/tajaa-cli.git
 cd tajaa-cli
 
-# Create virtual environment (recommended)
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# or: .\venv\Scripts\activate  # Windows
+# Install dependencies (choose one method)
 
-# Install dependencies
+# Method 1: Using virtual environment (recommended)
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 
-# Launch
-python main.py
+# Method 2: Direct install (if venv issues)
+pip3 install -r requirements.txt
+
+# Launch (activate venv first if you used Method 1)
+python3 main.py
+```
+
+### Quick Fix for "No module named 'typer'" Error
+
+```bash
+# If you see this error, just run:
+pip3 install -r requirements.txt
+
+# Then launch:
+python3 main.py
 ```
 
 ### Requirements
 
-- Python 3.12+
+- Python 3.10+ (3.12 recommended)
 - Kali Linux (recommended) or any Linux distribution
 - 480+ security tools (install with `chmod +x install_arsenal.sh && sudo ./install_arsenal.sh`)
 
