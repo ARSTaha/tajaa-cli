@@ -658,14 +658,14 @@ class TajaaCLI:
             choices.append(Choice(value="__exit__", name="🚪  Exit"))
 
             self.console.print()
-            result = inquirer.select(
+            result = await inquirer.select(
                 message="Select option:",
                 choices=[c for c in choices if c.value != ""],
                 pointer="❯",
                 qmark="",
                 amark="",
                 instruction="",
-            ).execute()
+            ).execute_async()
 
             return None if result == "__exit__" else result
 
@@ -679,7 +679,7 @@ class TajaaCLI:
             name = category.get('name', 'Tools')
 
             self.console.print()
-            self.console.print(f"[bold #FF00FF]  ╔═══ {name.upper()} ═══[/bold #FF00FF]")
+            self.console.print(f"[bold magenta]  ╔═══ {name.upper()} ═══[/bold magenta]")
             self.console.print()
 
             choices = []
@@ -689,13 +689,13 @@ class TajaaCLI:
 
             choices.append(Choice(value="__back__", name="← Back"))
 
-            result = inquirer.select(
+            result = await inquirer.select(
                 message="Select tool:",
                 choices=choices,
                 pointer="❯",
                 qmark="",
                 amark="",
-            ).execute()
+            ).execute_async()
 
             return None if result == "__back__" else result
 
@@ -722,13 +722,13 @@ class TajaaCLI:
                 ]
                 choices.append(Choice(value="__back__", name="← Back"))
 
-                result = inquirer.select(
+                result = await inquirer.select(
                     message="Select tool:",
                     choices=choices,
                     pointer="❯",
                     qmark="",
                     amark="",
-                ).execute()
+                ).execute_async()
 
                 if result != "__back__":
                     # Find and execute the plugin
@@ -755,13 +755,13 @@ class TajaaCLI:
         choices.append(Choice(value="__back__", name="← Back"))
 
         self.console.print()
-        result = inquirer.select(
+        result = await inquirer.select(
             message="Select attack chain:",
             choices=choices,
             pointer="❯",
             qmark="",
             amark="",
-        ).execute()
+        ).execute_async()
 
         if result == "__back__":
             return
