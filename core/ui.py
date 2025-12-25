@@ -60,8 +60,7 @@ class CyberpunkTheme:
 # =============================================================================
 
 # 3D Neon ASCII Art Banner - Massive and cinematic
-BANNER_3D = """
-[bold #00FFFF]
+BANNER_3D = """[bold cyan]
 ████████████████████████████████████████████████████████████████████████████████
 ██                                                                            ██
 ██    ██████████╗  ███████╗      ██╗  ███████╗  ███████╗                      ██
@@ -71,24 +70,24 @@ BANNER_3D = """
 ██       ██║      ██║   ██║ ╚█████╔╝  ██║   ██║ ██║   ██║                     ██
 ██       ╚═╝      ╚═╝   ╚═╝  ╚════╝   ╚═╝   ╚═╝ ╚═╝   ╚═╝                     ██
 ██                                                                            ██
-██[/bold #00FFFF][#FF00FF]    ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀      [/#FF00FF]██
-██[bold #00FF00]              ╔═══════════════════════════════════════════════╗              [/bold #00FF00]██
-██[bold #00FF00]              ║[/bold #00FF00][#FFFF00]  ⚡ CYBER SECURITY FRAMEWORK v5.0 ⚡  [/#FFFF00][bold #00FF00]║              [/bold #00FF00]██
-██[bold #00FF00]              ╚═══════════════════════════════════════════════╝              [/bold #00FF00]██
+██[/bold cyan][magenta]    ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀      [/magenta][bold cyan]██
+██[/bold cyan][bold green]              ╔═══════════════════════════════════════════════╗              [/bold green][bold cyan]██
+██[/bold cyan][bold green]              ║[/bold green][yellow]  ⚡ CYBER SECURITY FRAMEWORK v5.0 ⚡  [/yellow][bold green]║              [/bold green][bold cyan]██
+██[/bold cyan][bold green]              ╚═══════════════════════════════════════════════╝              [/bold green][bold cyan]██
 ██                                                                            ██
 ████████████████████████████████████████████████████████████████████████████████
-[/bold #00FFFF]"""
+[/bold cyan]"""
 
 # Compact banner for after initialization
-BANNER_COMPACT = """[bold #00FFFF]
+BANNER_COMPACT = """[bold cyan]
 ╔══════════════════════════════════════════════════════════════════╗
-║  [bold #FF00FF]████████╗[/bold #FF00FF][bold #00FFFF]  __ _   (_)  __ _    __ _   [/bold #00FFFF][#00FF00]⚡ v5.0[/#00FF00]  [bold #FFFF00]💀[/bold #FFFF00]            ║
-║  [bold #FF00FF]╚══██╔══╝[/bold #FF00FF][bold #00FFFF] / _` |  | | / _` |  / _` |[/bold #00FFFF]   [dim]Cyber Security Framework[/dim]   ║
-║  [bold #FF00FF]   ██║   [/bold #FF00FF][bold #00FFFF]| (_| |  | || (_| | | (_| |[/bold #00FFFF]   [dim]────────────────────────[/dim]   ║
-║  [bold #FF00FF]   ╚═╝   [/bold #FF00FF][bold #00FFFF] \\__,_| _/ | \\__,_|  \\__,_|[/bold #00FFFF]   [dim]By Tajaa[/dim]                    ║
-║                  [bold #00FFFF]|__/[/bold #00FFFF]                                                  ║
+║  [bold magenta]████████╗[/bold magenta]  __ _   (_)  __ _    __ _   [green]⚡ v5.0[/green]  [bold yellow]💀[/bold yellow]            ║
+║  [bold magenta]╚══██╔══╝[/bold magenta] / _` |  | | / _` |  / _` |   [dim]Cyber Security Framework[/dim]   ║
+║  [bold magenta]   ██║   [/bold magenta]| (_| |  | || (_| | | (_| |   [dim]────────────────────────[/dim]   ║
+║  [bold magenta]   ╚═╝   [/bold magenta] \\__,_| _/ | \\__,_|  \\__,_|   [dim]By Tajaa[/dim]                    ║
+║                  |__/                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
-[/bold #00FFFF]"""
+[/bold cyan]"""
 
 
 # =============================================================================
@@ -124,13 +123,13 @@ class CinematicIntro:
     async def _matrix_boot(self) -> None:
         """Matrix-style boot sequence."""
         boot_messages = [
-            ("[#00FF00]█[/#00FF00] Initializing neural network...", 0.03),
-            ("[#00FF00]█[/#00FF00] Loading cryptographic modules...", 0.02),
-            ("[#00FF00]█[/#00FF00] Establishing secure channels...", 0.02),
-            ("[#00FF00]█[/#00FF00] Calibrating attack vectors...", 0.03),
-            ("[#00FF00]█[/#00FF00] Synchronizing with C2 servers...", 0.02),
-            ("[#00FF00]█[/#00FF00] Bypassing detection systems...", 0.03),
-            ("[#00FF00]█[/#00FF00] [bold]SYSTEM READY[/bold]", 0.05),
+            ("[green]█[/green] Initializing neural network...", 0.03),
+            ("[green]█[/green] Loading cryptographic modules...", 0.02),
+            ("[green]█[/green] Establishing secure channels...", 0.02),
+            ("[green]█[/green] Calibrating attack vectors...", 0.03),
+            ("[green]█[/green] Synchronizing with C2 servers...", 0.02),
+            ("[green]█[/green] Bypassing detection systems...", 0.03),
+            ("[green]█[/green] [bold]SYSTEM READY[/bold]", 0.05),
         ]
 
         for msg, delay in boot_messages:
@@ -170,15 +169,15 @@ class CinematicIntro:
         ]
 
         self.console.print()
-        self.console.print("[bold #00FFFF]  ╔═══════════════════════════════════════════════════════════╗[/bold #00FFFF]")
-        self.console.print("[bold #00FFFF]  ║[/bold #00FFFF]            [bold #FF00FF]⚡ SYSTEM INITIALIZATION ⚡[/bold #FF00FF]            [bold #00FFFF]║[/bold #00FFFF]")
-        self.console.print("[bold #00FFFF]  ╚═══════════════════════════════════════════════════════════╝[/bold #00FFFF]")
+        self.console.print("[bold cyan]  ╔═══════════════════════════════════════════════════════════╗[/bold cyan]")
+        self.console.print("[bold cyan]  ║[/bold cyan]            [bold magenta]⚡ SYSTEM INITIALIZATION ⚡[/bold magenta]            [bold cyan]║[/bold cyan]")
+        self.console.print("[bold cyan]  ╚═══════════════════════════════════════════════════════════╝[/bold cyan]")
         self.console.print()
 
         with Progress(
-            SpinnerColumn("dots", style="#00FFFF"),
-            TextColumn("[bold #FF00FF]{task.description}[/bold #FF00FF]"),
-            BarColumn(bar_width=40, style="#333355", complete_style="#00FF00", finished_style="#00FF00"),
+            SpinnerColumn("dots", style="cyan"),
+            TextColumn("[bold magenta]{task.description}[/bold magenta]"),
+            BarColumn(bar_width=40, style="dim", complete_style="green", finished_style="green"),
             TaskProgressColumn(),
             console=self.console,
             transient=True,
@@ -189,17 +188,17 @@ class CinematicIntro:
                     await asyncio.sleep(0.005 * (weight / 15))
                     progress.update(task, advance=1)
 
-        self.console.print("  [bold #00FF00]✓ All systems operational[/bold #00FF00]")
+        self.console.print("  [bold green]✓ All systems operational[/bold green]")
         await asyncio.sleep(0.3)
 
     async def _ready_state(self) -> None:
         """Show ready state."""
         self.console.print()
         ready_text = Text()
-        ready_text.append("  ◈ ", style="bold #FF00FF")
-        ready_text.append("TAJAA ", style="bold #00FFFF")
-        ready_text.append("READY ", style="bold #00FF00")
-        ready_text.append("◈", style="bold #FF00FF")
+        ready_text.append("  ◈ ", style="bold magenta")
+        ready_text.append("TAJAA ", style="bold cyan")
+        ready_text.append("READY ", style="bold green")
+        ready_text.append("◈", style="bold magenta")
         self.console.print(ready_text)
         self.console.print()
         await asyncio.sleep(0.5)
@@ -244,16 +243,16 @@ class DashboardLayout:
     def _make_header(self) -> Panel:
         """Generate header panel."""
         header_text = Text()
-        header_text.append(" 💀 ", style="bold #FF00FF")
-        header_text.append("TAJAA", style="bold #00FFFF")
+        header_text.append(" 💀 ", style="bold magenta")
+        header_text.append("TAJAA", style="bold cyan")
         header_text.append(" │ ", style="dim")
-        header_text.append("Cyber Security Framework", style="dim #00FF00")
+        header_text.append("Cyber Security Framework", style="dim green")
         header_text.append(" │ ", style="dim")
-        header_text.append(datetime.now().strftime("%H:%M:%S"), style="#FFFF00")
+        header_text.append(datetime.now().strftime("%H:%M:%S"), style="yellow")
 
         return Panel(
             Align.center(header_text),
-            style="bold #00FFFF on #0a0a0f",
+            style="bold cyan",
             box=box.MINIMAL,
         )
 
@@ -262,22 +261,22 @@ class DashboardLayout:
         content = []
 
         if self._active_target:
-            content.append(f"[bold #00FFFF]🎯 Target:[/bold #00FFFF]")
-            content.append(f"   [#00FF00]{self._active_target}[/#00FF00]")
+            content.append(f"[bold cyan]🎯 Target:[/bold cyan]")
+            content.append(f"   [green]{self._active_target}[/green]")
         else:
             content.append("[dim]No active target[/dim]")
 
         ports = self._status.get('ports', [])
         if ports:
-            content.append(f"\n[bold #FF00FF]🔓 Open Ports:[/bold #FF00FF]")
-            content.append(f"   [#FFFF00]{', '.join(map(str, ports[:10]))}[/#FFFF00]")
+            content.append(f"\n[bold magenta]🔓 Open Ports:[/bold magenta]")
+            content.append(f"   [yellow]{', '.join(map(str, ports[:10]))}[/yellow]")
             if len(ports) > 10:
                 content.append(f"   [dim]+{len(ports) - 10} more[/dim]")
 
         return Panel(
             "\n".join(content),
-            title="[bold #00FFFF]Target Info[/bold #00FFFF]",
-            border_style="#333355",
+            title="[bold cyan]Target Info[/bold cyan]",
+            border_style="dim",
             box=box.ROUNDED,
         )
 
@@ -434,9 +433,9 @@ class UIComponents:
     def command_box(command: str) -> Panel:
         """Create a styled command display box."""
         return Panel(
-            f"[bold #00FF00]$ {command}[/bold #00FF00]",
-            title="[bold #00FFFF]Command[/bold #00FFFF]",
-            border_style="#00FF00",
+            f"[bold green]$ {command}[/bold green]",
+            title="[bold cyan]Command[/bold cyan]",
+            border_style="green",
             box=box.HEAVY,
         )
 
@@ -444,15 +443,15 @@ class UIComponents:
     def status_indicator(status: str) -> Text:
         """Create a status indicator."""
         indicators = {
-            'success': ("✓", "#00FF00"),
-            'error': ("✗", "#FF3366"),
-            'warning': ("⚠", "#FFAA00"),
-            'info': ("ℹ", "#00CCFF"),
-            'running': ("●", "#00FFFF"),
-            'pending': ("○", "#666666"),
+            'success': ("✓", "green"),
+            'error': ("✗", "red"),
+            'warning': ("⚠", "yellow"),
+            'info': ("ℹ", "cyan"),
+            'running': ("●", "cyan"),
+            'pending': ("○", "dim"),
         }
 
-        icon, color = indicators.get(status, ("?", "#FFFFFF"))
+        icon, color = indicators.get(status, ("?", "white"))
         text = Text()
         text.append(f" {icon} ", style=f"bold {color}")
         return text
@@ -464,9 +463,9 @@ class UIComponents:
         empty = width - filled
 
         bar = Text()
-        bar.append("█" * filled, style="#00FF00")
-        bar.append("░" * empty, style="#333355")
-        bar.append(f" {progress * 100:.0f}%", style="bold #00FFFF")
+        bar.append("█" * filled, style="green")
+        bar.append("░" * empty, style="dim")
+        bar.append(f" {progress * 100:.0f}%", style="bold cyan")
         return bar
 
 
@@ -491,7 +490,7 @@ class TajaaUI:
     def show_categories(self, categories: Dict[str, Any]) -> None:
         """Display categories in a grid."""
         self.console.print()
-        self.console.print("[bold #00FFFF]  ╔═══ CATEGORIES ═══════════════════════════════════════════╗[/bold #00FFFF]")
+        self.console.print("[bold cyan]  ╔═══ CATEGORIES ═══════════════════════════════════════════╗[/bold cyan]")
         self.console.print()
 
         for idx, (cat_id, cat_data) in enumerate(categories.items(), 1):
@@ -502,12 +501,12 @@ class TajaaUI:
             emoji = self._get_category_emoji(cat_id)
 
             self.console.print(
-                f"  [dim]{idx:2}.[/dim]  {emoji}  [bold #00FFFF]{name}[/bold #00FFFF]  "
-                f"[dim]─────[/dim] [#FF00FF]{count} tools[/#FF00FF]"
+                f"  [dim]{idx:2}.[/dim]  {emoji}  [bold cyan]{name}[/bold cyan]  "
+                f"[dim]─────[/dim] [magenta]{count} tools[/magenta]"
             )
 
         self.console.print()
-        self.console.print("[bold #00FFFF]  ╚═══════════════════════════════════════════════════════════╝[/bold #00FFFF]")
+        self.console.print("[bold cyan]  ╚═══════════════════════════════════════════════════════════╝[/bold cyan]")
         self.console.print()
 
     def _get_category_emoji(self, cat_id: str) -> str:
@@ -541,7 +540,7 @@ class TajaaUI:
     def show_tools(self, category_name: str, tools: Dict[str, Any]) -> None:
         """Display tools in a category."""
         self.console.print()
-        self.console.print(f"[bold #FF00FF]  ╔═══ {category_name.upper()} ═══[/bold #FF00FF]")
+        self.console.print(f"[bold magenta]  ╔═══ {category_name.upper()} ═══[/bold magenta]")
         self.console.print()
 
         for idx, (tool_id, tool_data) in enumerate(tools.items(), 1):
@@ -549,13 +548,13 @@ class TajaaUI:
             desc = tool_data.get('description', '')[:50]
 
             self.console.print(
-                f"  [dim]{idx:2}.[/dim]  🔧  [bold #00FF00]{name}[/bold #00FF00]"
+                f"  [dim]{idx:2}.[/dim]  🔧  [bold green]{name}[/bold green]"
             )
             if desc:
                 self.console.print(f"        [dim]{desc}...[/dim]")
 
         self.console.print()
-        self.console.print(f"[bold #FF00FF]  ╚{'═' * 50}[/bold #FF00FF]")
+        self.console.print(f"[bold magenta]  ╚{'═' * 50}[/bold magenta]")
         self.console.print()
 
     def show_suggestions(self, suggestions: List[Dict]) -> None:
@@ -564,12 +563,12 @@ class TajaaUI:
             return
 
         self.console.print()
-        self.console.print("[bold #FFFF00]  💡 RECOMMENDED TOOLS[/bold #FFFF00]")
+        self.console.print("[bold yellow]  💡 RECOMMENDED TOOLS[/bold yellow]")
         self.console.print("  [dim]─────────────────────────────────────────[/dim]")
 
         for sugg in suggestions[:5]:
             self.console.print(
-                f"  [#00FF00]▸[/#00FF00] [bold]{sugg.get('tool_name', '')}[/bold]"
+                f"  [green]▸[/green] [bold]{sugg.get('tool_name', '')}[/bold]"
             )
             self.console.print(f"    [dim]{sugg.get('reason', '')}[/dim]")
 
@@ -578,7 +577,7 @@ class TajaaUI:
     def show_command(self, tool_name: str, command: str, description: str = "") -> None:
         """Display a command in styled format."""
         self.console.print()
-        self.console.print(f"[bold #00FFFF]  ┌─ 🔧 {tool_name}[/bold #00FFFF]")
+        self.console.print(f"[bold cyan]  ┌─ 🔧 {tool_name}[/bold cyan]")
         if description:
             self.console.print(f"[dim]  │  {description}[/dim]")
         self.console.print(f"[dim]  └{'─' * 55}[/dim]")
@@ -592,28 +591,28 @@ class TajaaUI:
             current = "    "
             for part in parts:
                 if len(current) + len(part) > 70:
-                    self.console.print(f"[#00FF00]{current} \\[/#00FF00]")
+                    self.console.print(f"[green]{current} \\[/green]")
                     current = "      " + part
                 else:
                     current += " " + part if current.strip() else "    " + part
             if current.strip():
-                self.console.print(f"[#00FF00]{current}[/#00FF00]")
+                self.console.print(f"[green]{current}[/green]")
         else:
-            self.console.print(f"    [#00FF00]{command}[/#00FF00]")
+            self.console.print(f"    [green]{command}[/green]")
 
         self.console.print()
 
     def show_result(self, success: bool, message: str = "") -> None:
         """Display execution result."""
         if success:
-            self.console.print(f"  [bold #00FF00]✓ {message or 'Completed successfully'}[/bold #00FF00]")
+            self.console.print(f"  [bold green]✓ {message or 'Completed successfully'}[/bold green]")
         else:
-            self.console.print(f"  [bold #FF3366]✗ {message or 'Execution failed'}[/bold #FF3366]")
+            self.console.print(f"  [bold red]✗ {message or 'Execution failed'}[/bold red]")
 
     def show_search_results(self, results: List[tuple], query: str) -> None:
         """Display search results."""
         self.console.print()
-        self.console.print(f"[bold #00FFFF]  🔍 Search Results for '{query}'[/bold #00FFFF]")
+        self.console.print(f"[bold cyan]  🔍 Search Results for '{query}'[/bold cyan]")
         self.console.print("  [dim]─────────────────────────────────────────[/dim]")
 
         if not results:
@@ -622,8 +621,8 @@ class TajaaUI:
             for idx, (tool, score) in enumerate(results[:15], 1):
                 confidence_bar = "█" * (score // 20) + "░" * (5 - score // 20)
                 self.console.print(
-                    f"  [dim]{idx:2}.[/dim] [bold #00FF00]{tool.metadata.name}[/bold #00FF00] "
-                    f"[dim]│[/dim] [{CyberpunkTheme.NEON_YELLOW}]{confidence_bar}[/{CyberpunkTheme.NEON_YELLOW}]"
+                    f"  [dim]{idx:2}.[/dim] [bold green]{tool.metadata.name}[/bold green] "
+                    f"[dim]│[/dim] [yellow]{confidence_bar}[/yellow]"
                 )
                 self.console.print(f"      [dim]{tool.metadata.description[:60]}...[/dim]")
 
@@ -632,7 +631,7 @@ class TajaaUI:
     def confirm(self, message: str, default: bool = True) -> bool:
         """Show styled confirmation prompt."""
         from rich.prompt import Confirm
-        return Confirm.ask(f"  [bold #00FFFF]{message}[/bold #00FFFF]", default=default)
+        return Confirm.ask(f"  [bold cyan]{message}[/bold cyan]", default=default)
 
     def prompt(self, message: str, default: str = "") -> str:
         """Show styled input prompt."""
