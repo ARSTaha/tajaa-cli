@@ -1,0 +1,2 @@
+"""Tajaa Modules - Plugin Categories"""
+
