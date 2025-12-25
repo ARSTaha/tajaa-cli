@@ -41,7 +41,7 @@ python3 main.py --config configs/02_ctf_kit.yaml
 | Config File | Domain | Tools |
 |------------|--------|-------|
 | `01_commands.yaml` | General Pentesting | 60+ |
-| `02_ctf_kit.yaml` | CTF Competitions | 70+ |
+| `02_ctf_kit.yaml` | CTF Competitions | 150+ |
 | `03_web_bounty.yaml` | Web Security | 80+ |
 | `04_network_ad.yaml` | Active Directory | 65+ |
 | `05_mobile_iot.yaml` | Mobile & IoT | 60+ |

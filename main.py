@@ -10,6 +10,11 @@ Version: 4.0.0
 License: MIT
 """
 
+# =============================================================================
+# IMPORTS
+# =============================================================================
+
+# Standard Library
 import subprocess
 import shutil
 import ipaddress
@@ -20,20 +25,19 @@ from datetime import datetime
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
+# Third-Party Libraries
 import typer
 import yaml
 import pyperclip
-import pyfiglet
 from rich.console import Console
-from rich.panel import Panel
-from rich.table import Table
-from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.prompt import Prompt, Confirm
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
 
 
-# Configuration Classes
+# =============================================================================
+# DATA MODELS
+# =============================================================================
 
 @dataclass
 class ToolConfig:
@@ -50,6 +54,11 @@ class CategoryConfig:
     """Configuration for a category of tools."""
     name: str
     tools: Dict[str, ToolConfig]
+
+
+# =============================================================================
+# CONFIGURATION LOADER
+# =============================================================================
 
 
 class ConfigLoader:
@@ -393,16 +402,12 @@ class DependencyChecker:
 
     def warn_missing_tool(self, tool_name: str) -> bool:
         """Warn user about missing tool and ask to continue."""
-        self.console.print(
-            Panel(
-                f"[bold yellow]⚠ Warning:[/bold yellow] Tool '{tool_name}' not found in system PATH!\n\n"
-                f"The command may fail to execute. Please ensure '{tool_name}' is installed.",
-                title="Dependency Warning",
-                border_style="yellow"
-            )
-        )
+        self.console.print()
+        self.console.print("[yellow]⚠ WARNING[/yellow]")
+        self.console.print(f"[dim]Tool not found:[/dim] {tool_name}")
+        self.console.print()
 
-        return Confirm.ask("[yellow]Continue anyway?[/yellow]", default=False)
+        return Confirm.ask("Continue anyway?", default=False)
 
 
 # Command Execution & Logging
@@ -493,95 +498,102 @@ class CommandExecutor:
             return None
 
     def execute(self, tool: ToolConfig, category_name: str, simulate: bool = False) -> None:
-        """Execute a tool command or show it in simulation mode."""
+        """Execute a tool command with clean output."""
         tool_binary = tool.command.split()[0]
         if not self.dependency_checker.check_tool_exists(tool_binary):
             if not self.dependency_checker.warn_missing_tool(tool_binary):
                 return
 
-        self.console.print(f"\n[bold cyan]🔧 Preparing:[/bold cyan] {tool.name}")
-        self.console.print(f"[dim]{tool.description}[/dim]\n")
+        # Clean tool header
+        self.console.print()
+        self.console.print("[dim]─────────────────────────────────────────[/dim]")
+        self.console.print(f"[bold white]{tool.name}[/bold white]")
+        self.console.print(f"[dim]{tool.description}[/dim]")
+        self.console.print("[dim]─────────────────────────────────────────[/dim]")
+        self.console.print()
 
         prepared_command = self.prepare_command(tool)
 
         if prepared_command is None:
-            self.console.print("[yellow]Command preparation cancelled[/yellow]")
+            self.console.print("[yellow]Cancelled[/yellow]")
             return
 
-        self.console.print(
-            Panel(
-                f"[bold green]{prepared_command}[/bold green]",
-                title="Generated Command",
-                border_style="green"
-            )
-        )
+        # Clean command display
+        self.console.print("[bold white]COMMAND[/bold white]")
+        self.console.print()
+
+        # Format command for better readability
+        formatted_cmd = self._format_command_display(prepared_command)
+        self.console.print(f"  [green]{formatted_cmd}[/green]")
+        self.console.print()
 
         # Copy to clipboard
         try:
             pyperclip.copy(prepared_command)
-            self.console.print("[dim]✓ Command copied to clipboard[/dim]\n")
+            self.console.print("[dim]✓ Copied to clipboard[/dim]")
         except Exception:
             pass
+
+        self.console.print()
 
         # Log the command
         self.logger.log_command(prepared_command, category_name, tool.name)
 
         # Execute or simulate
         if not simulate:
-            if Confirm.ask("[cyan]Execute this command now?[/cyan]", default=True):
+            if Confirm.ask("Execute now?", default=True):
+                self.console.print()
                 self._execute_with_progress(prepared_command)
         else:
-            self.console.print("[yellow]Simulation mode - command not executed[/yellow]")
+            self.console.print("[dim]Simulation mode - not executed[/dim]")
+
+    def _format_command_display(self, command: str) -> str:
+        """Format command for readable display."""
+        # If command is too long, break it into multiple lines
+        if len(command) > 60:
+            # Try to break at logical points
+            parts = command.split(' -')
+            if len(parts) > 1:
+                formatted = parts[0]
+                for part in parts[1:]:
+                    formatted += f"\n     -{part}"
+                return formatted
+        return command
 
     def _execute_with_progress(self, command: str) -> None:
-        """
-        Execute command with a progress indicator.
-        Uses safer subprocess execution with shell=False when possible.
-
-        Args:
-            command: Command to execute
-        """
+        """Execute command with clean output."""
         try:
-            with Progress(
-                SpinnerColumn(),
-                TextColumn("[progress.description]{task.description}"),
-                console=self.console
-            ) as progress:
-                task = progress.add_task("[cyan]Executing command...", total=None)
+            self.console.print("[dim]Running...[/dim]")
+            self.console.print()
 
-                # Try to execute without shell=True for better security
-                # Fall back to shell=True for complex commands with pipes, etc.
-                try:
-                    # Parse command into arguments
-                    args = shlex.split(command)
-                    result = subprocess.run(
-                        args,
-                        shell=False,
-                        capture_output=False,
-                        text=True
-                    )
-                except (ValueError, FileNotFoundError):
-                    # Fallback to shell=True for complex commands
-                    # (e.g., commands with pipes, redirects)
-                    self.console.print("[dim]Using shell mode for complex command...[/dim]")
-                    result = subprocess.run(
-                        command,
-                        shell=True,
-                        capture_output=False,
-                        text=True
-                    )
+            # Try to execute without shell=True for better security
+            try:
+                args = shlex.split(command)
+                result = subprocess.run(
+                    args,
+                    shell=False,
+                    capture_output=False,
+                    text=True
+                )
+            except (ValueError, FileNotFoundError):
+                # Fallback to shell=True for complex commands
+                result = subprocess.run(
+                    command,
+                    shell=True,
+                    capture_output=False,
+                    text=True
+                )
 
-                progress.stop()
-
-                if result.returncode == 0:
-                    self.console.print("[bold green]✓ Command executed successfully[/bold green]")
-                else:
-                    self.console.print(f"[bold yellow]⚠ Command exited with code {result.returncode}[/bold yellow]")
+            self.console.print()
+            if result.returncode == 0:
+                self.console.print("[green]✓ Done[/green]")
+            else:
+                self.console.print(f"[yellow]⚠ Exited with code {result.returncode}[/yellow]")
 
         except KeyboardInterrupt:
-            self.console.print("\n[yellow]Command execution interrupted by user[/yellow]")
+            self.console.print("\n[yellow]Interrupted[/yellow]")
         except Exception as e:
-            self.console.print(f"[bold red]Error executing command:[/bold red] {e}")
+            self.console.print(f"[red]Error: {e}[/red]")
 
 
 # ============================================================================
@@ -592,70 +604,53 @@ class UIManager:
     """Manages the user interface and menu interactions."""
 
     def __init__(self, console: Console) -> None:
-        """
-        Initialize the UI manager.
-
-        Args:
-            console: Rich console for output
-        """
         self.console: Console = console
 
     def show_banner(self) -> None:
-        """Display the application banner."""
-        try:
-            banner_text = pyfiglet.figlet_format("TAJAA", font="slant")
-            self.console.print(f"[bold cyan]{banner_text}[/bold cyan]")
-        except Exception:
-            self.console.print("[bold cyan]TAJAA CLI[/bold cyan]\n")
-
-        self.console.print(
-            Panel(
-                "[bold]The Ultimate Cyber Security Framework[/bold]\n"
-                "[dim]Version 4.0.0 | 9 Specialized Domains | 500+ Tools[/dim]",
-                border_style="cyan"
-            )
-        )
+        """Display a clean, minimal banner."""
+        self.console.print()
+        self.console.print("[bold cyan]╔════════════════════════════════════════╗[/bold cyan]")
+        self.console.print("[bold cyan]║[/bold cyan]            [bold white]T A J A A   C L I[/bold white]            [bold cyan]║[/bold cyan]")
+        self.console.print("[bold cyan]║[/bold cyan]     [dim]Cyber Security Framework v4.0[/dim]      [bold cyan]║[/bold cyan]")
+        self.console.print("[bold cyan]╚════════════════════════════════════════╝[/bold cyan]")
         self.console.print()
 
     def show_categories_table(self, categories: Dict[str, CategoryConfig]) -> None:
-        """
-        Display available categories in a table.
-
-        Args:
-            categories: Dictionary of category configurations
-        """
-        table = Table(title="Available Categories", border_style="cyan")
-        table.add_column("#", style="cyan", justify="center")
-        table.add_column("Category", style="bold green")
-        table.add_column("Tools Count", justify="center")
+        """Display categories in a clean, readable format."""
+        self.console.print()
+        self.console.print("[bold white]CATEGORIES[/bold white]")
+        self.console.print("[dim]─────────────────────────────────────────[/dim]")
+        self.console.print()
 
         for idx, (cat_id, cat_config) in enumerate(categories.items(), 1):
-            table.add_row(str(idx), cat_config.name, str(len(cat_config.tools)))
+            tool_count = len(cat_config.tools)
+            self.console.print(f"  [dim]{idx:2}.[/dim]  {cat_config.name}  [dim]({tool_count})[/dim]")
 
-        self.console.print(table)
+        self.console.print()
+        self.console.print("[dim]─────────────────────────────────────────[/dim]")
         self.console.print()
 
     def select_category(self, categories: Dict[str, CategoryConfig]) -> Optional[str]:
-        """
-        Prompt user to select a category.
-
-        Args:
-            categories: Dictionary of category configurations
-
-        Returns:
-            Selected category ID or None if cancelled
-        """
+        """Prompt user to select a category with clean UI."""
         try:
-            choices = [
-                Choice(value=cat_id, name=f"{cat_config.name} ({len(cat_config.tools)} tools)")
-                for cat_id, cat_config in categories.items()
-            ]
-            choices.append(Choice(value="exit", name="[Exit]"))
+            choices = []
+            for cat_id, cat_config in categories.items():
+                choices.append(Choice(
+                    value=cat_id,
+                    name=f"{cat_config.name}"
+                ))
+            choices.append(Choice(value="exit", name="Exit"))
 
             selected = inquirer.select(
-                message="Select a category:",
+                message="Select category",
                 choices=choices,
-                default=choices[0].value if choices else None
+                default=choices[0].value if choices else None,
+                pointer="→",
+                style={
+                    "pointer": "#00d7ff bold",
+                    "highlighted": "#00d7ff",
+                    "selected": "#00d7ff",
+                }
             ).execute()
 
             return None if selected == "exit" else selected
@@ -664,29 +659,31 @@ class UIManager:
             return None
 
     def select_tool(self, category: CategoryConfig) -> Optional[str]:
-        """
-        Prompt user to select a tool from a category.
+        """Prompt user to select a tool with clean, readable format."""
+        self.console.print()
+        self.console.print(f"[bold white]{category.name}[/bold white]")
+        self.console.print("[dim]─────────────────────────────────────────[/dim]")
+        self.console.print()
 
-        Args:
-            category: Category configuration
-
-        Returns:
-            Selected tool ID or None if cancelled
-        """
         try:
-            choices = [
-                Choice(
+            choices = []
+            for tool_id, tool_config in category.tools.items():
+                choices.append(Choice(
                     value=tool_id,
-                    name=f"{tool_config.name}\n  └─ {tool_config.description}"
-                )
-                for tool_id, tool_config in category.tools.items()
-            ]
-            choices.append(Choice(value="back", name="[← Back to Categories]"))
+                    name=f"{tool_config.name}"
+                ))
+            choices.append(Choice(value="back", name="← Back"))
 
             selected = inquirer.select(
-                message=f"Select a tool from {category.name}:",
+                message="Select tool",
                 choices=choices,
-                default=choices[0].value if choices else None
+                default=choices[0].value if choices else None,
+                pointer="→",
+                style={
+                    "pointer": "#00d7ff bold",
+                    "highlighted": "#00d7ff",
+                    "selected": "#00d7ff",
+                }
             ).execute()
 
             return None if selected == "back" else selected
@@ -780,16 +777,17 @@ class TajaaCLI:
                     self.ui_manager.show_banner()
 
                 except KeyboardInterrupt:
-                    self.console.print("\n[yellow]Returning to main menu...[/yellow]\n")
+                    self.console.print()
                     continue
 
         except KeyboardInterrupt:
-            self.console.print("\n[yellow]Exiting Tajaa CLI...[/yellow]")
+            self.console.print("\n[dim]Goodbye![/dim]")
         except Exception as e:
-            self.console.print(f"[bold red]Unexpected error:[/bold red] {e}")
+            self.console.print(f"[red]Error: {e}[/red]")
         finally:
-            self.console.print("\n[bold cyan]Thank you for using Tajaa CLI![/bold cyan]")
-            self.console.print("[dim]Stay ethical. Happy hacking! 🔒[/dim]\n")
+            self.console.print()
+            self.console.print("[dim]Thanks for using Tajaa CLI[/dim]")
+            self.console.print()
 
 
 # ============================================================================
