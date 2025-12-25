@@ -9,18 +9,39 @@ Get started with Tajaa CLI in 5 minutes.
 git clone https://github.com/ARSTaha/tajaa-cli.git
 cd tajaa-cli
 
-# Create virtual environment
-python3 -m venv .venv
+# Make install script executable and run it
+chmod +x install.sh
+./install.sh
+
+# Activate virtual environment
 source .venv/bin/activate
 
-# Install dependencies
-pip install -r requirements.txt
-
 # Verify installation
-python3 test_components.py
+python3 main.py --version
 ```
 
-**Important:** Always activate the virtual environment before using Tajaa CLI:
+### Alternative: Manual Installation
+
+```bash
+# Clone repository
+git clone https://github.com/ARSTaha/tajaa-cli.git
+cd tajaa-cli
+
+# Install dependencies directly (if venv issues)
+pip3 install -r requirements.txt
+
+# Run
+python3 main.py
+```
+
+### Quick Fix: "No module named 'typer'" Error
+
+```bash
+pip3 install -r requirements.txt
+python3 main.py
+```
+
+**Important:** If using virtual environment, always activate it before using Tajaa CLI:
 ```bash
 source .venv/bin/activate  # Linux/Mac
 .venv\Scripts\activate     # Windows

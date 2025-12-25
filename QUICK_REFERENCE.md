@@ -3,7 +3,7 @@
 Fast command reference for Tajaa CLI operations.
 
 **Author:** Tajaa  
-**Version:** 3.1.0
+**Version:** 5.0.0
 
 ---
 
@@ -22,6 +22,14 @@ chmod +x install.sh
 source .venv/bin/activate
 
 # Run Tajaa CLI
+python3 main.py
+```
+
+### Quick Fix: "No module named 'typer'" Error
+
+```bash
+cd ~/tajaa-cli
+pip3 install -r requirements.txt
 python3 main.py
 ```
 

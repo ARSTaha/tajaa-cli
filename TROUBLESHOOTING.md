@@ -9,30 +9,51 @@ Common installation issues and solutions for Tajaa CLI.
 ### Problem
 ```
 Traceback (most recent call last):
-  File "/home/kali/tajaa-cli/main.py", line 24, in <module>
+  File "/home/kali/tajaa-cli/main.py", line 28, in <module>
     import typer
 ModuleNotFoundError: No module named 'typer'
 ```
 
 ### Cause
-You're running the script without activating the virtual environment. Modern Kali Linux requires virtual environments for Python packages.
+Python dependencies are not installed, or the virtual environment is not activated.
 
-### Solution
+### Quick Fix (Fastest)
 
-**ALWAYS activate the virtual environment before running:**
+```bash
+cd ~/tajaa-cli
+pip3 install -r requirements.txt
+python3 main.py
+```
+
+### Solution 1: Use Virtual Environment (Recommended)
 
 ```bash
 # Navigate to project directory
-cd tajaa-cli
+cd ~/tajaa-cli
 
 # Activate virtual environment
 source .venv/bin/activate
+
+# If .venv doesn't exist, create it first:
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 
 # Now run the framework
 python3 main.py
 ```
 
 You should see `(.venv)` at the beginning of your terminal prompt when activated.
+
+### Solution 2: Run the Installer
+
+```bash
+cd ~/tajaa-cli
+chmod +x install.sh
+./install.sh
+source .venv/bin/activate
+python3 main.py
+```
 
 **To deactivate when done:**
 ```bash

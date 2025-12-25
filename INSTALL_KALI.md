@@ -187,12 +187,27 @@ sudo ./install_arsenal.sh
 
 ### Problem: `ModuleNotFoundError: No module named 'typer'`
 
-**Solution:**
-You forgot to activate the virtual environment. Run:
-
+**Solution 1:** Activate the virtual environment:
 ```bash
 cd ~/tajaa-cli
 source .venv/bin/activate
+python3 main.py
+```
+
+**Solution 2:** If venv doesn't exist, install dependencies directly:
+```bash
+cd ~/tajaa-cli
+pip3 install -r requirements.txt
+python3 main.py
+```
+
+**Solution 3:** Run the installer:
+```bash
+cd ~/tajaa-cli
+chmod +x install.sh
+./install.sh
+source .venv/bin/activate
+python3 main.py
 ```
 
 ### Problem: `externally-managed-environment` error during install
