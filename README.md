@@ -1,42 +1,52 @@
-# ⚔️ Tajaa CLI - Modular Cyber Security Framework
+# ⚔️ Tajaa CLI - The Ultimate Cyber Security Framework
 
-[![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](https://github.com/ARSTaha/tajaa-cli)
+[![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](https://github.com/ARSTaha/tajaa-cli)
 [![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)](https://www.kali.org/)
+[![Platform](https://img.shields.io/badge/platform-Kali%20Linux-557C94.svg)](https://www.kali.org/)
+[![Tools](https://img.shields.io/badge/tools-500+-red.svg)](CONFIG_CATALOG.md)
 
-A modular framework for penetration testing and security assessments. Combines 480+ security tools across 8 specialized domains in a single CLI interface.
+**The most comprehensive pentesting framework ever created.** 500+ battle-tested security tools across 9 specialized domains, organized for real-world scenarios.
 
----
-
-## What is Tajaa CLI?
-
-Tajaa CLI is a modular penetration testing framework with clean OOP architecture. Instead of maintaining multiple scattered scripts, you get organized tool configurations that adapt to your workflow - whether you're doing CTF competitions, web pentesting, or cloud audits.
-
-### Key Features
-
-- **Modular Configuration** - 8 specialized YAML configs for different security domains
-- **Input Validation** - Automatic validation for IPs, ports, domains, and file paths
-- **Command Injection Protection** - All inputs sanitized with `shlex.quote()`
-- **Session Logging** - Every command timestamped for documentation
-- **Smart Dependency Checking** - Pre-execution warnings for missing tools
-- **Rich Terminal UI** - Clean interface with syntax highlighting
-- **Clipboard Integration** - Auto-copy commands for quick execution
+> *"One framework to rule them all."*
 
 ---
 
-## The 8 Modules
+## Why Tajaa CLI?
+
+Tajaa CLI transforms how security professionals work. No more searching through bookmarks, remembering complex syntax, or maintaining scattered scripts. Everything you need is organized, validated, and ready to execute.
+
+### What Makes It Different
+
+- **🎯 CTF-Optimized** - 150+ CTF-specific tools including the legendary `nmap -sC -sV -p-` and complete exploitation chains
+- **🔒 Security-First** - All inputs sanitized with `shlex.quote()`, command injection protection built-in
+- **⚡ Zero Friction** - Select tool, enter parameters, execute. Commands auto-copied to clipboard
+- **📚 Self-Documenting** - Session logging with timestamps for writeups and reports
+- **🧩 Modular Design** - 9 specialized configs that load instantly, switch contexts in seconds
+
+### Core Features
+
+- **500+ Pre-configured Tools** - Every tool you need, perfectly parameterized
+- **Smart Input Validation** - IP addresses, domains, ports, file paths all validated
+- **Dependency Checking** - Warns about missing tools before execution
+- **Rich Terminal UI** - Beautiful interface powered by Rich library
+- **Session Logging** - Every command logged with timestamps
+
+---
+
+## The 9 Modules
 
 | Module | Config File | Tools | Primary Use Cases |
 |--------|------------|-------|-------------------|
-| **🏆 CTF Kit** | `ctf_kit.yaml` | 50+ | Port scanning, steganography, password cracking, binary analysis, crypto |
-| **🌐 Web Bounty** | `web_bounty.yaml` | 70+ | Subdomain enum, vuln scanning, XSS/SQLi, API fuzzing, CMS exploitation |
-| **🏢 Network AD** | `network_ad.yaml` | 55+ | SMB enum, Kerberos attacks, lateral movement, domain compromise |
-| **📱 Mobile IoT** | `mobile_iot.yaml` | 60+ | APK analysis, iOS reverse engineering, firmware extraction, dynamic analysis |
-| **☁️ Cloud Auditor** | `cloud_auditor.yaml` | 50+ | Cloud enum, S3 testing, IAM auditing, container security, metadata exploitation |
-| **🕵️ OSINT Detective** | `osint_detective.yaml` | 65+ | Passive recon, social media OSINT, email intel, cert transparency |
-| **📡 Wireless Radio** | `wireless_radio.yaml` | 75+ | WiFi cracking, Bluetooth attacks, evil twin, SDR, NFC/RFID |
-| **🔒 Post Exploit** | `post_exploit.yaml` | 55+ | Privilege escalation, data exfil, persistence, anti-forensics |
+| **⚔️ General** | `01_commands.yaml` | 60+ | General pentesting commands |
+| **🏆 CTF Kit** | `02_ctf_kit.yaml` | 150+ | **The ultimate CTF toolkit** - Nmap arsenal, stego, crypto, pwn, privesc |
+| **🌐 Web Bounty** | `03_web_bounty.yaml` | 80+ | Subdomain enum, SQLi, XSS, API fuzzing, CMS exploitation |
+| **🏢 Network AD** | `04_network_ad.yaml` | 65+ | SMB, Kerberos, LDAP, lateral movement, domain compromise |
+| **📱 Mobile IoT** | `05_mobile_iot.yaml` | 60+ | APK analysis, iOS RE, firmware extraction, dynamic analysis |
+| **☁️ Cloud Auditor** | `06_cloud_auditor.yaml` | 75+ | AWS/Azure/GCP enum, S3 testing, container security |
+| **🕵️ OSINT Detective** | `07_osint_detective.yaml` | 60+ | Passive recon, social media OSINT, email intel |
+| **📡 Wireless Radio** | `08_wireless_radio.yaml` | 45+ | WiFi cracking, Bluetooth, evil twin, SDR, NFC/RFID |
+| **🔒 Post Exploit** | `09_post_exploit.yaml` | 75+ | Privilege escalation, persistence, data exfil |
 
 **→ See [CONFIG_CATALOG.md](CONFIG_CATALOG.md) for complete tool listings and detailed documentation**
 
@@ -177,11 +187,11 @@ tajaa-cli/
 ├── main.py                    # Main framework (OOP architecture)
 ├── requirements.txt           # Python dependencies
 ├── install.sh                 # Automated installer
-├── install_arsenal.sh         # Optional tools installer
+├── install_arsenal.sh         # Optional tools installer (CyberChef, payloads)
 │
 ├── configs/                   # Configuration modules
 │   ├── 01_commands.yaml       # General pentesting (60+ tools)
-│   ├── 02_ctf_kit.yaml        # CTF competitions (70+ tools)
+│   ├── 02_ctf_kit.yaml        # CTF competitions (167 tools) ⭐
 │   ├── 03_web_bounty.yaml     # Web security (80+ tools)
 │   ├── 04_network_ad.yaml     # Active Directory (65+ tools)
 │   ├── 05_mobile_iot.yaml     # Mobile & IoT (60+ tools)
@@ -202,10 +212,9 @@ tajaa-cli/
 ├── QUICK_REFERENCE.md         # Command reference
 ├── LICENSE                    # MIT License
 │
-└── tests/
-    ├── test_components.py     # Unit tests
-    ├── test_security.py       # Security tests
-    └── verify_security.py     # Quick verification
+├── test_components.py         # Unit tests
+├── test_security.py           # Security tests
+└── verify_security.py         # Quick verification
 ```
 
 ---

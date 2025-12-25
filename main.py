@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
-Tajaa CLI - Modular Cyber Security Framework
+Tajaa CLI - The Ultimate Cyber Security Framework
 
-A modular framework for penetration testing and security assessments.
-Supports CTF, Web Security, Active Directory, Mobile/IoT, Cloud, OSINT,
-Wireless, and Post-Exploitation.
+The most comprehensive pentesting framework ever created.
+500+ battle-tested security tools across 9 specialized domains.
 
 Author: Tajaa
-Version: 3.1.0
+Version: 4.0.0
 License: MIT
 """
 
@@ -611,8 +610,8 @@ class UIManager:
 
         self.console.print(
             Panel(
-                "[bold]Modular Cyber Security Framework[/bold]\n"
-                "[dim]Version 3.1.0 | 8 Specialized Domains | 480+ Tools[/dim]",
+                "[bold]The Ultimate Cyber Security Framework[/bold]\n"
+                "[dim]Version 4.0.0 | 9 Specialized Domains | 500+ Tools[/dim]",
                 border_style="cyan"
             )
         )
@@ -799,7 +798,7 @@ class TajaaCLI:
 
 app = typer.Typer(
     name="tajaa",
-    help="Tajaa CLI - The Ultimate Modular Cyber Security Framework with 8 specialized domains",
+    help="Tajaa CLI - The Ultimate Cyber Security Framework with 500+ tools across 9 domains",
     add_completion=False
 )
 
@@ -822,8 +821,8 @@ def main(
     """
     Launch the Tajaa CLI interactive interface.
 
-    A production-grade modular cyber security framework for Kali Linux.
-    Choose from 8 specialized domains: CTF, Web Bounty, Active Directory,
+    The ultimate cyber security framework for Kali Linux.
+    Choose from 9 specialized domains: CTF Kit, Web Bounty, Active Directory,
     Mobile/IoT, Cloud Security, OSINT, Wireless, and Post-Exploitation.
     """
     tajaa = TajaaCLI(config_path=config, log_path=log)

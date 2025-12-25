@@ -1,573 +1,267 @@
-# Configuration Catalog - Tajaa CLI
+# Tajaa CLI - Configuration Catalog
 
-Complete reference for all 9 configuration modules and 480+ security tools.
-
-**Author:** Tajaa  
-**Version:** 3.1.0  
-**Last Updated:** December 19, 2025
+Complete reference for all tools and configurations available in the Tajaa CLI framework.
 
 ---
 
-## Table of Contents
+## Overview
 
-1. [01_commands.yaml](#1-01_commandsyaml---general-pentesting) - General Pentesting (60+ tools)
-2. [02_ctf_kit.yaml](#2-02_ctf_kityaml---ctf-competitions) - CTF Competitions (70+ tools)
-3. [03_web_bounty.yaml](#3-03_web_bountyyaml---web-security) - Web Security (80+ tools)
-4. [04_network_ad.yaml](#4-04_network_adyaml---active-directory) - Active Directory (65+ tools)
-5. [05_mobile_iot.yaml](#5-05_mobile_iotyaml---mobile--iot) - Mobile & IoT (60+ tools)
-6. [06_cloud_auditor.yaml](#6-06_cloud_auditoryaml---cloud-security) - Cloud Security (75+ tools)
-7. [07_osint_detective.yaml](#7-07_osint_detectiveyaml---osint) - OSINT (60+ tools)
-8. [08_wireless_radio.yaml](#8-08_wireless_radioyaml---wireless) - Wireless (45+ tools)
-9. [09_post_exploit.yaml](#9-09_post_exploityaml---post-exploitation) - Post-Exploitation (75+ tools)
+Tajaa CLI provides **8 specialized security modules** with **480+ pre-configured tools**. Each module is stored as a YAML configuration file in the `configs/` directory.
+
+| Module | File | Tools | Description |
+|--------|------|-------|-------------|
+| General Commands | `01_commands.yaml` | 60+ | General pentesting and recon |
+| CTF Kit | `02_ctf_kit.yaml` | 150+ | Complete CTF competition toolkit |
+| Web Bounty | `03_web_bounty.yaml` | 80+ | Bug bounty and web security |
+| Network AD | `04_network_ad.yaml` | 65+ | Active Directory attacks |
+| Mobile IoT | `05_mobile_iot.yaml` | 60+ | Mobile and IoT testing |
+| Cloud Auditor | `06_cloud_auditor.yaml` | 75+ | Cloud security auditing |
+| OSINT Detective | `07_osint_detective.yaml` | 60+ | Open source intelligence |
+| Wireless Radio | `08_wireless_radio.yaml` | 45+ | Wireless and RF attacks |
+| Post Exploit | `09_post_exploit.yaml` | 75+ | Post-exploitation techniques |
 
 ---
 
-## 1. 01_commands.yaml - General Pentesting
+## Module Details
 
-**Use Case:** Standard penetration testing engagements  
-**Total Tools:** 60+  
-**Categories:** 6
+### CTF Kit (`02_ctf_kit.yaml`)
 
-### Categories
+The ultimate CTF competition toolkit with 150+ tools organized into 15 categories.
 
-#### 🔍 Reconnaissance
-- **Nmap Quick Scan** - Fast port scan (top 1000 ports)
-- **Nmap Full Scan** - Comprehensive all-port scan with service detection
-- **Nmap Vulnerability Scan** - NSE vulnerability scripts
-- **RustScan** - Ultra-fast port scanner
-- **WhatWeb** - Web technology fingerprinting
+#### Categories
 
-#### 🌐 Web Application Attacks
-- **Gobuster** - Directory/file brute forcing
-- **Nikto** - Web server vulnerability scanner
-- **SQLMap** - Automated SQL injection testing
-- **Wfuzz** - Web application fuzzer
+| Category | Tools | Description |
+|----------|-------|-------------|
+| 🎯 Nmap Arsenal | 15 | Essential Nmap scans for every scenario |
+| ⚡ Lightning Fast Scanners | 3 | RustScan, Masscan for quick enumeration |
+| 🔍 Service Enumeration | 12 | SMB, SNMP, LDAP, NFS enumeration |
+| 🌐 Web Discovery | 8 | Directory and content discovery |
+| 🔎 Web Analysis | 6 | Technology fingerprinting |
+| 💉 Web Vulnerabilities | 9 | SQLi, XSS, LFI, SSRF exploitation |
+| 📦 CMS Attacks | 5 | WordPress, Drupal, Joomla scanners |
+| 🔓 Hash Cracking | 13 | John, Hashcat for all hash types |
+| 🔐 Brute Force | 9 | Hydra, Medusa for online attacks |
+| 🖼️ Steganography | 13 | Image and file forensics |
+| 🔊 Audio Stego | 3 | Audio analysis tools |
+| 🔐 Cryptography | 12 | Encoding, decryption, RSA attacks |
+| ⚙️ Binary Analysis | 12 | Reverse engineering tools |
+| 💀 Binary Exploitation | 5 | ROP gadgets, pattern generation |
+| 📈 Privilege Escalation | 10 | LinPEAS, WinPEAS, enumeration |
+| 🐚 Shells & Listeners | 14 | Reverse shell generators |
+| 🕵️ OSINT | 7 | Passive reconnaissance |
+| ⚡ Quick Utilities | 13 | HTTP servers, searchsploit, tunnels |
 
-#### 💥 Exploitation
-- **Metasploit DB** - Import Nmap results into Metasploit
-- **SearchSploit** - Local exploit database search
-- **Hydra SSH** - SSH credential brute forcing
+#### Nmap Arsenal (15 Essential Scans)
 
-#### 📡 Network Analysis
-- **NetDiscover** - Active/passive network reconnaissance
-- **ARP-Scan** - ARP-based host discovery
-- **TCPDump** - Network packet capture
-
-#### 🔎 Service Enumeration
-- **Enum4Linux** - Windows/Samba enumeration
-- **SMBClient** - SMB share enumeration
-- **LDAP Search** - LDAP directory enumeration
-- **SNMP Walk** - SNMP information gathering
-
-#### 📶 Wireless Attacks
-- **Airmon-ng** - Enable monitor mode
-- **Airodump-ng** - Wireless packet capture
-- **Wash** - WPS detection
-
-**Usage:**
-```bash
-python3 main.py --config configs/01_commands.yaml
+```
+nmap_full_tcp      - Full TCP scan with scripts: nmap -sC -sV -p- -oN scan.txt
+nmap_quick_initial - Quick initial recon: nmap -sC -sV -oN initial_scan.txt
+nmap_udp_top100    - UDP top 100: sudo nmap -sU --top-ports 100 -sV
+nmap_all_scripts   - Full script scan: nmap -sC -sV -A -T4 -p-
+nmap_vuln_scan     - Vulnerability detection: nmap --script vuln -p-
+nmap_smb_enum      - SMB enumeration: nmap -p 139,445 --script=smb-*
+nmap_http_enum     - HTTP enumeration: nmap -p 80,443 --script=http-*
+nmap_ftp_anon      - FTP anonymous check: nmap -p 21 --script=ftp-*
+nmap_ssh_enum      - SSH enumeration: nmap -p 22 --script=ssh-*
+nmap_ldap_enum     - LDAP/AD enumeration: nmap -p 389,636 --script=ldap-*
+nmap_mysql_enum    - MySQL enumeration: nmap -p 3306 --script=mysql-*
+nmap_snmp_enum     - SNMP enumeration: sudo nmap -sU -p 161 --script=snmp-*
+nmap_dns_enum      - DNS enumeration: nmap -p 53 --script=dns-*
+nmap_rdp_check     - RDP security check: nmap -p 3389 --script=rdp-*
+nmap_stealth_syn   - Stealth SYN scan: sudo nmap -sS -T2 -f
 ```
 
+#### Hash Cracking Reference
+
+| Hash Type | John Mode | Hashcat Mode |
+|-----------|-----------|--------------|
+| MD5 | auto | 0 |
+| SHA1 | auto | 100 |
+| SHA256 | auto | 1400 |
+| SHA512 | auto | 1700 |
+| NTLM | auto | 1000 |
+| bcrypt | auto | 3200 |
+| WordPress | auto | 400 |
+| Linux Shadow | auto | 1800 |
+
 ---
 
-## 2. 02_ctf_kit.yaml - CTF Competitions
+### Web Bounty (`03_web_bounty.yaml`)
 
-**Use Case:** Capture The Flag competitions and speed hacking  
-**Total Tools:** 70+  
-**Categories:** 7
+Bug bounty hunting and web application security testing.
 
-### Categories
+#### Categories
 
-#### 🔍 Network Reconnaissance
-- **RustScan** - Ultra-fast port scanner
-- **Nmap Fast** - Quick 1000-port scan
-- **Nmap Vuln** - Vulnerability detection
-- **Masscan** - Mass IP scanning
+| Category | Description |
+|----------|-------------|
+| Subdomain Discovery | Sublist3r, Amass, Subfinder |
+| Web Probing | Httprobe, Httpx, Wayback |
+| Vulnerability Scanners | Nuclei, Nikto, Wapiti |
+| XSS Detection | Dalfox, XSStrike, XSSer |
+| SQL Injection | SQLmap (all modes) |
+| CMS Scanning | WPScan, Joomscan, Droopescan |
+| API Testing | Arjun, Kiterunner, Ffuf |
+| Fuzzing | Wfuzz, Ffuf, custom payloads |
+| Command Injection | Commix, Tplmap |
+| SSL/TLS Analysis | SSLyze, Testssl.sh |
 
-#### 🖼️ Steganography & Forensics
-- **ExifTool** - EXIF metadata extraction
-- **Binwalk** - Firmware/file carving
-- **Steghide** - Extract hidden data from images
-- **Zsteg** - PNG/BMP LSB analysis
-- **Strings** - Extract readable strings
-- **Foremost** - File recovery by headers/footers
+---
 
-#### 🔓 Password Cracking
-- **John the Ripper** - Password hash cracking
-- **Hashcat MD5** - GPU-accelerated MD5 cracking
-- **Hashcat NTLM** - Windows NTLM cracking
-- **Hashcat SHA256** - SHA256 hash cracking
-- **Hydra SSH** - SSH brute forcing
+### Network AD (`04_network_ad.yaml`)
 
-#### 🔐 Cryptography Tools
-- **Hash Identifier** - Detect hash types
-- **Base64 Decode** - Base64 decoding
-- **OpenSSL AES Decrypt** - AES decryption
-- **CyberChef Local** - Local HTML crypto tool
+Active Directory and network penetration testing.
 
-#### 🐚 Reverse Shells & Payloads
-- **Python Reverse Shell** - Python-based reverse shell
-- **Bash Reverse Shell** - Bash TCP reverse shell
-- **Netcat Reverse** - Traditional netcat shell
-- **Msfvenom Linux** - Linux ELF payload generation
-- **Msfvenom Windows** - Windows EXE payload generation
+#### Categories
 
-#### 🌐 Quick Web Enumeration
-- **Gobuster** - Directory brute forcing
-- **Ffuf Vhost** - Virtual host discovery
-- **WhatWeb** - Technology fingerprinting
-- **Curl Headers** - HTTP header analysis
+| Category | Description |
+|----------|-------------|
+| SMB Enumeration | Enum4linux, SMBClient, CrackMapExec |
+| Kerberos Attacks | Kerbrute, GetNPUsers, GetUserSPNs |
+| LDAP Enumeration | LDAPSearch, BloodHound |
+| Credential Attacks | Responder, NTLMRelayx |
+| Lateral Movement | PsExec, WMIExec, EvilWinRM |
+| Domain Compromise | Secretsdump, DCSync |
 
-#### ⚙️ Binary & Reverse Engineering
-- **File Identify** - File type detection
-- **Ltrace** - Library call tracing
-- **Strace** - System call tracing
-- **Radare2** - Binary analysis
-- **Objdump** - Binary disassembly
+---
 
-**Usage:**
+### Cloud Auditor (`06_cloud_auditor.yaml`)
+
+Cloud infrastructure security assessment.
+
+#### Categories
+
+| Category | Description |
+|----------|-------------|
+| AWS Enumeration | aws-cli, Pacu, ScoutSuite |
+| Azure Auditing | Az PowerShell, ROADtools |
+| GCP Testing | gcloud, GCPBucketBrute |
+| S3 Bucket Testing | S3Scanner, Bucket Finder |
+| Container Security | Docker Bench, Trivy |
+| Kubernetes | kubectl, Kubeaudit |
+
+---
+
+## Usage Examples
+
+### Loading a Specific Module
+
 ```bash
+# Activate virtual environment first
+source .venv/bin/activate
+
+# Load CTF Kit
 python3 main.py --config configs/02_ctf_kit.yaml
-```
 
----
-
-## 3. 03_web_bounty.yaml - Web Security
-
-**Use Case:** Bug bounty hunting and web application testing  
-**Total Tools:** 80+  
-**Categories:** 8
-
-### Key Categories
-
-#### Directory & Subdomain Enumeration
-- Gobuster, Dirb, Ffuf, Feroxbuster
-- Sublist3r, Amass, Assetfinder
-
-#### Vulnerability Scanning
-- Nikto, Nuclei, WPScan, Joomscan
-- Wapiti, XSStrike, SQLMap
-
-#### API & GraphQL Testing
-- Postman, Arjun, GraphQL Voyager
-- JWT Tool, API Fuzzer
-
-#### CMS Exploitation
-- WordPress, Joomla, Drupal scanners
-- CMS-specific exploit tools
-
-#### SSL/TLS Analysis
-- SSLScan, TestSSL, SSL Labs
-
-#### JavaScript Analysis
-- JSParser, LinkFinder, Retire.js
-
-**Usage:**
-```bash
+# Load Web Bounty
 python3 main.py --config configs/03_web_bounty.yaml
-```
 
----
-
-## 4. 04_network_ad.yaml - Active Directory
-
-**Use Case:** Windows networks and Active Directory penetration testing  
-**Total Tools:** 65+  
-**Categories:** 7
-
-### Key Categories
-
-#### AD Enumeration
-- BloodHound, SharpHound, PowerView
-- ADExplorer, Enum4Linux
-
-#### Kerberos Attacks
-- Rubeus, Kerberoasting
-- AS-REP Roasting, Golden/Silver Tickets
-
-#### Credential Dumping
-- Mimikatz, LaZagne, Pypykatz
-- SAM/LSA dumping
-
-#### SMB Exploitation
-- SMBClient, CrackMapExec, PSExec
-- EternalBlue, SMBGhost
-
-#### LDAP & Domain Services
-- LDAP enumeration, DCSync
-- Group Policy exploitation
-
-#### Windows Privilege Escalation
-- PowerUp, WinPEAS, Watson
-- Token manipulation
-
-**Usage:**
-```bash
-python3 main.py --config configs/04_network_ad.yaml
-```
-
----
-
-## 5. 05_mobile_iot.yaml - Mobile & IoT
-
-**Use Case:** Mobile app and IoT device security testing  
-**Total Tools:** 60+  
-**Categories:** 6
-
-### Key Categories
-
-#### Android Analysis
-- APKTool, Jadx, MobSF
-- Frida, Objection, Drozer
-
-#### iOS Security
-- iProxy, iFunBox, Class-dump-z
-- Clutch, Bagbak
-
-#### Firmware Analysis
-- Binwalk, Firmware-mod-kit
-- QEMU emulation
-
-#### Hardware Hacking
-- UART, JTAG, SPI tools
-- Logic analyzers, Bus Pirate
-
-#### Network Analysis
-- Wireshark, tcpdump
-- BLE sniffing, Zigbee analysis
-
-**Usage:**
-```bash
-python3 main.py --config configs/05_mobile_iot.yaml
-```
-
----
-
-## 6. 06_cloud_auditor.yaml - Cloud Security
-
-**Use Case:** AWS, Azure, and GCP security auditing  
-**Total Tools:** 75+  
-**Categories:** 8
-
-### Key Categories
-
-#### ☁️ AWS Reconnaissance
-- **Check Auth** - Verify AWS authentication
-- **Get Caller Identity** - Check current credentials
-- **List S3 Buckets** - Enumerate S3 buckets
-- **List EC2 Instances** - Discover EC2 resources
-- **List IAM Users** - IAM enumeration
-- **List Lambda Functions** - Serverless discovery
-
-#### 🔍 AWS Security Auditing
-- **Prowler** - Comprehensive AWS security audit
-- **ScoutSuite** - Multi-cloud security tool
-- **Cloudsplaining** - IAM risk analysis
-- **Pacu** - AWS exploitation framework
-
-#### 🔷 Azure Reconnaissance
-- Azure CLI enumeration tools
-- VM, storage, web app discovery
-- Key Vault enumeration
-
-#### 🌐 GCP Reconnaissance
-- GCloud project enumeration
-- Compute instance discovery
-- Storage bucket listing
-
-#### 🪣 S3 Bucket Exploitation
-- Bucket ACL checking
-- Public access testing
-- Bucket content downloading
-
-#### 🐳 Container & Kubernetes Security
-- kubectl commands
-- Trivy scanning
-- Docker inspection
-
-#### 🔐 Cloud Metadata Exploitation
-- AWS EC2 metadata
-- Azure VM metadata
-- GCP service account tokens
-
-#### ⚡ Serverless Security
-- Lambda function testing
-- Serverless framework tools
-
-**Usage:**
-```bash
+# Load Cloud Auditor
 python3 main.py --config configs/06_cloud_auditor.yaml
 ```
 
----
+### CTF Workflow Example
 
-## 7. 07_osint_detective.yaml - OSINT
+1. **Start with Fast Scan**
+   - Select "Nmap Arsenal" → "Full TCP Scan with Scripts"
+   - This runs: `nmap -sC -sV -p- -oN scan.txt <target>`
 
-**Use Case:** Open-source intelligence gathering  
-**Total Tools:** 60+  
-**Categories:** 6
+2. **Enumerate Services**
+   - Based on open ports, select appropriate enumeration tools
+   - SMB on 445? Use "Service Enumeration" → "Enum4Linux"
+   - Web on 80? Use "Web Discovery" → "Gobuster"
 
-### Key Categories
+3. **Find Vulnerabilities**
+   - Use "Web Vulnerabilities" category for SQLi, XSS testing
+   - Use "Hash Cracking" if you find password hashes
 
-#### Email Intelligence
-- Hunter.io, TheHarvester
-- Email verification, breach checking
+4. **Get Shell**
+   - Use "Shells & Listeners" to generate reverse shells
+   - Start listener with "Netcat - Start Listener"
 
-#### Domain & Subdomain Intel
-- Whois, DNS enumeration
-- Certificate transparency logs
-
-#### Social Media OSINT
-- Sherlock, Twint, InstagramOSINT
-- Username enumeration
-
-#### People Search
-- Spokeo, Pipl alternatives
-- Social network discovery
-
-#### Image & Metadata Analysis
-- Exiftool, reverse image search
-- Geolocation extraction
-
-#### Dark Web & Breach Data
-- Have I Been Pwned
-- Breach database searching
-
-**Usage:**
-```bash
-python3 main.py --config configs/07_osint_detective.yaml
-```
+5. **Privilege Escalation**
+   - Use "Privilege Escalation" → "LinPEAS - Host for Download"
+   - Transfer to target and run enumeration
 
 ---
 
-## 8. 08_wireless_radio.yaml - Wireless
+## Creating Custom Configurations
 
-**Use Case:** WiFi, Bluetooth, SDR, and RF security  
-**Total Tools:** 45+  
-**Categories:** 5
-
-### Key Categories
-
-#### WiFi Hacking
-- Aircrack-ng suite
-- WPA/WPA2 cracking
-- Evil twin attacks
-
-#### Bluetooth Attacks
-- Bluesniff, Btlejack
-- BLE exploitation
-
-#### SDR & Radio Frequency
-- GNU Radio, HackRF
-- RTL-SDR tools
-
-#### RFID/NFC
-- Proxmark3, Chameleon
-- Card cloning
-
-#### Jamming & Analysis
-- Signal jammers
-- Spectrum analysis
-
-**Usage:**
-```bash
-python3 main.py --config configs/08_wireless_radio.yaml
-```
-
----
-
-## 9. 09_post_exploit.yaml - Post-Exploitation
-
-**Use Case:** Post-compromise activities and persistence  
-**Total Tools:** 75+  
-**Categories:** 10
-
-### Key Categories
-
-#### 🐧 Linux Enumeration
-- **Payload Server** - HTTP server for hosting payloads
-- **LinPEAS Command** - Generate download command
-- **pspy Command** - Process monitoring download
-- **SUID Find** - Find SUID binaries
-- **Capabilities Check** - Linux capabilities enumeration
-
-#### 📤 Data Exfiltration
-- Netcat file transfer
-- Curl upload
-- Base64 encoding
-- SCP transfer
-- Python HTTP server
-
-#### 🔒 Persistence Mechanisms
-- Crontab backdoors
-- Systemd services
-- SSH key injection
-- Bashrc backdoors
-
-#### ↔️ Lateral Movement
-- SSH tunneling
-- SOCKS proxies
-- Chisel tunneling
-- Proxychains
-
-#### 🔑 Credential Harvesting
-- Mimikatz (Windows)
-- LaZagne password recovery
-- Browser password extraction
-- /etc/shadow dumping
-
-#### 🗺️ Internal Network Discovery
-- ARP scanning
-- Ping sweeps
-- NetBIOS scanning
-- Network range discovery
-
-#### ⬆️ Privilege Escalation Exploits
-- PwnKit (CVE-2021-4034)
-- Dirty Pipe (CVE-2022-0847)
-- DirtyCOW (CVE-2016-5195)
-- GTFOBins exploitation
-
-#### 🧹 Anti-Forensics & Cleanup
-- Clear command history
-- Secure file deletion
-- Log wiping
-- Timestamp modification
-
-#### 🌐 Web Shell Deployment
-- PHP web shells
-- ASP shells
-- JSP shells
-- Weevely backdoors
-
-#### 🐳 Container Escape Techniques
-- Docker socket exploitation
-- Privileged container checks
-- CGroup escapes
-
-**Usage:**
-```bash
-python3 main.py --config configs/09_post_exploit.yaml
-```
-
----
-
-## Usage Guide
-
-### Basic Usage
-
-```bash
-# Launch specific module
-python3 main.py --config configs/02_ctf_kit.yaml
-
-# Or use aliases (if configured)
-alias tajaa-ctf="python3 ~/tajaa-cli/main.py --config configs/02_ctf_kit.yaml"
-tajaa-ctf
-```
-
-### Module Selection Guide
-
-| Scenario | Recommended Module |
-|----------|-------------------|
-| General pentest | 01_commands.yaml |
-| CTF competition | 02_ctf_kit.yaml |
-| Bug bounty hunting | 03_web_bounty.yaml |
-| Corporate network | 04_network_ad.yaml |
-| Mobile app test | 05_mobile_iot.yaml |
-| Cloud audit | 06_cloud_auditor.yaml |
-| OSINT investigation | 07_osint_detective.yaml |
-| WiFi assessment | 08_wireless_radio.yaml |
-| Post-compromise | 09_post_exploit.yaml |
-
----
-
-## Adding Custom Tools
-
-Edit any YAML file to add your own tools:
+You can create your own YAML configurations. Here's the structure:
 
 ```yaml
 categories:
-  your_category:
-    name: "Your Category Name"
+  category_name:
+    name: "Category Display Name"
     tools:
-      your_tool:
-        name: "Your Tool Name"
-        description: "What it does"
-        command: "your_command {param1} {param2}"
+      tool_id:
+        name: "Tool Display Name"
+        description: "What this tool does"
+        command: "actual command with {parameters}"
         params:
-          - param1
-          - param2
+          - parameter1
+          - parameter2
         defaults:
-          param1: "default_value"
+          parameter1: "default_value"
+```
+
+### Example Custom Tool
+
+```yaml
+categories:
+  my_tools:
+    name: "My Custom Tools"
+    tools:
+      my_scanner:
+        name: "My Port Scanner"
+        description: "Custom nmap scan with my preferred options"
+        command: "nmap -sC -sV -A -T4 --open -oA myscan {target_ip}"
+        params:
+          - target_ip
 ```
 
 ---
 
-## Tool Statistics
+## Tool Dependencies
 
-| Module | Categories | Tools | Primary Focus |
-|--------|-----------|-------|---------------|
-| 01_commands.yaml | 6 | 60+ | General pentesting |
-| 02_ctf_kit.yaml | 7 | 70+ | CTF & speed hacking |
-| 03_web_bounty.yaml | 8 | 80+ | Web application security |
-| 04_network_ad.yaml | 7 | 65+ | Active Directory |
-| 05_mobile_iot.yaml | 6 | 60+ | Mobile & IoT |
-| 06_cloud_auditor.yaml | 8 | 75+ | Cloud security |
-| 07_osint_detective.yaml | 6 | 60+ | Intelligence gathering |
-| 08_wireless_radio.yaml | 5 | 45+ | Wireless security |
-| 09_post_exploit.yaml | 10 | 75+ | Post-exploitation |
-| **TOTAL** | **66** | **480+** | **Multi-domain** |
+Most tools are pre-installed on Kali Linux. For missing tools:
 
----
+```bash
+# Update package lists
+sudo apt update
 
-## Parameter Types
+# Install common tools
+sudo apt install nmap masscan rustscan gobuster feroxbuster ffuf
+sudo apt install john hashcat hydra medusa crackmapexec
+sudo apt install sqlmap nikto wpscan whatweb
+sudo apt install binwalk foremost steghide exiftool
+sudo apt install radare2 gdb ltrace strace
+```
 
-Tajaa CLI automatically validates these parameter types:
+### Optional Installations
 
-- **target_ip** - IPv4 address or hostname
-- **target_url** - URL (auto-normalized)
-- **lhost/lport** - Local host/port
-- **file_path** - File system paths
-- **wordlist** - Wordlist paths (multi-location support)
-- **username/password** - Authentication credentials
-- **domain** - Domain names
-- **hash_file** - Hash files for cracking
+Run `install_arsenal.sh` for additional tools:
 
----
+```bash
+sudo ./install_arsenal.sh
+```
 
-## Security Features
-
-All tools in this catalog benefit from:
-
-✅ **Command Injection Protection** - All inputs sanitized with `shlex.quote()`  
-✅ **Input Validation** - Automatic parameter validation  
-✅ **Dangerous Input Detection** - Pattern matching for shell metacharacters  
-✅ **Session Logging** - Every command logged with timestamp  
-✅ **Dependency Checking** - Pre-execution tool availability warnings  
-
----
-
-## Contributing
-
-To add a new module:
-
-1. Create `configs/10_your_module.yaml`
-2. Follow the existing YAML structure
-3. Test with `python3 main.py --config configs/10_your_module.yaml`
-4. Submit pull request
+This installs:
+- CyberChef (Local HTML version)
+- LinPEAS / WinPEAS
+- pspy64
+- Common wordlists (SecLists, rockyou.txt)
 
 ---
 
 ## Support
 
-- **Issues:** https://github.com/ARSTaha/tajaa-cli/issues
-- **Documentation:** See README.md
-- **Examples:** See EXAMPLES.md
+- **Issues**: [GitHub Issues](https://github.com/ARSTaha/tajaa-cli/issues)
+- **Documentation**: See other .md files in the repository
+- **Troubleshooting**: Check [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 
 ---
 
-**Author:** Tajaa  
-**License:** MIT  
-**Version:** 3.1.0
+**Author**: Tajaa  
+**License**: MIT  
+**Version**: 4.0.0
 

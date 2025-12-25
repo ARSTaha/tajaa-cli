@@ -4,6 +4,52 @@ All notable changes to Tajaa CLI will be documented in this file.
 
 ---
 
+## [4.0.0] - 2025-12-25
+
+### The Ultimate CTF Toolkit Release
+
+This release transforms Tajaa CLI into the most comprehensive CTF toolkit ever created.
+
+### New Features
+
+- **167 CTF Tools** - Massive expansion of the CTF Kit module
+- **15 Essential Nmap Scans** - Including the legendary `nmap -sC -sV -p- -oN scan.txt`
+- **Complete Hash Cracking Arsenal** - John + Hashcat for all common hash types
+- **Comprehensive Steganography Suite** - 16 tools for image, audio, and binary analysis
+- **Binary Exploitation Tools** - Pattern generation, ROP gadgets, pwntools integration
+- **Privilege Escalation Helpers** - LinPEAS/WinPEAS hosting with download command generators
+- **18 Specialized Categories** - Organized workflow from recon to post-exploitation
+
+### CTF Kit Categories
+
+1. Nmap Arsenal (15 scans)
+2. Lightning Fast Scanners (RustScan, Masscan)
+3. Service-Specific Enumeration (SMB, SNMP, LDAP, NFS)
+4. Web Directory & Content Discovery
+5. Web Technology Analysis
+6. Web Vulnerability Exploitation (SQLi, XSS, LFI, SSRF)
+7. CMS Exploitation (WordPress, Drupal, Joomla)
+8. Hash Identification & Cracking
+9. Online Brute Force Attacks
+10. Steganography Analysis
+11. Audio Steganography
+12. Cryptography Tools
+13. Binary Analysis
+14. Binary Exploitation
+15. Privilege Escalation Enumeration
+16. Reverse Shells & Listeners
+17. OSINT & Information Gathering
+18. Quick CTF Utilities
+
+### Changed
+
+- Version bumped to 4.0.0
+- Rebranded as "The Ultimate Cyber Security Framework"
+- Tool count increased from 480+ to 500+
+- Updated documentation and CONFIG_CATALOG.md
+
+---
+
 ## [3.1.0] - 2025-12-19
 
 ### Security Fixes

