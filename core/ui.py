@@ -619,12 +619,28 @@ class TajaaUI:
             self.console.print("  [dim]No results found[/dim]")
         else:
             for idx, (tool, score) in enumerate(results[:15], 1):
-                confidence_bar = "█" * (score // 20) + "░" * (5 - score // 20)
+                # Convert score to int for string multiplication
+                score_int = int(score) if isinstance(score, float) else score
+                filled = min(5, max(0, score_int // 20))
+                confidence_bar = "█" * filled + "░" * (5 - filled)
+
+                # Handle both ToolInfo objects and objects with metadata attribute
+                if hasattr(tool, 'metadata'):
+                    name = tool.metadata.name
+                    desc = tool.metadata.description[:60] if tool.metadata.description else ''
+                elif hasattr(tool, 'name'):
+                    name = tool.name
+                    desc = (tool.description[:60] if hasattr(tool, 'description') and tool.description else '')
+                else:
+                    name = str(tool)
+                    desc = ''
+
                 self.console.print(
-                    f"  [dim]{idx:2}.[/dim] [bold green]{tool.metadata.name}[/bold green] "
+                    f"  [dim]{idx:2}.[/dim] [bold green]{name}[/bold green] "
                     f"[dim]│[/dim] [yellow]{confidence_bar}[/yellow]"
                 )
-                self.console.print(f"      [dim]{tool.metadata.description[:60]}...[/dim]")
+                if desc:
+                    self.console.print(f"      [dim]{desc}...[/dim]")
 
         self.console.print()
 
