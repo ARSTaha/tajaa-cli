@@ -101,14 +101,14 @@ This is the framework that makes Metasploit look like a calculator.
 ### One-Line Install (Kali Linux)
 
 ```bash
-git clone https://github.com/Tajaa/tajaa-cli.git && cd tajaa-cli && ./install.sh
+git clone https://github.com/ARSTaha/tajaa-cli.git && cd tajaa-cli && ./install.sh
 ```
 
 ### Manual Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/Tajaa/tajaa-cli.git
+git clone https://github.com/ARSTaha/tajaa-cli.git
 cd tajaa-cli
 
 # Create virtual environment (recommended)
